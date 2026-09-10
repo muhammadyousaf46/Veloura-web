@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Veloura — An Extraordinary Dining Experience</title>
+<meta name="description" content="Veloura is a premium fine-dining restaurant. Discover exquisite flavors, refined ambiance, and unforgettable moments." />
+<meta property="og:title" content="Veloura — Where Every Flavor Tells a Story" />
+<meta property="og:description" content="Discover exquisite flavors, refined ambiance, and unforgettable moments at Veloura." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- ==================== NAVBAR ==================== -->
+<header class="navbar">
+  <a href="index.html" class="logo">VELOURA</a>
+
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="index.html" aria-current="page">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="reservation.html">Reservations</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="nav-actions">
+    <button class="icon-btn" aria-label="Search">&#128269;</button>
+    <a href="cart.html" class="icon-btn" aria-label="Cart">
+      &#128717;
+      <span class="cart-count">0</span>
+    </a>
+    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="about.html">About</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="reservation.html">Reservations</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <div class="hero-bg">
+    <!-- IMAGE PLACEHOLDER: replace this gradient with:
+         background-image: url('images/hero/hero-main.jpg');
+         background-size: cover; background-position: center; -->
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Veloura</p>
+    <h1>An Extraordinary<br />Dining Experience.</h1>
+    <p>Discover exquisite flavors, refined ambiance, and unforgettable moments at Veloura.</p>
+    <div class="hero-actions">
+      <a href="menu.html" class="btn btn-primary">Explore Menu</a>
+      <a href="menu.html" class="btn btn-outline">Order Online</a>
+    </div>
+  </div>
+  <div class="scroll-cue">SCROLL</div>
+</section>
+
+<!-- ==================== SIGNATURE CREATIONS ==================== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <hr class="rule" />
+        <h2>Signature Creations</h2>
+      </div>
+      <p>Six dishes that define our kitchen — crafted daily with the season's finest ingredients.</p>
+    </div>
+    <div class="dish-grid" id="featured-dish-grid">
+      <!-- Populated by js/index.js from Supabase menu_items -->
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ABOUT PREVIEW ==================== -->
+<section class="section-tight">
+  <div class="container">
+    <div class="split">
+      <div class="split-media reveal">
+        <!-- IMAGE PLACEHOLDER: images/about/about-main.jpg -->
+      </div>
+      <div class="split-copy reveal">
+        <hr class="rule" />
+        <h2>Crafted With Passion</h2>
+        <p>Every plate at Veloura begins with a story — sourced from trusted growers, shaped by technique, and finished with restraint. Our kitchen believes flavor should never be rushed, and hospitality should never be routine.</p>
+        <a href="about.html" class="btn btn-dark">Discover Our Story</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOD CATEGORIES ==================== -->
+<section class="section-tight">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <hr class="rule" />
+        <h2>Explore by Category</h2>
+      </div>
+    </div>
+  </div>
+  <div class="category-strip reveal">
+    <a class="category-tile" href="menu.html#starters"><span class="cat-name">Starters</span></a>
+    <a class="category-tile" href="menu.html#main-course"><span class="cat-name">Main Course</span></a>
+    <a class="category-tile" href="menu.html#burgers"><span class="cat-name">Burgers</span></a>
+    <a class="category-tile" href="menu.html#pizza"><span class="cat-name">Pizza</span></a>
+    <a class="category-tile" href="menu.html#bbq-grill"><span class="cat-name">BBQ &amp; Grill</span></a>
+    <a class="category-tile" href="menu.html#desi-cuisine"><span class="cat-name">Desi Cuisine</span></a>
+    <a class="category-tile" href="menu.html#chinese"><span class="cat-name">Chinese</span></a>
+    <a class="category-tile" href="menu.html#pasta"><span class="cat-name">Pasta</span></a>
+    <a class="category-tile" href="menu.html#seafood"><span class="cat-name">Seafood</span></a>
+    <a class="category-tile" href="menu.html#desserts"><span class="cat-name">Desserts</span></a>
+    <a class="category-tile" href="menu.html#beverages"><span class="cat-name">Beverages</span></a>
+  </div>
+</section>
+
+<!-- ==================== WHY CHOOSE VELOURA ==================== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <hr class="rule" />
+        <h2>Why Choose Veloura</h2>
+      </div>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+        <h3>Premium Ingredients</h3>
+        <p>Sourced from trusted growers and select purveyors for consistent, exceptional quality.</p>
+      </div>
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="5"/></svg>
+        <h3>Expert Chefs</h3>
+        <p>A kitchen led by chefs trained in classical technique and modern restraint.</p>
+      </div>
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 20h16M6 20V10l6-6 6 6v10"/></svg>
+        <h3>Elegant Atmosphere</h3>
+        <p>An interior designed for quiet indulgence — warm light, soft acoustics, considered detail.</p>
+      </div>
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4l16 16M20 4L4 20"/></svg>
+        <h3>Exceptional Service</h3>
+        <p>Attentive, unobtrusive hospitality from the moment you arrive to your final course.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CUSTOMER REVIEWS ==================== -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <hr class="rule" />
+        <h2>What Our Guests Say</h2>
+      </div>
+    </div>
+    <div class="testimonial-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Every course felt considered. The lamb was the best I've had this year, and the service never once felt rushed.</p>
+        <p class="testimonial-name">Amina R.</p>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Veloura is our go-to for anniversaries. The ambiance alone is worth the visit — the food simply confirms it.</p>
+        <p class="testimonial-name">Hassan K.</p>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★☆</div>
+        <p class="testimonial-text">Beautifully plated, generous portions, and a wine pairing that actually matched the menu. Highly recommend.</p>
+        <p class="testimonial-name">Sara M.</p>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">The tasting menu is worth planning your evening around. Book ahead — it fills up fast.</p>
+        <p class="testimonial-name">Bilal A.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SPECIAL OFFER ==================== -->
+<section class="offer-banner reveal">
+  <div class="container">
+    <h2>A Taste Worth Celebrating</h2>
+    <p style="margin-left:auto;margin-right:auto;">This month: a complimentary dessert with every tasting menu reservation for two.</p>
+    <a href="menu.html" class="btn btn-primary">Order Now</a>
+  </div>
+</section>
+
+<!-- ==================== NEWSLETTER ==================== -->
+<section class="section-tight">
+  <div class="container" style="text-align:center;">
+    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
+    <h2 style="margin-bottom:0.75rem;">Stay in the Loop</h2>
+    <p style="margin:0 auto 2rem;">Seasonal menus, private events, and reservations — straight to your inbox.</p>
+    <form id="newsletter-form" class="newsletter" novalidate>
+      <label for="newsletter-email" class="visually-hidden">Email address</label>
+      <input id="newsletter-email" type="email" placeholder="Email address" required />
+      <button type="submit" class="btn btn-dark">Subscribe</button>
+    </form>
+    <p class="form-status" role="status"></p>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <p class="logo">VELOURA</p>
+        <p>"Where Every Flavor Tells a Story."</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guest</h4>
+        <ul>
+          <li><a href="reservation.html">Reservations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <div class="social-icons">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="Facebook">FB</a>
+          <a href="#" aria-label="TikTok">TT</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Veloura. All rights reserved.</span>
+      <span>Address, phone &amp; hours — placeholder, update in contact.html</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
