@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign Up — Veloura</title>
+<meta name="description" content="Create a Veloura account." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<header class="navbar">
+  <a href="index.html" class="logo">VELOURA</a>
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="reservation.html">Reservations</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="nav-actions">
+    <a href="cart.html" class="icon-btn" aria-label="Cart">&#128717;<span class="cart-count">0</span></a>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="about.html">About</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="reservation.html">Reservations</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="section auth-card" style="margin-top:5rem;">
+  <div class="container" style="max-width:420px;">
+    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
+    <h1 style="text-align:center;font-size:2.2rem;margin-bottom:0.5rem;">Create Your Account</h1>
+    <p style="text-align:center;margin:0 auto 2rem;">Join Veloura for faster checkout and order history.</p>
+
+    <form id="signup-form" novalidate>
+      <div class="field" style="margin-bottom:1rem;">
+        <label for="full_name">Full Name</label>
+        <input id="full_name" name="full_name" type="text" required />
+      </div>
+      <div class="field" style="margin-bottom:1rem;">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required />
+      </div>
+      <div class="field" style="margin-bottom:1.25rem;">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" minlength="6" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Create Account</button>
+      <p class="form-status" role="status" style="text-align:center;margin-top:0.75rem;"></p>
+    </form>
+
+    <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;justify-content:center;">
+      <span>&copy; 2026 Veloura. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

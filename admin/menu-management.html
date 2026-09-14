@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Menu Management — Veloura Admin</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div id="admin-guard" class="admin-guard-block">
+  <div>
+    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
+    <h2>Checking access&hellip;</h2>
+    <p>Verifying administrator permissions.</p>
+    <a href="../login.html" class="btn btn-dark" style="margin-top:1.5rem;">Go to Login</a>
+  </div>
+</div>
+
+<div class="admin-shell" style="display:none;">
+<aside class="admin-sidebar">
+  <a href="index.html" class="logo">VELOURA</a>
+  <nav class="admin-nav">
+    <a href="index.html">Overview</a>
+    <a href="menu-management.html" aria-current="page">Menu Management</a>
+    <a href="orders.html">Orders</a>
+    <a href="reservations.html">Reservations</a>
+    <a href="customers.html">Customers</a>
+    <a href="messages.html">Contact Messages</a>
+    <a href="newsletter.html">Newsletter</a>
+    <a href="#" class="signout" data-logout>Sign Out</a>
+    <a href="../index.html" style="margin-top:0.5rem;">&larr; Back to Site</a>
+  </nav>
+</aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 style="font-size:1.8rem;">Menu Management</h1>
+    </div>
+    <div class="admin-topbar">
+      <button id="add-item-btn" class="btn btn-primary">Add Menu Item</button>
+    </div>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Popular</th><th>Vegetarian</th><th>Available</th><th>Actions</th></tr></thead>
+        <tbody id="menu-table-body"></tbody>
+      </table>
+    </div>
+
+    <div id="item-modal" class="modal-backdrop">
+      <div class="modal-box">
+        <h3 id="modal-title">Add Menu Item</h3>
+        <form id="item-form">
+          <input type="hidden" id="item-id" />
+          <div class="field" style="margin-bottom:0.75rem;"><label for="item-name">Name</label><input id="item-name" required /></div>
+          <div class="field" style="margin-bottom:0.75rem;"><label for="item-description">Description</label><textarea id="item-description"></textarea></div>
+          <div class="field" style="margin-bottom:0.75rem;"><label for="item-category">Category</label><select id="item-category"></select></div>
+          <div class="field" style="margin-bottom:0.75rem;"><label for="item-price">Price (Rs)</label><input id="item-price" type="number" min="0" step="1" required /></div>
+          <div class="field" style="margin-bottom:0.75rem;"><label for="item-image">Image URL</label><input id="item-image" placeholder="https://... (from Supabase Storage)" /></div>
+          <label style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;"><input type="checkbox" id="item-popular" /> Mark as popular</label>
+          <label style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;"><input type="checkbox" id="item-vegetarian" /> Vegetarian</label>
+          <label style="display:flex;gap:0.5rem;align-items:center;"><input type="checkbox" id="item-available" checked /> Available</label>
+          <div class="modal-close-row">
+            <button type="button" class="btn btn-dark" id="modal-cancel">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Item</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="../js/supabase-client.js"></script>
+<script src="../js/auth.js"></script>
+<script src="js/admin-guard.js"></script>
+<script src="js/menu-management.js"></script>
+</body>
+</html>

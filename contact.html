@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact — Veloura</title>
+<meta name="description" content="Get in touch with Veloura." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<header class="navbar">
+  <a href="index.html" class="logo">VELOURA</a>
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="reservation.html">Reservations</a></li>
+      <li><a href="contact.html" aria-current="page">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="nav-actions">
+    <a href="cart.html" class="icon-btn" aria-label="Cart">&#128717;<span class="cart-count">0</span></a>
+    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="about.html">About</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="reservation.html">Reservations</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="hero-eyebrow" style="color:var(--gold);">Contact</p>
+    <h1>Get in Touch</h1>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="contact-layout">
+      <div>
+        <div class="contact-info-item">
+          <h4>Address</h4>
+          <p>[Restaurant Address — placeholder, update once available]</p>
+        </div>
+        <div class="contact-info-item">
+          <h4>Phone</h4>
+          <p>[+92 XXX XXXXXXX — placeholder]</p>
+        </div>
+        <div class="contact-info-item">
+          <h4>Email</h4>
+          <p>[hello@veloura.example — placeholder]</p>
+        </div>
+        <div class="contact-info-item">
+          <h4>Opening Hours</h4>
+          <p>[Mon–Sun, 12:00 PM – 11:00 PM — placeholder]</p>
+        </div>
+        <div class="map-placeholder">
+          <!-- IMAGE/EMBED PLACEHOLDER: replace with a Google Maps <iframe> once the address is finalized -->
+          Map will appear here
+        </div>
+        <div class="social-icons" style="margin-top:1.5rem;">
+          <a href="#" aria-label="Instagram" style="color:var(--umber);">Instagram</a>
+          <a href="#" aria-label="Facebook" style="color:var(--umber);">Facebook</a>
+          <a href="#" aria-label="TikTok" style="color:var(--umber);">TikTok</a>
+        </div>
+      </div>
+
+      <form id="contact-form" novalidate>
+        <div class="field" style="margin-bottom:1rem;"><label for="name">Name</label><input id="name" name="name" type="text" required /></div>
+        <div class="field" style="margin-bottom:1rem;"><label for="email">Email</label><input id="email" name="email" type="email" required /></div>
+        <div class="field" style="margin-bottom:1rem;"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" /></div>
+        <div class="field" style="margin-bottom:1rem;"><label for="message">Message</label><textarea id="message" name="message" required></textarea></div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+        <p class="form-status" role="status" style="margin-top:0.75rem;"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><p class="logo">VELOURA</p><p>"Where Every Flavor Tells a Story."</p></div>
+      <div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+      <div><h4>Guest</h4><ul><li><a href="reservation.html">Reservations</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
+      <div><h4>Follow</h4><div class="social-icons"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="TikTok">TT</a></div></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 Veloura. All rights reserved.</span><span>Address, phone &amp; hours — placeholder, update in contact.html</span></div>
+  </div>
+</footer>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/contact.js"></script>
+</body>
+</html>

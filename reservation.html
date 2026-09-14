@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reservations — Veloura</title>
+<meta name="description" content="Reserve your table at Veloura." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<header class="navbar">
+  <a href="index.html" class="logo">VELOURA</a>
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="reservation.html" aria-current="page">Reservations</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="nav-actions">
+    <a href="cart.html" class="icon-btn" aria-label="Cart">&#128717;<span class="cart-count">0</span></a>
+    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="about.html">About</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="reservation.html">Reservations</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="hero-eyebrow" style="color:var(--gold);">Reservations</p>
+    <h1>Book Your Table</h1>
+    <p>We recommend booking at least 48 hours in advance for weekend evenings.</p>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container" style="max-width:640px;">
+    <form id="reservation-form" novalidate>
+      <div class="form-grid">
+        <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" required /></div>
+        <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" required /></div>
+        <div class="field full"><label for="email">Email</label><input id="email" name="email" type="email" /></div>
+        <div class="field"><label for="reservation_date">Date</label><input id="reservation_date" name="reservation_date" type="date" required /></div>
+        <div class="field"><label for="reservation_time">Time</label><input id="reservation_time" name="reservation_time" type="time" required /></div>
+        <div class="field"><label for="guests">Number of Guests</label><input id="guests" name="guests" type="number" min="1" max="20" value="2" required /></div>
+        <div class="field full"><label for="special_request">Special Request</label><textarea id="special_request" name="special_request" placeholder="Anniversary, dietary needs, seating preference..."></textarea></div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="margin-top:1.5rem;">Request Reservation</button>
+      <p class="form-status" role="status" style="margin-top:0.75rem;"></p>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><p class="logo">VELOURA</p><p>"Where Every Flavor Tells a Story."</p></div>
+      <div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+      <div><h4>Guest</h4><ul><li><a href="reservation.html">Reservations</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
+      <div><h4>Follow</h4><div class="social-icons"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="TikTok">TT</a></div></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 Veloura. All rights reserved.</span><span>Address, phone &amp; hours — placeholder, update in contact.html</span></div>
+  </div>
+</footer>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/reservation.js"></script>
+</body>
+</html>

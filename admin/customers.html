@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Customer Management — Veloura Admin</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div id="admin-guard" class="admin-guard-block">
+  <div>
+    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
+    <h2>Checking access&hellip;</h2>
+    <p>Verifying administrator permissions.</p>
+    <a href="../login.html" class="btn btn-dark" style="margin-top:1.5rem;">Go to Login</a>
+  </div>
+</div>
+
+<div class="admin-shell" style="display:none;">
+<aside class="admin-sidebar">
+  <a href="index.html" class="logo">VELOURA</a>
+  <nav class="admin-nav">
+    <a href="index.html">Overview</a>
+    <a href="menu-management.html">Menu Management</a>
+    <a href="orders.html">Orders</a>
+    <a href="reservations.html">Reservations</a>
+    <a href="customers.html" aria-current="page">Customers</a>
+    <a href="messages.html">Contact Messages</a>
+    <a href="newsletter.html">Newsletter</a>
+    <a href="#" class="signout" data-logout>Sign Out</a>
+    <a href="../index.html" style="margin-top:0.5rem;">&larr; Back to Site</a>
+  </nav>
+</aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 style="font-size:1.8rem;">Customer Management</h1>
+    </div>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Orders Placed</th><th>Joined</th></tr></thead>
+        <tbody id="customers-table-body"></tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<script src="../js/supabase-client.js"></script>
+<script src="../js/auth.js"></script>
+<script src="js/admin-guard.js"></script>
+<script src="js/customers.js"></script>
+</body>
+</html>

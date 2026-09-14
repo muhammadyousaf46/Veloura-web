@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Checkout — Veloura</title>
+<meta name="description" content="Complete your Veloura order." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<header class="navbar">
+  <a href="index.html" class="logo">VELOURA</a>
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="reservation.html">Reservations</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="nav-actions">
+    <a href="cart.html" class="icon-btn" aria-label="Cart">&#128717;<span class="cart-count">0</span></a>
+    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="about.html">About</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="reservation.html">Reservations</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="hero-eyebrow" style="color:var(--gold);">Order</p>
+    <h1>Checkout</h1>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+
+    <div id="checkout-empty" class="empty-state" style="display:none;">
+      <p>Your cart is empty — add something delicious first.</p>
+      <a href="menu.html" class="btn btn-dark" style="margin-top:1.5rem;">Browse the Menu</a>
+    </div>
+
+    <div id="checkout-content" class="cart-layout">
+      <form id="checkout-form" novalidate>
+        <h3 style="margin-bottom:1rem;">Order Type</h3>
+        <div class="order-type-toggle">
+          <button type="button" data-type="delivery" class="active">Delivery</button>
+          <button type="button" data-type="pickup">Pickup</button>
+        </div>
+
+        <h3 style="margin:2rem 0 1rem;">Your Details</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label for="full_name">Full Name</label>
+            <input id="full_name" name="full_name" type="text" required />
+            <p class="field-error" id="full_name-error"></p>
+          </div>
+          <div class="field">
+            <label for="phone">Phone Number</label>
+            <input id="phone" name="phone" type="tel" required />
+            <p class="field-error" id="phone-error"></p>
+          </div>
+          <div class="field full">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+            <p class="field-error" id="email-error"></p>
+          </div>
+          <div class="field full" id="address-field">
+            <label for="address">Delivery Address</label>
+            <input id="address" name="address" type="text" />
+            <p class="field-error" id="address-error"></p>
+          </div>
+          <div class="field">
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" />
+            <p class="field-error" id="city-error"></p>
+          </div>
+          <div class="field full">
+            <label for="notes">Additional Instructions</label>
+            <textarea id="notes" name="notes" placeholder="Optional"></textarea>
+          </div>
+        </div>
+
+        <h3 style="margin:2rem 0 1rem;">Payment Method</h3>
+        <div class="payment-options">
+          <div class="payment-option selected" data-method="cod">
+            <input type="radio" name="payment_display" checked readonly /> Cash on Delivery
+          </div>
+          <div class="payment-detail">Pay in cash when your order arrives, or at pickup.</div>
+
+          <div class="payment-option" data-method="jazzcash">
+            <input type="radio" name="payment_display" readonly /> JazzCash
+          </div>
+          <div class="payment-detail">You'll receive JazzCash payment instructions after placing the order. Live payment gateway integration is coming soon — your order is recorded with payment status "Pending" until then.</div>
+
+          <div class="payment-option" data-method="easypaisa">
+            <input type="radio" name="payment_display" readonly /> Easypaisa
+          </div>
+          <div class="payment-detail">You'll receive Easypaisa payment instructions after placing the order. Live payment gateway integration is coming soon — your order is recorded with payment status "Pending" until then.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:1rem;">Place Order</button>
+      </form>
+
+      <div class="summary-box">
+        <h3 style="margin-bottom:1.25rem;">Order Review</h3>
+        <div id="checkout-items"></div>
+        <div class="summary-row" style="margin-top:1rem;"><span>Subtotal</span><span id="checkout-subtotal">Rs 0</span></div>
+        <div class="summary-row"><span>Delivery Fee</span><span id="checkout-delivery">Rs 0</span></div>
+        <div class="summary-row total"><span>Total</span><span id="checkout-total">Rs 0</span></div>
+      </div>
+    </div>
+
+    <div id="order-confirmation" class="confirmation-box" style="display:none;">
+      <p class="hero-eyebrow" style="color:var(--gold);">Success</p>
+      <h1 style="font-size:2.4rem;">Order Placed Successfully</h1>
+      <hr class="rule" />
+      <p>Order #<strong id="confirm-order-number"></strong></p>
+      <div class="order-summary-list" id="confirm-items"></div>
+      <div class="summary-row total"><span>Total</span><span id="confirm-total"></span></div>
+      <div class="summary-row"><span>Payment Method</span><span id="confirm-payment"></span></div>
+      <div class="summary-row"><span>Status</span><span id="confirm-status"></span></div>
+      <a href="index.html" class="btn btn-dark" style="margin-top:1.5rem;">Back to Home</a>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><p class="logo">VELOURA</p><p>"Where Every Flavor Tells a Story."</p></div>
+      <div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+      <div><h4>Guest</h4><ul><li><a href="reservation.html">Reservations</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
+      <div><h4>Follow</h4><div class="social-icons"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="TikTok">TT</a></div></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 Veloura. All rights reserved.</span><span>Address, phone &amp; hours — placeholder, update in contact.html</span></div>
+  </div>
+</footer>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/checkout.js"></script>
+</body>
+</html>
