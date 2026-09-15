@@ -126,7 +126,9 @@ function initLogoutButtons() {
     btn.addEventListener("click", async (e) => {
       e.preventDefault();
       await supabase.auth.signOut();
-      window.location.href = "../login.html";
+      // Admin sidebar logout: reload so the inline admin-guard login form reappears.
+      // Any other [data-logout] button: send to the public login page.
+      window.location.href = btn.dataset.logout === "admin" ? "index.html" : "../login.html";
     });
   });
 }

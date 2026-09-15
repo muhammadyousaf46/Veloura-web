@@ -2,7 +2,46 @@
 // VELOURA — Home page: Signature Creations (featured dishes from Supabase)
 // ==========================================================================
 
-document.addEventListener("DOMContentLoaded", loadFeaturedDishes);
+document.addEventListener("DOMContentLoaded", () => {
+  loadFeaturedDishes();
+  loadActiveDeal();
+});
+
+async function loadActiveDeal() {
+  const content = document.querySelector("#offer-content");
+  if (!content) return;
+
+  try {
+    const today = new Date().toISOString().split("T")[0];
+    const { data, error } = await supabase
+      .from("deals")
+      .select("*, menu_items(name, price)")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (error) throw error;
+    if (!data || data.length === 0) return; // keep the static fallback copy
+
+    const deal = data[0];
+    if (deal.start_date && deal.start_date > today) return;
+    if (deal.end_date && deal.end_date < today) return;
+
+    const discountLine = deal.discount_percent
+      ? `<p class="dish-price" style="font-size:1.4rem;margin-bottom:0.5rem;">${deal.discount_percent}% Off${deal.menu_items ? " — " + deal.menu_items.name : ""}</p>`
+      : "";
+
+    content.innerHTML = `
+      <h2>${deal.title}</h2>
+      ${discountLine}
+      <p style="margin-left:auto;margin-right:auto;">${deal.description ?? ""}</p>
+      <a href="menu.html" class="btn btn-primary">Order Now</a>
+    `;
+  } catch (err) {
+    console.error("Failed to load active deal:", err);
+    // Static fallback copy already in the DOM — nothing further to do.
+  }
+}
 
 async function loadFeaturedDishes() {
   const grid = document.querySelector("#featured-dish-grid");

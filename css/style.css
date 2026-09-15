@@ -266,10 +266,19 @@ p { max-width: 62ch; color: var(--umber); }
 
 .hero-bg {
   position: absolute;
-  inset: 0;
+  inset: -5%;
   /* IMAGE PLACEHOLDER: replace background-image url() below with a real hero photo (e.g. /images/hero/hero-main.jpg) */
-  background: linear-gradient(120deg, #17140F 0%, #221E17 55%, #2C2519 100%);
+  background: linear-gradient(120deg, #17140F 0%, #221E17 45%, #2C2519 70%, #221E17 100%);
+  background-size: 220% 220%;
   opacity: 0.9;
+  animation: hero-bg-drift 18s ease-in-out infinite alternate;
+  transition: transform 300ms ease-out;
+  will-change: transform, background-position;
+}
+
+@keyframes hero-bg-drift {
+  0% { background-position: 0% 30%; }
+  100% { background-position: 100% 70%; }
 }
 
 .hero-bg::after {
@@ -278,18 +287,57 @@ p { max-width: 62ch; color: var(--umber); }
   background: linear-gradient(90deg, rgba(23,20,15,0.92) 0%, rgba(23,20,15,0.55) 55%, rgba(23,20,15,0.75) 100%);
 }
 
+/* ---- Floating gold particles ---- */
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.35;
+  filter: blur(0.5px);
+  animation: particle-float 12s ease-in-out infinite;
+}
+.p1 { width: 6px; height: 6px; top: 22%; left: 12%; animation-duration: 14s; animation-delay: 0s; }
+.p2 { width: 3px; height: 3px; top: 65%; left: 22%; animation-duration: 10s; animation-delay: 1.2s; }
+.p3 { width: 4px; height: 4px; top: 40%; left: 78%; animation-duration: 16s; animation-delay: 0.4s; }
+.p4 { width: 2px; height: 2px; top: 78%; left: 60%; animation-duration: 9s; animation-delay: 2s; }
+.p5 { width: 5px; height: 5px; top: 15%; left: 55%; animation-duration: 13s; animation-delay: 0.8s; }
+.p6 { width: 3px; height: 3px; top: 55%; left: 90%; animation-duration: 11s; animation-delay: 1.6s; }
+
+@keyframes particle-float {
+  0%, 100% { transform: translate(0, 0); opacity: 0.15; }
+  50% { transform: translate(12px, -26px); opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg, .particle { animation: none; }
+}
+
 .hero-content {
   position: relative;
   z-index: 2;
   max-width: 640px;
   padding: 0 var(--space-md);
   color: var(--ivory);
-  opacity: 0;
-  transform: translateY(18px);
-  animation: hero-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
 }
 
-@keyframes hero-in { to { opacity: 1; transform: translateY(0); } }
+/* Staggered per-element entrance, timed by each element's --d custom property */
+.hero-fade {
+  opacity: 0;
+  transform: translateY(22px);
+  animation: hero-fade-in 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes hero-fade-in { to { opacity: 1; transform: translateY(0); } }
+
+.hero-heading { overflow: hidden; }
+.hero-line { display: block; overflow: hidden; }
+.hero-word { display: inline-block; color: var(--ivory); }
 
 .hero-eyebrow {
   color: var(--gold);
@@ -297,7 +345,19 @@ p { max-width: 62ch; color: var(--umber); }
   font-family: var(--font-display);
   font-style: italic;
   margin-bottom: 1rem;
+  position: relative;
 }
+.hero-eyebrow::after {
+  content: "";
+  display: inline-block;
+  width: 28px; height: 1px;
+  background: var(--gold);
+  margin-left: 0.75rem;
+  vertical-align: middle;
+  transform-origin: left;
+  animation: rule-grow 700ms ease 0.5s both;
+}
+@keyframes rule-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 .hero-content h1 { color: var(--ivory); margin-bottom: 1.25rem; }
 
@@ -308,6 +368,17 @@ p { max-width: 62ch; color: var(--umber); }
 }
 
 .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.hero-actions .btn { position: relative; overflow: hidden; }
+.hero-actions .btn::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: rgba(247,242,231,0.18);
+  transform: translateX(-100%);
+  transition: transform 500ms ease;
+}
+.hero-actions .btn:hover::before { transform: translateX(0); }
+.hero-actions .btn span, .hero-actions .btn { z-index: 1; }
 
 .scroll-cue {
   position: absolute;
@@ -325,6 +396,13 @@ p { max-width: 62ch; color: var(--umber); }
   content: "";
   width: 1px; height: 32px;
   background: var(--gold);
+  animation: scroll-line 1.8s ease-in-out infinite;
+  transform-origin: top;
+}
+@keyframes scroll-line {
+  0% { transform: scaleY(0.3); opacity: 0.4; }
+  50% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(0.3); opacity: 0.4; }
 }
 
 /* ---- Fade-in on scroll ---- */

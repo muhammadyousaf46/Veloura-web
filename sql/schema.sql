@@ -102,18 +102,7 @@ create table if not exists newsletter_subscribers (
   created_at timestamptz not null default now()
 );
 
-create table if not exists deals (
-  id uuid primary key default uuid_generate_v4(),
-  title text not null,
-  description text,
-  menu_item_id uuid references menu_items(id) on delete set null,
-  discount_price numeric(10,2),
-  image_url text,
-  is_active boolean not null default true,
-  starts_at date,
-  ends_at date,
-  created_at timestamptz not null default now()
-);
+-- deals table is created further down, near its policies and the storage bucket setup.
 
 -- ==========================================================================
 -- AUTO-CREATE PROFILE ON SIGNUP
@@ -144,7 +133,7 @@ alter table order_items enable row level security;
 alter table reservations enable row level security;
 alter table contact_messages enable row level security;
 alter table newsletter_subscribers enable row level security;
-alter table deals enable row level security;
+-- deals RLS is enabled further down, right after its table is created.
 
 -- Helper: is the current user an admin?
 create or replace function public.is_admin()
@@ -212,11 +201,7 @@ create policy "Anyone can subscribe" on newsletter_subscribers
 create policy "Admins view subscribers" on newsletter_subscribers
   for select using (public.is_admin());
 
--- ---- deals (public read active deals, admin write) ----
-create policy "Anyone can view deals" on deals
-  for select using (true);
-create policy "Admins manage deals" on deals
-  for all using (public.is_admin());
+-- deals policies are created further down, right after the deals table.
 
 -- ==========================================================================
 -- SEED DATA (sample categories + menu items — replace/expand as needed)
@@ -235,30 +220,8 @@ insert into categories (name, description) values
   ('Beverages', 'Crafted drinks, hot and cold')
 on conflict do nothing;
 
--- ==========================================================================
--- STORAGE BUCKET (for menu item + deal images uploaded from the admin panel)
--- Run this AFTER the tables above. If it errors because the bucket already
--- exists, that's fine — it means this part is already set up.
--- ==========================================================================
-insert into storage.buckets (id, name, public)
-values ('veloura-images', 'veloura-images', true)
-on conflict (id) do nothing;
-
-create policy "Public can view veloura images"
-  on storage.objects for select
-  using (bucket_id = 'veloura-images');
-
-create policy "Admins can upload veloura images"
-  on storage.objects for insert
-  with check (bucket_id = 'veloura-images' and public.is_admin());
-
-create policy "Admins can update veloura images"
-  on storage.objects for update
-  using (bucket_id = 'veloura-images' and public.is_admin());
-
-create policy "Admins can delete veloura images"
-  on storage.objects for delete
-  using (bucket_id = 'veloura-images' and public.is_admin());
+-- Storage bucket for menu/deal/gallery images is created further down,
+-- right after the deals table (see "IMAGE STORAGE" section below).
 
 -- ==========================================================================
 -- DEALS (special offers, linked to a menu item)

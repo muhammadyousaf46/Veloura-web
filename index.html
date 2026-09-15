@@ -53,22 +53,35 @@
 </div>
 
 <!-- ==================== HERO ==================== -->
-<section class="hero">
-  <div class="hero-bg">
+<section class="hero" id="hero">
+  <div class="hero-bg" id="hero-bg">
     <!-- IMAGE PLACEHOLDER: replace this gradient with:
          background-image: url('images/hero/hero-main.jpg');
          background-size: cover; background-position: center; -->
   </div>
+
+  <div class="hero-particles" aria-hidden="true">
+    <span class="particle p1"></span>
+    <span class="particle p2"></span>
+    <span class="particle p3"></span>
+    <span class="particle p4"></span>
+    <span class="particle p5"></span>
+    <span class="particle p6"></span>
+  </div>
+
   <div class="hero-content">
-    <p class="hero-eyebrow">Veloura</p>
-    <h1>An Extraordinary<br />Dining Experience.</h1>
-    <p>Discover exquisite flavors, refined ambiance, and unforgettable moments at Veloura.</p>
-    <div class="hero-actions">
+    <p class="hero-eyebrow hero-fade" style="--d:0s;">Veloura</p>
+    <h1 class="hero-heading">
+      <span class="hero-line"><span class="hero-word hero-fade" style="--d:0.15s;">An</span> <span class="hero-word hero-fade" style="--d:0.25s;">Extraordinary</span></span>
+      <span class="hero-line"><span class="hero-word hero-fade" style="--d:0.4s;">Dining</span> <span class="hero-word hero-fade" style="--d:0.5s;">Experience.</span></span>
+    </h1>
+    <p class="hero-fade" style="--d:0.65s;">Discover exquisite flavors, refined ambiance, and unforgettable moments at Veloura.</p>
+    <div class="hero-actions hero-fade" style="--d:0.8s;">
       <a href="menu.html" class="btn btn-primary">Explore Menu</a>
       <a href="menu.html" class="btn btn-outline">Order Online</a>
     </div>
   </div>
-  <div class="scroll-cue">SCROLL</div>
+  <div class="scroll-cue hero-fade" style="--d:1s;">SCROLL</div>
 </section>
 
 <!-- ==================== SIGNATURE CREATIONS ==================== -->
@@ -198,12 +211,14 @@
 </section>
 
 <!-- ==================== SPECIAL OFFER ==================== -->
-<section class="offer-banner reveal">
-  <div class="container">
+<section class="offer-banner reveal" id="offer-banner">
+  <div class="container" id="offer-content">
     <h2>A Taste Worth Celebrating</h2>
     <p style="margin-left:auto;margin-right:auto;">This month: a complimentary dessert with every tasting menu reservation for two.</p>
     <a href="menu.html" class="btn btn-primary">Order Now</a>
   </div>
+  <!-- Populated by js/index.js from Supabase `deals` when an active deal exists;
+       falls back to the static copy above otherwise. -->
 </section>
 
 <!-- ==================== NEWSLETTER ==================== -->

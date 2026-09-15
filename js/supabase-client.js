@@ -69,6 +69,25 @@ function showToast(message, type = "success") {
 }
 
 /**
+ * Uploads a file to the shared "veloura-images" Supabase Storage bucket
+ * under the given subfolder (e.g. "menu", "categories", "deals") and
+ * returns its public URL. Used by every admin image upload field.
+ */
+async function uploadToVelouraStorage(file, subfolder = "misc") {
+  const ext = file.name.split(".").pop();
+  const path = `${subfolder}/${crypto.randomUUID()}.${ext}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("veloura-images")
+    .upload(path, file, { cacheControl: "3600", upsert: false });
+
+  if (uploadError) throw uploadError;
+
+  const { data } = supabase.storage.from("veloura-images").getPublicUrl(path);
+  return data.publicUrl;
+}
+
+/**
  * Friendly error mapper — never show raw Supabase/JS errors to users.
  */
 function friendlyError(error) {

@@ -8,7 +8,28 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollReveal();
   initCartBadge();
   initNewsletterForm();
+  initHeroParallax();
 });
+
+/* ---- Subtle hero background parallax on mouse move (desktop only) ---- */
+function initHeroParallax() {
+  const hero = document.querySelector("#hero");
+  const bg = document.querySelector("#hero-bg");
+  if (!hero || !bg) return;
+  if (!window.matchMedia("(pointer: fine)").matches) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  hero.addEventListener("mousemove", (e) => {
+    const rect = hero.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    bg.style.transform = `translate(${x * -14}px, ${y * -14}px) scale(1.04)`;
+  });
+
+  hero.addEventListener("mouseleave", () => {
+    bg.style.transform = "translate(0, 0) scale(1)";
+  });
+}
 
 /* ---- Navbar background on scroll ---- */
 function initNavbar() {

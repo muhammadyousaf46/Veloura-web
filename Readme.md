@@ -63,6 +63,13 @@ writing admin-only data even if they bypass the frontend JavaScript.
 2. Paste the entire contents of `sql/schema.sql` and run it.
 3. This creates all tables, RLS policies, the auto-profile trigger, and seeds the 11 menu categories.
 
+**If you ever re-run this script** on a database where it already ran once
+(e.g. you added a column by hand and want to reapply), you'll get errors
+like `policy "..." already exists` — `CREATE POLICY` isn't safe to run
+twice. If that happens, either:
+- Drop the specific policy first: `drop policy if exists "policy name here" on table_name;`, then re-run, or
+- Only run the specific section you actually need to re-apply, instead of the whole file.
+
 ## 4. Add Your Supabase URL and Key
 
 1. In Supabase: **Project Settings > API**.
@@ -142,3 +149,74 @@ Any static host works (no server-side rendering needed):
 - **Vercel / Netlify**: drag-and-drop the project folder or connect the git repo.
 - **GitHub Pages** also works for a fully static deploy.
 - Just make sure `js/supabase-client.js` has your real project URL/key before deploying.
+
+## 11. Deploy to Vercel & Connect Supabase
+
+Veloura is a static site, so Vercel just needs to serve the files — Supabase
+is the backend, reached directly from the browser via the anon key.
+
+1. **Push the project to GitHub** (or GitLab/Bitbucket) as its own repo.
+2. **Set your real Supabase URL/key first** — before deploying, open
+   `js/supabase-client.js` and replace `SUPABASE_URL` / `SUPABASE_ANON_KEY`
+   with your project's values (see steps 2–4 above), then commit.
+3. **Import the repo in Vercel**: [vercel.com/new](https://vercel.com/new) → select the repo.
+4. **Framework Preset**: choose "Other" (no build step needed — it's plain HTML/CSS/JS).
+   - Build Command: leave empty
+   - Output Directory: leave as `.` (project root)
+5. Click **Deploy**. Vercel gives you a `https://your-project.vercel.app` URL.
+6. **Tell Supabase about your new domain** (required for auth to work correctly):
+   - Supabase Dashboard → **Authentication → URL Configuration**
+   - Set **Site URL** to your Vercel URL (e.g. `https://veloura.vercel.app`)
+   - Add the same URL (and `http://localhost:8000` if you test locally) under **Redirect URLs**
+   - This is what makes password-reset links and email confirmations redirect back to the right place.
+7. Every `git push` to your main branch auto-redeploys on Vercel — no extra config needed since there's no build step to break.
+
+If you'd rather not commit real keys to a public repo: keep the repo
+private, or add a Vercel **Environment Variable** and a tiny build step that
+injects it into `supabase-client.js` at build time — not required for a
+first deploy, since the anon key is safe to expose publicly (RLS is what
+actually protects your data).
+
+## 12. Admin Login & Changing Admin Credentials
+
+Every page under `/admin/` now asks for **email + password directly on
+the page** (no redirect to a separate login screen) — if you're not
+signed in as an admin, you'll see an inline sign-in form right where the
+dashboard would be.
+
+**To change the admin's login email or password later:**
+
+- **Password** — there's no safe way to set a password via plain SQL
+  (Supabase stores a salted hash, not the password itself). Use either:
+  - Supabase Dashboard → **Authentication → Users** → click the admin user → **Send password recovery**, or **Reset Password** directly, or
+  - Have the admin use the "Forgot password?" link on `login.html`.
+- **Email** — Dashboard → **Authentication → Users** → click the user → edit email (this updates `auth.users` and keeps everything in sync, including confirmation state).
+- **Full name / role** — these live in your own `profiles` table and can be changed directly in SQL Editor:
+  ```sql
+  update profiles set full_name = 'New Name' where email = 'admin@example.com';
+  ```
+- **To promote a different user to admin** (or demote one):
+  ```sql
+  update profiles set role = 'admin' where email = 'someone@example.com';
+  update profiles set role = 'customer' where email = 'someone-else@example.com';
+  ```
+
+## 13. Managing the Restaurant from the Admin Dashboard
+
+The admin dashboard (`/admin/`) now covers the whole restaurant:
+
+- **Overview** — live stats: total orders, today's orders, total customers, total revenue, pending orders, pending reservations.
+- **Menu Management** — add/edit/delete dishes, set price/category/availability/popular/vegetarian, and **upload a photo directly** (drag a file in — it's uploaded to Supabase Storage and linked automatically, no need to host images elsewhere).
+- **Categories** *(new)* — add/edit/delete menu categories, each with its own optional image.
+- **Deals** *(new)* — create, modify, or delete special offers. Each deal can optionally link to a specific menu item and a discount percentage, plus a start/end date and its own image. Any deal marked **Active** (and within its date range) automatically replaces the static "A Taste Worth Celebrating" banner on the home page — the most recently created active deal is shown.
+- **Orders** — search/filter, and update order status or payment status inline.
+- **Reservations** — approve, reject, or mark completed.
+- **Customers** — registered customers and how many orders each has placed.
+- **Contact Messages** — read/delete messages submitted via the contact form.
+- **Newsletter** — see who's subscribed.
+
+**Image uploads** go to a public `veloura-images` bucket created by
+`sql/schema.sql` (with RLS policies so only admins can upload/modify —
+everyone can view). If you ever see an upload fail with a permissions
+error, double check you ran the full, latest `sql/schema.sql` (the bucket
+and its policies are near the bottom of the file).
