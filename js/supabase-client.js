@@ -9,8 +9,8 @@
 // Security (RLS) policies (see /sql/schema.sql) control what it can access.
 // ==========================================================================
 
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL"; // e.g. https://xxxxx.supabase.co
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_URL = "https://owyyxnrumposabelapid.supabase.co"; // e.g. https://xxxxx.supabase.co
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93eXl4bnJ1bXBvc2FiZWxhcGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NjA4OTksImV4cCI6MjEwNTAzNjg5OX0.L8sHHMj0eij0pzkPJL1tuqtGIxM9MH6qfyYp_YOMEG0";
 
 // Loaded via CDN script tag in each HTML page (see index.html <head>)
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
