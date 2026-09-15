@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Category Management — Veloura Admin</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div id="admin-guard" class="admin-guard-block">
+  <div id="admin-guard-inner">
+    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
+    <h2>Checking access&hellip;</h2>
+    <p>Verifying administrator permissions.</p>
+  </div>
+</div>
+
+<div class="admin-shell" style="display:none;">
+  <aside class="admin-sidebar">
+    <a href="index.html" class="logo">VELOURA</a>
+    <nav class="admin-nav">
+      <a href="index.html">Overview</a>
+      <a href="menu-management.html">Menu Management</a>
+      <a href="categories.html" aria-current="page">Categories</a>
+      <a href="deals.html">Deals</a>
+      <a href="orders.html">Orders</a>
+      <a href="reservations.html">Reservations</a>
+      <a href="customers.html">Customers</a>
+      <a href="messages.html">Contact Messages</a>
+      <a href="newsletter.html">Newsletter</a>
+      <a href="#" class="signout" data-logout="admin">Sign Out</a>
+      <a href="../index.html" style="margin-top:0.5rem;">&larr; Back to Site</a>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 style="font-size:1.8rem;">Category Management</h1>
+      <button id="add-category-btn" class="btn btn-primary">Add Category</button>
+    </div>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Name</th><th>Description</th><th>Items</th><th>Actions</th></tr></thead>
+        <tbody id="categories-table-body"></tbody>
+      </table>
+    </div>
+
+    <div id="category-modal" class="modal-backdrop">
+      <div class="modal-box">
+        <h3 id="cat-modal-title">Add Category</h3>
+        <form id="category-form">
+          <input type="hidden" id="category-id" />
+          <div class="field" style="margin-bottom:0.75rem;"><label for="category-name">Name</label><input id="category-name" required /></div>
+          <div class="field" style="margin-bottom:0.75rem;"><label for="category-description">Description</label><textarea id="category-description"></textarea></div>
+          <div class="field" style="margin-bottom:0.75rem;">
+            <label for="category-image">Image</label>
+            <input id="category-image" type="file" accept="image/*" />
+            <input type="hidden" id="category-image-url" />
+            <p style="font-size:0.8rem;color:var(--stone);margin-top:0.3rem;">Uploads to Supabase Storage automatically.</p>
+          </div>
+          <div class="modal-close-row">
+            <button type="button" class="btn btn-dark" id="cat-modal-cancel">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Category</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../js/supabase-client.js"></script>
+<script src="../js/auth.js"></script>
+<script src="js/admin-guard.js"></script>
+<script src="js/categories.js"></script>
+</body>
+</html>
