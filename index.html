@@ -1,285 +1,543 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Veloura — An Extraordinary Dining Experience</title>
-<meta name="description" content="Veloura is a premium fine-dining restaurant. Discover exquisite flavors, refined ambiance, and unforgettable moments." />
-<meta property="og:title" content="Veloura — Where Every Flavor Tells a Story" />
-<meta property="og:description" content="Discover exquisite flavors, refined ambiance, and unforgettable moments at Veloura." />
-<meta property="og:type" content="website" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css" />
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veloura — Fine Dining Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0d0d0d',
+                            card: '#161616',
+                            border: '#2a2a2a',
+                            gold: '#d4af37',
+                            goldHover: '#b89628',
+                            cream: '#f5f2eb',
+                            muted: '#9a9a9a'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Styles for luxury glassmorphism and subtle animations */
+        .glass-panel {
+            background: rgba(22, 22, 22, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border-glow:hover {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d0d0d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-brand-dark text-brand-cream font-sans antialiased overflow-x-hidden selection:bg-brand-gold selection:text-brand-dark">
 
-<!-- ==================== NAVBAR ==================== -->
-<header class="navbar">
-  <a href="index.html" class="logo">VELOURA</a>
+    <!-- Sticky Navigation Header -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 py-5 px-6 md:px-12 bg-brand-dark/80 backdrop-blur-md border-b border-brand-border/40">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <span class="text-2xl md:text-3xl font-serif font-bold tracking-widest text-brand-cream group-hover:text-brand-gold transition-colors">
+                    VELOURA
+                </span>
+                <span class="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
+            </a>
 
-  <nav aria-label="Primary">
-    <ul class="nav-links">
-      <li><a href="index.html" aria-current="page">Home</a></li>
-      <li><a href="menu.html">Menu</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="reservation.html">Reservations</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
+                <a href="#hero" class="text-brand-cream hover:text-brand-gold transition-colors">Home</a>
+                <a href="#about" class="text-brand-cream/80 hover:text-brand-gold transition-colors">Experience</a>
+                <a href="#menu" class="text-brand-cream/80 hover:text-brand-gold transition-colors">Culinary Menu</a>
+                <a href="#location" class="text-brand-cream/80 hover:text-brand-gold transition-colors">Location</a>
+            </nav>
 
-  <div class="nav-actions">
-    <button class="icon-btn" aria-label="Search">&#128269;</button>
-    <a href="cart.html" class="icon-btn" aria-label="Cart">
-      &#128717;
-      <span class="cart-count">0</span>
-    </a>
-    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
-    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
-
-<div class="mobile-menu">
-  <a href="index.html">Home</a>
-  <a href="menu.html">Menu</a>
-  <a href="about.html">About</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="reservation.html">Reservations</a>
-  <a href="contact.html">Contact</a>
-</div>
-
-<!-- ==================== HERO ==================== -->
-<section class="hero" id="hero">
-  <div class="hero-bg" id="hero-bg">
-    <!-- IMAGE PLACEHOLDER: replace this gradient with:
-         background-image: url('images/hero/hero-main.jpg');
-         background-size: cover; background-position: center; -->
-  </div>
-
-  <div class="hero-particles" aria-hidden="true">
-    <span class="particle p1"></span>
-    <span class="particle p2"></span>
-    <span class="particle p3"></span>
-    <span class="particle p4"></span>
-    <span class="particle p5"></span>
-    <span class="particle p6"></span>
-  </div>
-
-  <div class="hero-content">
-    <p class="hero-eyebrow hero-fade" style="--d:0s;">Veloura</p>
-    <h1 class="hero-heading">
-      <span class="hero-line"><span class="hero-word hero-fade" style="--d:0.15s;">An</span> <span class="hero-word hero-fade" style="--d:0.25s;">Extraordinary</span></span>
-      <span class="hero-line"><span class="hero-word hero-fade" style="--d:0.4s;">Dining</span> <span class="hero-word hero-fade" style="--d:0.5s;">Experience.</span></span>
-    </h1>
-    <p class="hero-fade" style="--d:0.65s;">Discover exquisite flavors, refined ambiance, and unforgettable moments at Veloura.</p>
-    <div class="hero-actions hero-fade" style="--d:0.8s;">
-      <a href="menu.html" class="btn btn-primary">Explore Menu</a>
-      <a href="menu.html" class="btn btn-outline">Order Online</a>
-    </div>
-  </div>
-  <div class="scroll-cue hero-fade" style="--d:1s;">SCROLL</div>
-</section>
-
-<!-- ==================== SIGNATURE CREATIONS ==================== -->
-<section class="section">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <hr class="rule" />
-        <h2>Signature Creations</h2>
-      </div>
-      <p>Six dishes that define our kitchen — crafted daily with the season's finest ingredients.</p>
-    </div>
-    <div class="dish-grid" id="featured-dish-grid">
-      <!-- Populated by js/index.js from Supabase menu_items -->
-    </div>
-  </div>
-</section>
-
-<!-- ==================== ABOUT PREVIEW ==================== -->
-<section class="section-tight">
-  <div class="container">
-    <div class="split">
-      <div class="split-media reveal">
-        <!-- IMAGE PLACEHOLDER: images/about/about-main.jpg -->
-      </div>
-      <div class="split-copy reveal">
-        <hr class="rule" />
-        <h2>Crafted With Passion</h2>
-        <p>Every plate at Veloura begins with a story — sourced from trusted growers, shaped by technique, and finished with restraint. Our kitchen believes flavor should never be rushed, and hospitality should never be routine.</p>
-        <a href="about.html" class="btn btn-dark">Discover Our Story</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== FOOD CATEGORIES ==================== -->
-<section class="section-tight">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <hr class="rule" />
-        <h2>Explore by Category</h2>
-      </div>
-    </div>
-  </div>
-  <div class="category-strip reveal">
-    <a class="category-tile" href="menu.html#starters"><span class="cat-name">Starters</span></a>
-    <a class="category-tile" href="menu.html#main-course"><span class="cat-name">Main Course</span></a>
-    <a class="category-tile" href="menu.html#burgers"><span class="cat-name">Burgers</span></a>
-    <a class="category-tile" href="menu.html#pizza"><span class="cat-name">Pizza</span></a>
-    <a class="category-tile" href="menu.html#bbq-grill"><span class="cat-name">BBQ &amp; Grill</span></a>
-    <a class="category-tile" href="menu.html#desi-cuisine"><span class="cat-name">Desi Cuisine</span></a>
-    <a class="category-tile" href="menu.html#chinese"><span class="cat-name">Chinese</span></a>
-    <a class="category-tile" href="menu.html#pasta"><span class="cat-name">Pasta</span></a>
-    <a class="category-tile" href="menu.html#seafood"><span class="cat-name">Seafood</span></a>
-    <a class="category-tile" href="menu.html#desserts"><span class="cat-name">Desserts</span></a>
-    <a class="category-tile" href="menu.html#beverages"><span class="cat-name">Beverages</span></a>
-  </div>
-</section>
-
-<!-- ==================== WHY CHOOSE VELOURA ==================== -->
-<section class="section">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <hr class="rule" />
-        <h2>Why Choose Veloura</h2>
-      </div>
-    </div>
-    <div class="feature-grid">
-      <div class="feature-card reveal">
-        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
-        <h3>Premium Ingredients</h3>
-        <p>Sourced from trusted growers and select purveyors for consistent, exceptional quality.</p>
-      </div>
-      <div class="feature-card reveal">
-        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="5"/></svg>
-        <h3>Expert Chefs</h3>
-        <p>A kitchen led by chefs trained in classical technique and modern restraint.</p>
-      </div>
-      <div class="feature-card reveal">
-        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 20h16M6 20V10l6-6 6 6v10"/></svg>
-        <h3>Elegant Atmosphere</h3>
-        <p>An interior designed for quiet indulgence — warm light, soft acoustics, considered detail.</p>
-      </div>
-      <div class="feature-card reveal">
-        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4l16 16M20 4L4 20"/></svg>
-        <h3>Exceptional Service</h3>
-        <p>Attentive, unobtrusive hospitality from the moment you arrive to your final course.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== CUSTOMER REVIEWS ==================== -->
-<section class="section section-dark">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <hr class="rule" />
-        <h2>What Our Guests Say</h2>
-      </div>
-    </div>
-    <div class="testimonial-grid">
-      <div class="testimonial-card reveal">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">Every course felt considered. The lamb was the best I've had this year, and the service never once felt rushed.</p>
-        <p class="testimonial-name">Amina R.</p>
-      </div>
-      <div class="testimonial-card reveal">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">Veloura is our go-to for anniversaries. The ambiance alone is worth the visit — the food simply confirms it.</p>
-        <p class="testimonial-name">Hassan K.</p>
-      </div>
-      <div class="testimonial-card reveal">
-        <div class="stars">★★★★☆</div>
-        <p class="testimonial-text">Beautifully plated, generous portions, and a wine pairing that actually matched the menu. Highly recommend.</p>
-        <p class="testimonial-name">Sara M.</p>
-      </div>
-      <div class="testimonial-card reveal">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">The tasting menu is worth planning your evening around. Book ahead — it fills up fast.</p>
-        <p class="testimonial-name">Bilal A.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== SPECIAL OFFER ==================== -->
-<section class="offer-banner reveal" id="offer-banner">
-  <div class="container" id="offer-content">
-    <h2>A Taste Worth Celebrating</h2>
-    <p style="margin-left:auto;margin-right:auto;">This month: a complimentary dessert with every tasting menu reservation for two.</p>
-    <a href="menu.html" class="btn btn-primary">Order Now</a>
-  </div>
-  <!-- Populated by js/index.js from Supabase `deals` when an active deal exists;
-       falls back to the static copy above otherwise. -->
-</section>
-
-<!-- ==================== NEWSLETTER ==================== -->
-<section class="section-tight">
-  <div class="container" style="text-align:center;">
-    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
-    <h2 style="margin-bottom:0.75rem;">Stay in the Loop</h2>
-    <p style="margin:0 auto 2rem;">Seasonal menus, private events, and reservations — straight to your inbox.</p>
-    <form id="newsletter-form" class="newsletter" novalidate>
-      <label for="newsletter-email" class="visually-hidden">Email address</label>
-      <input id="newsletter-email" type="email" placeholder="Email address" required />
-      <button type="submit" class="btn btn-dark">Subscribe</button>
-    </form>
-    <p class="form-status" role="status"></p>
-  </div>
-</section>
-
-<!-- ==================== FOOTER ==================== -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <p class="logo">VELOURA</p>
-        <p>"Where Every Flavor Tells a Story."</p>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Menu</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Guest</h4>
-        <ul>
-          <li><a href="reservation.html">Reservations</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="terms.html">Terms &amp; Conditions</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Follow</h4>
-        <div class="social-icons">
-          <a href="#" aria-label="Instagram">IG</a>
-          <a href="#" aria-label="Facebook">FB</a>
-          <a href="#" aria-label="TikTok">TT</a>
+            <!-- Action Button & Mobile Toggle -->
+            <div class="flex items-center gap-4">
+                <button onclick="openModal()" class="px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-brand-gold text-brand-dark hover:bg-brand-goldHover transition-all transform hover:-translate-y-0.5 shadow-lg shadow-brand-gold/10">
+                    Book A Table
+                </button>
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-brand-cream text-xl p-2 focus:outline-none" aria-label="Toggle Navigation">
+                    <i class="fa-solid fa-bars" id="menu-icon"></i>
+                </button>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>&copy; 2026 Veloura. All rights reserved.</span>
-      <span>Address, phone &amp; hours — placeholder, update in contact.html</span>
-    </div>
-  </div>
-</footer>
 
-<script src="js/supabase-client.js"></script>
-<script src="js/main.js"></script>
-<script src="js/index.js"></script>
+        <!-- Mobile Menu Navigation Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 glass-panel border-t border-brand-border/50 py-6 px-8 flex flex-col gap-5 text-center shadow-2xl">
+            <a href="#hero" onclick="toggleMobileMenu()" class="text-brand-cream hover:text-brand-gold transition-colors text-lg">Home</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="text-brand-cream hover:text-brand-gold transition-colors text-lg">Experience</a>
+            <a href="#menu" onclick="toggleMobileMenu()" class="text-brand-cream hover:text-brand-gold transition-colors text-lg">Culinary Menu</a>
+            <a href="#location" onclick="toggleMobileMenu()" class="text-brand-cream hover:text-brand-gold transition-colors text-lg">Location</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden">
+        <!-- Background Overlay Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1920&q=80" alt="Fine dining ambiance" class="w-full h-full object-cover opacity-25 scale-105 transition-transform duration-1000" id="hero-bg">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/70 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-dark via-transparent to-brand-dark/80"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center space-y-8 mt-10">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-gold/30 bg-brand-gold/5 text-brand-gold text-xs font-semibold uppercase tracking-widest backdrop-blur-md">
+                <i class="fa-solid fa-star text-[10px]"></i> Michelin Recommended Experience
+            </div>
+            
+            <h1 class="text-5xl sm:text-6xl md:text-7xl font-serif font-normal tracking-tight leading-tight">
+                A Culinary Experience <br>
+                <span class="italic gold-gradient-text">Beyond Boundaries</span>
+            </h1>
+
+            <p class="text-brand-muted text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+                Indulge in an exquisite fusion of contemporary gastronomy, artfully crafted with locally sourced organic elements and global culinary traditions.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <a href="#menu" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-brand-gold text-brand-dark font-semibold text-sm tracking-wider uppercase hover:bg-brand-goldHover transition-all transform hover:-translate-y-0.5 shadow-xl shadow-brand-gold/10">
+                    Explore Menu
+                </a>
+                <button onclick="openModal()" class="w-full sm:w-auto px-8 py-3.5 rounded-full glass-panel text-brand-cream border border-brand-gold/30 font-semibold text-sm tracking-wider uppercase hover:bg-brand-gold/10 transition-all hover:border-brand-gold">
+                    Reserve Table
+                </button>
+            </div>
+
+            <!-- Key Info Quick Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 pt-12 border-t border-brand-border/40 max-w-2xl mx-auto text-center">
+                <div>
+                    <p class="text-2xl font-serif text-brand-gold font-semibold">16+</p>
+                    <p class="text-xs text-brand-muted uppercase tracking-wider mt-1">Master Chefs</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-serif text-brand-gold font-semibold">4.9 / 5</p>
+                    <p class="text-xs text-brand-muted uppercase tracking-wider mt-1">Guest Rating</p>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <p class="text-2xl font-serif text-brand-gold font-semibold">DHA Phase 6</p>
+                    <p class="text-xs text-brand-muted uppercase tracking-wider mt-1">Islamabad</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About / Culinary Story Section -->
+    <section id="about" class="py-24 px-6 md:px-12 bg-brand-dark/90 relative border-t border-brand-border/30">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div class="relative">
+                <div class="aspect-[4/5] rounded-2xl overflow-hidden border border-brand-border shadow-2xl relative">
+                    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1000&q=80" alt="Chef plating gourmet dish" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/80 via-transparent to-transparent"></div>
+                </div>
+                <!-- Floating Card -->
+                <div class="absolute -bottom-6 -right-2 sm:-right-6 glass-panel p-6 rounded-xl border border-brand-gold/30 max-w-xs shadow-2xl hidden sm:block">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i class="fa-solid fa-award text-brand-gold text-2xl"></i>
+                        <h4 class="font-serif font-bold text-lg">Mastery in Taste</h4>
+                    </div>
+                    <p class="text-xs text-brand-muted leading-relaxed">Each dish tells a story of passion, balance, and precision crafted by Chef Antoine Laurent.</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="inline-flex items-center gap-2 text-brand-gold text-xs font-semibold uppercase tracking-widest">
+                    <span class="w-8 h-px bg-brand-gold"></span> The Veloura Narrative
+                </div>
+                <h2 class="text-4xl md:text-5xl font-serif leading-tight">
+                    Crafting Unforgettable <br>
+                    <span class="italic text-brand-gold">Gastronomic Moments</span>
+                </h2>
+                <p class="text-brand-muted leading-relaxed font-light">
+                    Founded with a vision to redefine fine dining in Islamabad, Veloura combines classic French culinary techniques with rich oriental flavors. Every single ingredient is carefully chosen from private local farms and luxury artisanal suppliers worldwide.
+                </p>
+                <div class="grid grid-cols-2 gap-6 pt-4">
+                    <div class="space-y-2 border-l-2 border-brand-gold/50 pl-4">
+                        <h4 class="font-serif text-lg font-semibold text-brand-cream">Private Dining</h4>
+                        <p class="text-xs text-brand-muted">Exclusive suites for intimate gatherings and VIP celebrations.</p>
+                    </div>
+                    <div class="space-y-2 border-l-2 border-brand-gold/50 pl-4">
+                        <h4 class="font-serif text-lg font-semibold text-brand-cream">Sommelier Pairings</h4>
+                        <p class="text-xs text-brand-muted">Curated zero-proof & vintage craft pairings by master sommeliers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Menu Section -->
+    <section id="menu" class="py-24 px-6 md:px-12 bg-brand-card/50 relative border-t border-brand-border/30">
+        <div class="max-w-7xl mx-auto space-y-12">
+            <!-- Section Header -->
+            <div class="text-center space-y-4 max-w-2xl mx-auto">
+                <div class="inline-flex items-center gap-2 text-brand-gold text-xs font-semibold uppercase tracking-widest">
+                    <i class="fa-solid fa-utensils"></i> Curated Gastronomy
+                </div>
+                <h2 class="text-4xl md:text-5xl font-serif">Explore Our Signature Menu</h2>
+                <p class="text-brand-muted text-sm font-light">Select a category to view our meticulously plated creations.</p>
+            </div>
+
+            <!-- Menu Category Navigation Tabs -->
+            <div class="flex flex-wrap items-center justify-center gap-3 md:gap-4 border-b border-brand-border/50 pb-6" id="menu-tabs">
+                <button onclick="switchTab('starters')" id="tab-starters" class="menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider transition-all bg-brand-gold text-brand-dark">
+                    Starters
+                </button>
+                <button onclick="switchTab('mains')" id="tab-mains" class="menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider text-brand-muted hover:text-brand-cream glass-panel border border-brand-border">
+                    Main Course
+                </button>
+                <button onclick="switchTab('desserts')" id="tab-desserts" class="menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider text-brand-muted hover:text-brand-cream glass-panel border border-brand-border">
+                    Desserts
+                </button>
+                <button onclick="switchTab('cocktails')" id="tab-cocktails" class="menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider text-brand-muted hover:text-brand-cream glass-panel border border-brand-border">
+                    Mocktails & Beverages
+                </button>
+            </div>
+
+            <!-- Menu Display Grid -->
+            <div id="menu-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamically Rendered via Javascript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Location & Operating Hours -->
+    <section id="location" class="py-20 px-6 md:px-12 bg-brand-dark relative border-t border-brand-border/30">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+            <div class="glass-panel p-8 rounded-2xl space-y-4 border border-brand-border gold-border-glow transition-all">
+                <div class="w-12 h-12 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold text-xl mb-4">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-semibold">Location</h3>
+                <p class="text-brand-muted text-sm leading-relaxed">
+                    Sector C, Commercial Avenue, DHA Phase 6, Islamabad, Pakistan.
+                </p>
+                <p class="text-xs text-brand-gold font-medium pt-2"><i class="fa-solid fa-square-parking mr-2"></i>Valet Parking Available</p>
+            </div>
+
+            <div class="glass-panel p-8 rounded-2xl space-y-4 border border-brand-border gold-border-glow transition-all">
+                <div class="w-12 h-12 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold text-xl mb-4">
+                    <i class="fa-clock fa-regular"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-semibold">Operating Hours</h3>
+                <div class="text-brand-muted text-sm space-y-2">
+                    <div class="flex justify-between border-b border-brand-border/40 pb-1">
+                        <span>Mon - Thu:</span>
+                        <span class="text-brand-cream">5:00 PM – 11:30 PM</span>
+                    </div>
+                    <div class="flex justify-between border-b border-brand-border/40 pb-1">
+                        <span>Fri - Sun:</span>
+                        <span class="text-brand-cream">1:00 PM – 12:30 AM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-2xl space-y-4 border border-brand-border gold-border-glow transition-all">
+                <div class="w-12 h-12 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold text-xl mb-4">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-semibold">Direct Enquiries</h3>
+                <p class="text-brand-muted text-sm leading-relaxed">
+                    For private dining bookings and press inquiries:
+                </p>
+                <div class="space-y-1 pt-1">
+                    <p class="text-brand-cream font-medium text-sm">+92 (51) 884-9021</p>
+                    <p class="text-brand-muted text-xs">reservations@velouradining.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 px-6 border-t border-brand-border/50 text-center text-brand-muted text-xs space-y-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <a href="#" class="font-serif text-2xl font-bold tracking-widest text-brand-cream">
+                VELOURA
+            </a>
+            <p>© 2026 Veloura Fine Dining. All rights reserved. Crafted for extraordinary taste.</p>
+            <div class="flex items-center gap-6 text-base text-brand-cream">
+                <a href="#" class="hover:text-brand-gold transition-colors" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-brand-gold transition-colors" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="hover:text-brand-gold transition-colors" aria-label="Tripadvisor"><i class="fa-brands fa-tripadvisor"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Quick Reservation Modal -->
+    <div id="reservation-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300">
+        <div class="glass-panel rounded-3xl border border-brand-gold/30 max-w-lg w-full p-8 relative shadow-2xl transform transition-transform duration-300 scale-95" id="modal-box">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-brand-muted hover:text-brand-cream text-xl p-2 focus:outline-none">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Modal Content Wrapper -->
+            <div id="modal-form-view" class="space-y-6">
+                <div>
+                    <span class="text-brand-gold text-xs font-semibold uppercase tracking-widest">Reserve Your Seat</span>
+                    <h3 class="text-3xl font-serif font-semibold mt-1">Book A Table</h3>
+                </div>
+
+                <form id="booking-form" onsubmit="handleReservation(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-brand-muted mb-1.5">Full Name</label>
+                        <input type="text" required placeholder="e.g. Hammad Khan" class="w-full bg-brand-dark/90 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-cream focus:outline-none focus:border-brand-gold transition-colors">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-brand-muted mb-1.5">Guests</label>
+                            <select id="guest-count" required class="w-full bg-brand-dark/90 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-cream focus:outline-none focus:border-brand-gold transition-colors">
+                                <option value="2 Guests">2 Guests</option>
+                                <option value="4 Guests">4 Guests</option>
+                                <option value="6 Guests">6 Guests</option>
+                                <option value="Private Suite (8+)">Private Suite (8+)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-brand-muted mb-1.5">Date</label>
+                            <input type="date" required class="w-full bg-brand-dark/90 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-cream focus:outline-none focus:border-brand-gold transition-colors">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-brand-muted mb-1.5">Preferred Time</label>
+                        <select required class="w-full bg-brand-dark/90 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-cream focus:outline-none focus:border-brand-gold transition-colors">
+                            <option value="06:30 PM">06:30 PM</option>
+                            <option value="08:00 PM">08:00 PM</option>
+                            <option value="09:30 PM">09:30 PM</option>
+                            <option value="11:00 PM">11:00 PM</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-brand-muted mb-1.5">Special Requests (Optional)</label>
+                        <textarea rows="2" placeholder="Anniversary, dietary preferences..." class="w-full bg-brand-dark/90 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-cream focus:outline-none focus:border-brand-gold transition-colors resize-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 rounded-xl bg-brand-gold text-brand-dark font-semibold text-sm uppercase tracking-wider hover:bg-brand-goldHover transition-colors mt-2 shadow-lg shadow-brand-gold/10">
+                        Confirm Reservation
+                    </button>
+                </form>
+            </div>
+
+            <!-- Instant Confirmation Feedback View -->
+            <div id="modal-success-view" class="hidden text-center py-8 space-y-6">
+                <div class="w-16 h-16 rounded-full bg-brand-gold/20 border border-brand-gold text-brand-gold text-3xl mx-auto flex items-center justify-center">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-serif font-bold text-brand-cream">Table Reserved!</h3>
+                    <p class="text-brand-muted text-sm mt-2 max-w-xs mx-auto">
+                        Thank you. We have sent a confirmation SMS & Email with your booking details.
+                    </p>
+                </div>
+                <div class="p-4 rounded-xl bg-brand-dark/60 border border-brand-border text-xs text-brand-cream/80 space-y-1">
+                    <p><span class="text-brand-muted">Status:</span> Confirmed VIP Slot</p>
+                    <p><span class="text-brand-muted">Location:</span> Veloura, DHA Phase 6, Islamabad</p>
+                </div>
+                <button onclick="closeModal()" class="px-8 py-3 rounded-full bg-brand-gold text-brand-dark font-semibold text-xs uppercase tracking-wider">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Menu Items Data Array
+        const menuData = {
+            starters: [
+                {
+                    title: "Truffle Infused Burrata",
+                    desc: "Fresh Italian burrata with black truffle tapenade, heirloom tomatoes, and 25-year aged balsamic glaze.",
+                    price: "PKR 3,200",
+                    img: "https://images.unsplash.com/photo-1592417817098-8f3d6ef23a28?auto=format&fit=crop&w=600&q=80",
+                    badge: "Chef Specialty"
+                },
+                {
+                    title: "Pan-Seared Hokkaido Scallops",
+                    desc: "Served over cauliflower silk, crispy pancetta lardons, and brown butter emulsion.",
+                    price: "PKR 4,100",
+                    img: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    title: "Wagyu Beef Carpaccio",
+                    desc: "Thinly sliced A5 Wagyu, caper berries, shaved parmesan, and horseradish aioli.",
+                    price: "PKR 3,800",
+                    img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80"
+                }
+            ],
+            mains: [
+                {
+                    title: "Dry-Aged Tomahawk Steak",
+                    desc: "45-day dry-aged charbroiled steak served with roasted bone marrow and truffle jus.",
+                    price: "PKR 12,500",
+                    img: "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80",
+                    badge: "Signature"
+                },
+                {
+                    title: "Chilean Sea Bass",
+                    desc: "Pan-roasted sea bass with miso glaze, saffron risotto, and baby bok choy.",
+                    price: "PKR 7,900",
+                    img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    title: "Sous-Vide Herb Duck Breast",
+                    desc: "Tender duck breast with spiced cherry reduction, fondant potatoes, and roasted carrots.",
+                    price: "PKR 6,400",
+                    img: "https://images.unsplash.com/photo-1514944288352-fffac99f0bdf?auto=format&fit=crop&w=600&q=80"
+                }
+            ],
+            desserts: [
+                {
+                    title: "Veloura Gold Sphere",
+                    desc: "Dark chocolate dome melted with hot salted caramel, hazelnut praline, and vanilla bean gelato.",
+                    price: "PKR 2,400",
+                    img: "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80",
+                    badge: "Must Try"
+                },
+                {
+                    title: "Deconstructed Saffron Mille-Feuille",
+                    desc: "Crispy caramelized pastry layers with Kashmiri saffron cream and pistachio dust.",
+                    price: "PKR 1,950",
+                    img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
+                }
+            ],
+            cocktails: [
+                {
+                    title: "Smoked Oak & Vanilla Elixir",
+                    desc: "Cold-brewed espresso infused with oak smoke, Tahitian vanilla bean, and velvet foam.",
+                    price: "PKR 1,600",
+                    img: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    title: "Yuzu Sparkling Botanical",
+                    desc: "Japanese Yuzu extract, fresh rosemary, elderflower tonic, and edible gold leaf.",
+                    price: "PKR 1,450",
+                    img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80",
+                    badge: "Zero-Proof"
+                }
+            ]
+        };
+
+        // Render Menu Cards
+        function switchTab(category) {
+            // Update active tab button styles
+            document.querySelectorAll('.menu-tab').forEach(btn => {
+                btn.className = 'menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider text-brand-muted hover:text-brand-cream glass-panel border border-brand-border transition-all';
+            });
+            
+            const activeBtn = document.getElementById(`tab-${category}`);
+            if(activeBtn) {
+                activeBtn.className = 'menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider transition-all bg-brand-gold text-brand-dark shadow-lg shadow-brand-gold/10';
+            }
+
+            const container = document.getElementById('menu-container');
+            const items = menuData[category] || [];
+
+            container.innerHTML = items.map(item => `
+                <div class="glass-panel rounded-2xl overflow-hidden border border-brand-border/60 hover:border-brand-gold/50 transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-[16/10] overflow-hidden relative">
+                            <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            ${item.badge ? `<span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-brand-dark/80 backdrop-blur-md border border-brand-gold/40 text-brand-gold text-[10px] font-semibold uppercase tracking-widest">${item.badge}</span>` : ''}
+                        </div>
+                        <div class="p-6 space-y-2">
+                            <div class="flex items-start justify-between gap-2">
+                                <h3 class="font-serif font-semibold text-xl text-brand-cream group-hover:text-brand-gold transition-colors">${item.title}</h3>
+                            </div>
+                            <p class="text-brand-muted text-xs leading-relaxed font-light">${item.desc}</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-brand-border/30 mt-2">
+                        <span class="text-brand-gold font-serif text-lg font-bold">${item.price}</span>
+                        <button onclick="openModal()" class="text-xs uppercase tracking-wider text-brand-cream/80 hover:text-brand-gold transition-colors flex items-center gap-1">
+                            Reserve <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Mobile Navigation Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = 'fa-solid fa-bars';
+            } else {
+                icon.className = 'fa-solid fa-xmark';
+            }
+        }
+
+        // Modal Handler functions
+        function openModal() {
+            const modal = document.getElementById('reservation-modal');
+            const box = document.getElementById('modal-box');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('reservation-modal');
+            const box = document.getElementById('modal-box');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.getElementById('modal-form-view').classList.remove('hidden');
+                document.getElementById('modal-success-view').classList.add('hidden');
+            }, 200);
+        }
+
+        function handleReservation(e) {
+            e.preventDefault();
+            document.getElementById('modal-form-view').classList.add('hidden');
+            document.getElementById('modal-success-view').classList.remove('hidden');
+        }
+
+        // Initialize default tab on load
+        window.onload = function() {
+            switchTab('starters');
+        };
+    </script>
 </body>
 </html>
