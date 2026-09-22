@@ -1,543 +1,106 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veloura — Fine Dining Experience</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#0d0d0d',
-                            card: '#161616',
-                            border: '#2a2a2a',
-                            gold: '#d4af37',
-                            goldHover: '#b89628',
-                            cream: '#f5f2eb',
-                            muted: '#9a9a9a'
-                        }
-                    },
-                    fontFamily: {
-                        serif: ['Cormorant Garamond', 'serif'],
-                        sans: ['Plus Jakarta Sans', 'sans-serif']
-                    }
-                }
-            }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Veloura — An Extraordinary Dining Experience</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            gold: '#D4AF37',
+            goldLight: '#F3E5AB',
+            dark: '#0D0D0D',
+            card: '#161616',
+            cream: '#F9F6F0',
+            muted: '#A3A3A3'
+          }
+        },
+        fontFamily: {
+          serif: ['Cormorant Garamond', 'serif'],
+          sans: ['Manrope', 'sans-serif'],
         }
-    </script>
-    <style>
-        /* Custom Styles for luxury glassmorphism and subtle animations */
-        .glass-panel {
-            background: rgba(22, 22, 22, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-        }
-        .gold-gradient-text {
-            background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .gold-border-glow:hover {
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-            border-color: rgba(212, 175, 55, 0.5);
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0d0d0d;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2a2a2a;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #d4af37;
-        }
-    </style>
+      }
+    }
+  }
+</script>
 </head>
-<body class="bg-brand-dark text-brand-cream font-sans antialiased overflow-x-hidden selection:bg-brand-gold selection:text-brand-dark">
+<body class="bg-brand-dark text-brand-cream font-sans antialiased overflow-x-hidden">
 
-    <!-- Sticky Navigation Header -->
-    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 py-5 px-6 md:px-12 bg-brand-dark/80 backdrop-blur-md border-b border-brand-border/40">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <!-- Brand Logo -->
-            <a href="#" class="flex items-center gap-3 group">
-                <span class="text-2xl md:text-3xl font-serif font-bold tracking-widest text-brand-cream group-hover:text-brand-gold transition-colors">
-                    VELOURA
-                </span>
-                <span class="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
-            </a>
+<!-- NAVBAR -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-brand-dark/90 backdrop-blur-md border-b border-white/10 transition-all">
+  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <a href="index.html" class="font-serif text-2xl tracking-[0.3em] font-semibold text-brand-gold">VELOURA</a>
+    
+    <nav class="hidden md:flex items-center space-x-8 text-sm tracking-widest uppercase">
+      <a href="index.html" class="text-brand-gold">Home</a>
+      <a href="menu.html" class="hover:text-brand-gold transition">Menu</a>
+      <a href="about.html" class="hover:text-brand-gold transition">About</a>
+      <a href="gallery.html" class="hover:text-brand-gold transition">Gallery</a>
+      <a href="reservation.html" class="hover:text-brand-gold transition">Reservations</a>
+      <a href="contact.html" class="hover:text-brand-gold transition">Contact</a>
+    </nav>
 
-            <!-- Desktop Nav Links -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-                <a href="#hero" class="text-brand-cream hover:text-brand-gold transition-colors">Home</a>
-                <a href="#about" class="text-brand-cream/80 hover:text-brand-gold transition-colors">Experience</a>
-                <a href="#menu" class="text-brand-cream/80 hover:text-brand-gold transition-colors">Culinary Menu</a>
-                <a href="#location" class="text-brand-cream/80 hover:text-brand-gold transition-colors">Location</a>
-            </nav>
-
-            <!-- Action Button & Mobile Toggle -->
-            <div class="flex items-center gap-4">
-                <button onclick="openModal()" class="px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-brand-gold text-brand-dark hover:bg-brand-goldHover transition-all transform hover:-translate-y-0.5 shadow-lg shadow-brand-gold/10">
-                    Book A Table
-                </button>
-                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-brand-cream text-xl p-2 focus:outline-none" aria-label="Toggle Navigation">
-                    <i class="fa-solid fa-bars" id="menu-icon"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Mobile Menu Navigation Overlay -->
-        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 glass-panel border-t border-brand-border/50 py-6 px-8 flex flex-col gap-5 text-center shadow-2xl">
-            <a href="#hero" onclick="toggleMobileMenu()" class="text-brand-cream hover:text-brand-gold transition-colors text-lg">Home</a>
-            <a href="#about" onclick="toggleMobileMenu()" class="text-brand-cream hover:text-brand-gold transition-colors text-lg">Experience</a>
-            <a href="#menu" onclick="toggleMobileMenu()" class="text-brand-cream hover:text-brand-gold transition-colors text-lg">Culinary Menu</a>
-            <a href="#location" onclick="toggleMobileMenu()" class="text-brand-cream hover:text-brand-gold transition-colors text-lg">Location</a>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden">
-        <!-- Background Overlay Image -->
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1920&q=80" alt="Fine dining ambiance" class="w-full h-full object-cover opacity-25 scale-105 transition-transform duration-1000" id="hero-bg">
-            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/70 to-transparent"></div>
-            <div class="absolute inset-0 bg-gradient-to-r from-brand-dark via-transparent to-brand-dark/80"></div>
-        </div>
-
-        <div class="relative z-10 max-w-4xl mx-auto text-center space-y-8 mt-10">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-gold/30 bg-brand-gold/5 text-brand-gold text-xs font-semibold uppercase tracking-widest backdrop-blur-md">
-                <i class="fa-solid fa-star text-[10px]"></i> Michelin Recommended Experience
-            </div>
-            
-            <h1 class="text-5xl sm:text-6xl md:text-7xl font-serif font-normal tracking-tight leading-tight">
-                A Culinary Experience <br>
-                <span class="italic gold-gradient-text">Beyond Boundaries</span>
-            </h1>
-
-            <p class="text-brand-muted text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
-                Indulge in an exquisite fusion of contemporary gastronomy, artfully crafted with locally sourced organic elements and global culinary traditions.
-            </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                <a href="#menu" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-brand-gold text-brand-dark font-semibold text-sm tracking-wider uppercase hover:bg-brand-goldHover transition-all transform hover:-translate-y-0.5 shadow-xl shadow-brand-gold/10">
-                    Explore Menu
-                </a>
-                <button onclick="openModal()" class="w-full sm:w-auto px-8 py-3.5 rounded-full glass-panel text-brand-cream border border-brand-gold/30 font-semibold text-sm tracking-wider uppercase hover:bg-brand-gold/10 transition-all hover:border-brand-gold">
-                    Reserve Table
-                </button>
-            </div>
-
-            <!-- Key Info Quick Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 pt-12 border-t border-brand-border/40 max-w-2xl mx-auto text-center">
-                <div>
-                    <p class="text-2xl font-serif text-brand-gold font-semibold">16+</p>
-                    <p class="text-xs text-brand-muted uppercase tracking-wider mt-1">Master Chefs</p>
-                </div>
-                <div>
-                    <p class="text-2xl font-serif text-brand-gold font-semibold">4.9 / 5</p>
-                    <p class="text-xs text-brand-muted uppercase tracking-wider mt-1">Guest Rating</p>
-                </div>
-                <div class="col-span-2 md:col-span-1">
-                    <p class="text-2xl font-serif text-brand-gold font-semibold">DHA Phase 6</p>
-                    <p class="text-xs text-brand-muted uppercase tracking-wider mt-1">Islamabad</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About / Culinary Story Section -->
-    <section id="about" class="py-24 px-6 md:px-12 bg-brand-dark/90 relative border-t border-brand-border/30">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div class="relative">
-                <div class="aspect-[4/5] rounded-2xl overflow-hidden border border-brand-border shadow-2xl relative">
-                    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1000&q=80" alt="Chef plating gourmet dish" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/80 via-transparent to-transparent"></div>
-                </div>
-                <!-- Floating Card -->
-                <div class="absolute -bottom-6 -right-2 sm:-right-6 glass-panel p-6 rounded-xl border border-brand-gold/30 max-w-xs shadow-2xl hidden sm:block">
-                    <div class="flex items-center gap-3 mb-2">
-                        <i class="fa-solid fa-award text-brand-gold text-2xl"></i>
-                        <h4 class="font-serif font-bold text-lg">Mastery in Taste</h4>
-                    </div>
-                    <p class="text-xs text-brand-muted leading-relaxed">Each dish tells a story of passion, balance, and precision crafted by Chef Antoine Laurent.</p>
-                </div>
-            </div>
-
-            <div class="space-y-6">
-                <div class="inline-flex items-center gap-2 text-brand-gold text-xs font-semibold uppercase tracking-widest">
-                    <span class="w-8 h-px bg-brand-gold"></span> The Veloura Narrative
-                </div>
-                <h2 class="text-4xl md:text-5xl font-serif leading-tight">
-                    Crafting Unforgettable <br>
-                    <span class="italic text-brand-gold">Gastronomic Moments</span>
-                </h2>
-                <p class="text-brand-muted leading-relaxed font-light">
-                    Founded with a vision to redefine fine dining in Islamabad, Veloura combines classic French culinary techniques with rich oriental flavors. Every single ingredient is carefully chosen from private local farms and luxury artisanal suppliers worldwide.
-                </p>
-                <div class="grid grid-cols-2 gap-6 pt-4">
-                    <div class="space-y-2 border-l-2 border-brand-gold/50 pl-4">
-                        <h4 class="font-serif text-lg font-semibold text-brand-cream">Private Dining</h4>
-                        <p class="text-xs text-brand-muted">Exclusive suites for intimate gatherings and VIP celebrations.</p>
-                    </div>
-                    <div class="space-y-2 border-l-2 border-brand-gold/50 pl-4">
-                        <h4 class="font-serif text-lg font-semibold text-brand-cream">Sommelier Pairings</h4>
-                        <p class="text-xs text-brand-muted">Curated zero-proof & vintage craft pairings by master sommeliers.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Menu Section -->
-    <section id="menu" class="py-24 px-6 md:px-12 bg-brand-card/50 relative border-t border-brand-border/30">
-        <div class="max-w-7xl mx-auto space-y-12">
-            <!-- Section Header -->
-            <div class="text-center space-y-4 max-w-2xl mx-auto">
-                <div class="inline-flex items-center gap-2 text-brand-gold text-xs font-semibold uppercase tracking-widest">
-                    <i class="fa-solid fa-utensils"></i> Curated Gastronomy
-                </div>
-                <h2 class="text-4xl md:text-5xl font-serif">Explore Our Signature Menu</h2>
-                <p class="text-brand-muted text-sm font-light">Select a category to view our meticulously plated creations.</p>
-            </div>
-
-            <!-- Menu Category Navigation Tabs -->
-            <div class="flex flex-wrap items-center justify-center gap-3 md:gap-4 border-b border-brand-border/50 pb-6" id="menu-tabs">
-                <button onclick="switchTab('starters')" id="tab-starters" class="menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider transition-all bg-brand-gold text-brand-dark">
-                    Starters
-                </button>
-                <button onclick="switchTab('mains')" id="tab-mains" class="menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider text-brand-muted hover:text-brand-cream glass-panel border border-brand-border">
-                    Main Course
-                </button>
-                <button onclick="switchTab('desserts')" id="tab-desserts" class="menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider text-brand-muted hover:text-brand-cream glass-panel border border-brand-border">
-                    Desserts
-                </button>
-                <button onclick="switchTab('cocktails')" id="tab-cocktails" class="menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider text-brand-muted hover:text-brand-cream glass-panel border border-brand-border">
-                    Mocktails & Beverages
-                </button>
-            </div>
-
-            <!-- Menu Display Grid -->
-            <div id="menu-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Dynamically Rendered via Javascript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Location & Operating Hours -->
-    <section id="location" class="py-20 px-6 md:px-12 bg-brand-dark relative border-t border-brand-border/30">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-            <div class="glass-panel p-8 rounded-2xl space-y-4 border border-brand-border gold-border-glow transition-all">
-                <div class="w-12 h-12 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold text-xl mb-4">
-                    <i class="fa-solid fa-location-dot"></i>
-                </div>
-                <h3 class="font-serif text-2xl font-semibold">Location</h3>
-                <p class="text-brand-muted text-sm leading-relaxed">
-                    Sector C, Commercial Avenue, DHA Phase 6, Islamabad, Pakistan.
-                </p>
-                <p class="text-xs text-brand-gold font-medium pt-2"><i class="fa-solid fa-square-parking mr-2"></i>Valet Parking Available</p>
-            </div>
-
-            <div class="glass-panel p-8 rounded-2xl space-y-4 border border-brand-border gold-border-glow transition-all">
-                <div class="w-12 h-12 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold text-xl mb-4">
-                    <i class="fa-clock fa-regular"></i>
-                </div>
-                <h3 class="font-serif text-2xl font-semibold">Operating Hours</h3>
-                <div class="text-brand-muted text-sm space-y-2">
-                    <div class="flex justify-between border-b border-brand-border/40 pb-1">
-                        <span>Mon - Thu:</span>
-                        <span class="text-brand-cream">5:00 PM – 11:30 PM</span>
-                    </div>
-                    <div class="flex justify-between border-b border-brand-border/40 pb-1">
-                        <span>Fri - Sun:</span>
-                        <span class="text-brand-cream">1:00 PM – 12:30 AM</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-panel p-8 rounded-2xl space-y-4 border border-brand-border gold-border-glow transition-all">
-                <div class="w-12 h-12 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold text-xl mb-4">
-                    <i class="fa-solid fa-phone"></i>
-                </div>
-                <h3 class="font-serif text-2xl font-semibold">Direct Enquiries</h3>
-                <p class="text-brand-muted text-sm leading-relaxed">
-                    For private dining bookings and press inquiries:
-                </p>
-                <div class="space-y-1 pt-1">
-                    <p class="text-brand-cream font-medium text-sm">+92 (51) 884-9021</p>
-                    <p class="text-brand-muted text-xs">reservations@velouradining.com</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-black py-12 px-6 border-t border-brand-border/50 text-center text-brand-muted text-xs space-y-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <a href="#" class="font-serif text-2xl font-bold tracking-widest text-brand-cream">
-                VELOURA
-            </a>
-            <p>© 2026 Veloura Fine Dining. All rights reserved. Crafted for extraordinary taste.</p>
-            <div class="flex items-center gap-6 text-base text-brand-cream">
-                <a href="#" class="hover:text-brand-gold transition-colors" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="hover:text-brand-gold transition-colors" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" class="hover:text-brand-gold transition-colors" aria-label="Tripadvisor"><i class="fa-brands fa-tripadvisor"></i></a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Quick Reservation Modal -->
-    <div id="reservation-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300">
-        <div class="glass-panel rounded-3xl border border-brand-gold/30 max-w-lg w-full p-8 relative shadow-2xl transform transition-transform duration-300 scale-95" id="modal-box">
-            <!-- Close Button -->
-            <button onclick="closeModal()" class="absolute top-6 right-6 text-brand-muted hover:text-brand-cream text-xl p-2 focus:outline-none">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <!-- Modal Content Wrapper -->
-            <div id="modal-form-view" class="space-y-6">
-                <div>
-                    <span class="text-brand-gold text-xs font-semibold uppercase tracking-widest">Reserve Your Seat</span>
-                    <h3 class="text-3xl font-serif font-semibold mt-1">Book A Table</h3>
-                </div>
-
-                <form id="booking-form" onsubmit="handleReservation(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-brand-muted mb-1.5">Full Name</label>
-                        <input type="text" required placeholder="e.g. Hammad Khan" class="w-full bg-brand-dark/90 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-cream focus:outline-none focus:border-brand-gold transition-colors">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs uppercase tracking-wider text-brand-muted mb-1.5">Guests</label>
-                            <select id="guest-count" required class="w-full bg-brand-dark/90 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-cream focus:outline-none focus:border-brand-gold transition-colors">
-                                <option value="2 Guests">2 Guests</option>
-                                <option value="4 Guests">4 Guests</option>
-                                <option value="6 Guests">6 Guests</option>
-                                <option value="Private Suite (8+)">Private Suite (8+)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs uppercase tracking-wider text-brand-muted mb-1.5">Date</label>
-                            <input type="date" required class="w-full bg-brand-dark/90 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-cream focus:outline-none focus:border-brand-gold transition-colors">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-brand-muted mb-1.5">Preferred Time</label>
-                        <select required class="w-full bg-brand-dark/90 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-cream focus:outline-none focus:border-brand-gold transition-colors">
-                            <option value="06:30 PM">06:30 PM</option>
-                            <option value="08:00 PM">08:00 PM</option>
-                            <option value="09:30 PM">09:30 PM</option>
-                            <option value="11:00 PM">11:00 PM</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-brand-muted mb-1.5">Special Requests (Optional)</label>
-                        <textarea rows="2" placeholder="Anniversary, dietary preferences..." class="w-full bg-brand-dark/90 border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-cream focus:outline-none focus:border-brand-gold transition-colors resize-none"></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full py-4 rounded-xl bg-brand-gold text-brand-dark font-semibold text-sm uppercase tracking-wider hover:bg-brand-goldHover transition-colors mt-2 shadow-lg shadow-brand-gold/10">
-                        Confirm Reservation
-                    </button>
-                </form>
-            </div>
-
-            <!-- Instant Confirmation Feedback View -->
-            <div id="modal-success-view" class="hidden text-center py-8 space-y-6">
-                <div class="w-16 h-16 rounded-full bg-brand-gold/20 border border-brand-gold text-brand-gold text-3xl mx-auto flex items-center justify-center">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-                <div>
-                    <h3 class="text-3xl font-serif font-bold text-brand-cream">Table Reserved!</h3>
-                    <p class="text-brand-muted text-sm mt-2 max-w-xs mx-auto">
-                        Thank you. We have sent a confirmation SMS & Email with your booking details.
-                    </p>
-                </div>
-                <div class="p-4 rounded-xl bg-brand-dark/60 border border-brand-border text-xs text-brand-cream/80 space-y-1">
-                    <p><span class="text-brand-muted">Status:</span> Confirmed VIP Slot</p>
-                    <p><span class="text-brand-muted">Location:</span> Veloura, DHA Phase 6, Islamabad</p>
-                </div>
-                <button onclick="closeModal()" class="px-8 py-3 rounded-full bg-brand-gold text-brand-dark font-semibold text-xs uppercase tracking-wider">
-                    Done
-                </button>
-            </div>
-        </div>
+    <div class="flex items-center space-x-5">
+      <a href="reservation.html" class="hidden sm:inline-block bg-brand-gold text-brand-dark px-5 py-2 rounded-full font-medium text-xs tracking-wider uppercase hover:bg-brand-goldLight transition">Book A Table</a>
+      <a href="cart.html" class="relative p-2 text-brand-cream hover:text-brand-gold">
+        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        <span class="cart-count absolute -top-1 -right-1 bg-brand-gold text-brand-dark text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+      </a>
+      <a href="login.html" class="p-2 text-brand-cream hover:text-brand-gold"><i data-lucide="user" class="w-5 h-5"></i></a>
     </div>
+  </div>
+</header>
 
-    <script>
-        // Menu Items Data Array
-        const menuData = {
-            starters: [
-                {
-                    title: "Truffle Infused Burrata",
-                    desc: "Fresh Italian burrata with black truffle tapenade, heirloom tomatoes, and 25-year aged balsamic glaze.",
-                    price: "PKR 3,200",
-                    img: "https://images.unsplash.com/photo-1592417817098-8f3d6ef23a28?auto=format&fit=crop&w=600&q=80",
-                    badge: "Chef Specialty"
-                },
-                {
-                    title: "Pan-Seared Hokkaido Scallops",
-                    desc: "Served over cauliflower silk, crispy pancetta lardons, and brown butter emulsion.",
-                    price: "PKR 4,100",
-                    img: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=600&q=80"
-                },
-                {
-                    title: "Wagyu Beef Carpaccio",
-                    desc: "Thinly sliced A5 Wagyu, caper berries, shaved parmesan, and horseradish aioli.",
-                    price: "PKR 3,800",
-                    img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80"
-                }
-            ],
-            mains: [
-                {
-                    title: "Dry-Aged Tomahawk Steak",
-                    desc: "45-day dry-aged charbroiled steak served with roasted bone marrow and truffle jus.",
-                    price: "PKR 12,500",
-                    img: "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=600&q=80",
-                    badge: "Signature"
-                },
-                {
-                    title: "Chilean Sea Bass",
-                    desc: "Pan-roasted sea bass with miso glaze, saffron risotto, and baby bok choy.",
-                    price: "PKR 7,900",
-                    img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80"
-                },
-                {
-                    title: "Sous-Vide Herb Duck Breast",
-                    desc: "Tender duck breast with spiced cherry reduction, fondant potatoes, and roasted carrots.",
-                    price: "PKR 6,400",
-                    img: "https://images.unsplash.com/photo-1514944288352-fffac99f0bdf?auto=format&fit=crop&w=600&q=80"
-                }
-            ],
-            desserts: [
-                {
-                    title: "Veloura Gold Sphere",
-                    desc: "Dark chocolate dome melted with hot salted caramel, hazelnut praline, and vanilla bean gelato.",
-                    price: "PKR 2,400",
-                    img: "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80",
-                    badge: "Must Try"
-                },
-                {
-                    title: "Deconstructed Saffron Mille-Feuille",
-                    desc: "Crispy caramelized pastry layers with Kashmiri saffron cream and pistachio dust.",
-                    price: "PKR 1,950",
-                    img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80"
-                }
-            ],
-            cocktails: [
-                {
-                    title: "Smoked Oak & Vanilla Elixir",
-                    desc: "Cold-brewed espresso infused with oak smoke, Tahitian vanilla bean, and velvet foam.",
-                    price: "PKR 1,600",
-                    img: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80"
-                },
-                {
-                    title: "Yuzu Sparkling Botanical",
-                    desc: "Japanese Yuzu extract, fresh rosemary, elderflower tonic, and edible gold leaf.",
-                    price: "PKR 1,450",
-                    img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80",
-                    badge: "Zero-Proof"
-                }
-            ]
-        };
+<!-- HERO -->
+<section class="relative min-h-screen flex items-center justify-center pt-20 px-6 text-center">
+  <div class="max-w-3xl mx-auto z-10">
+    <p class="text-brand-gold tracking-[0.4em] uppercase text-xs mb-4">Curated Gastronomy</p>
+    <h1 class="font-serif text-5xl md:text-7xl font-normal leading-tight mb-6">Explore Our <br/><span class="italic text-brand-gold">Signature Menu</span></h1>
+    <p class="text-brand-muted text-base max-w-lg mx-auto mb-10">Select a category to view our meticulously plated creations.</p>
+    
+    <!-- DYNAMIC CATEGORY BUTTONS -->
+    <div class="flex flex-wrap justify-center gap-3 mb-12">
+      <button onclick="filterCategory('BBQ & Grill')" class="cat-btn bg-brand-gold text-brand-dark px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">BBQ & Grill</button>
+      <button onclick="filterCategory('Starters')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Starters</button>
+      <button onclick="filterCategory('Main Course')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Main Course</button>
+      <button onclick="filterCategory('Burgers')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Burgers</button>
+      <button onclick="filterCategory('Pizza')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Pizza</button>
+      <button onclick="filterCategory('Desi Cuisine')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Desi Cuisine</button>
+      <button onclick="filterCategory('Chinese')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Chinese</button>
+      <button onclick="filterCategory('Pasta')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Pasta</button>
+      <button onclick="filterCategory('Seafood')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Seafood</button>
+      <button onclick="filterCategory('Desserts')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Desserts</button>
+      <button onclick="filterCategory('Beverages')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Beverages</button>
+    </div>
+  </div>
+</section>
 
-        // Render Menu Cards
-        function switchTab(category) {
-            // Update active tab button styles
-            document.querySelectorAll('.menu-tab').forEach(btn => {
-                btn.className = 'menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider text-brand-muted hover:text-brand-cream glass-panel border border-brand-border transition-all';
-            });
-            
-            const activeBtn = document.getElementById(`tab-${category}`);
-            if(activeBtn) {
-                activeBtn.className = 'menu-tab px-6 py-2.5 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider transition-all bg-brand-gold text-brand-dark shadow-lg shadow-brand-gold/10';
-            }
+<!-- MENU ITEMS DISPLAY FROM SUPABASE -->
+<section class="max-w-7xl mx-auto px-6 py-12">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="featured-dish-grid">
+    <!-- Items from Supabase will load here automatically -->
+  </div>
+</section>
 
-            const container = document.getElementById('menu-container');
-            const items = menuData[category] || [];
-
-            container.innerHTML = items.map(item => `
-                <div class="glass-panel rounded-2xl overflow-hidden border border-brand-border/60 hover:border-brand-gold/50 transition-all duration-300 group flex flex-col justify-between">
-                    <div>
-                        <div class="aspect-[16/10] overflow-hidden relative">
-                            <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            ${item.badge ? `<span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-brand-dark/80 backdrop-blur-md border border-brand-gold/40 text-brand-gold text-[10px] font-semibold uppercase tracking-widest">${item.badge}</span>` : ''}
-                        </div>
-                        <div class="p-6 space-y-2">
-                            <div class="flex items-start justify-between gap-2">
-                                <h3 class="font-serif font-semibold text-xl text-brand-cream group-hover:text-brand-gold transition-colors">${item.title}</h3>
-                            </div>
-                            <p class="text-brand-muted text-xs leading-relaxed font-light">${item.desc}</p>
-                        </div>
-                    </div>
-                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-brand-border/30 mt-2">
-                        <span class="text-brand-gold font-serif text-lg font-bold">${item.price}</span>
-                        <button onclick="openModal()" class="text-xs uppercase tracking-wider text-brand-cream/80 hover:text-brand-gold transition-colors flex items-center gap-1">
-                            Reserve <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Mobile Navigation Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            menu.classList.toggle('hidden');
-            if (menu.classList.contains('hidden')) {
-                icon.className = 'fa-solid fa-bars';
-            } else {
-                icon.className = 'fa-solid fa-xmark';
-            }
-        }
-
-        // Modal Handler functions
-        function openModal() {
-            const modal = document.getElementById('reservation-modal');
-            const box = document.getElementById('modal-box');
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                box.classList.remove('scale-95');
-                box.classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('reservation-modal');
-            const box = document.getElementById('modal-box');
-            box.classList.remove('scale-100');
-            box.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.getElementById('modal-form-view').classList.remove('hidden');
-                document.getElementById('modal-success-view').classList.add('hidden');
-            }, 200);
-        }
-
-        function handleReservation(e) {
-            e.preventDefault();
-            document.getElementById('modal-form-view').classList.add('hidden');
-            document.getElementById('modal-success-view').classList.remove('hidden');
-        }
-
-        // Initialize default tab on load
-        window.onload = function() {
-            switchTab('starters');
-        };
-    </script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/index.js"></script>
+<script>
+  lucide.createIcons();
+  
+  function filterCategory(categoryName) {
+    if (window.loadCategoryDishes) {
+      window.loadCategoryDishes(categoryName);
+    }
+  }
+</script>
 </body>
 </html>
