@@ -1,106 +1,382 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Veloura — An Extraordinary Dining Experience</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          brand: {
-            gold: '#D4AF37',
-            goldLight: '#F3E5AB',
-            dark: '#0D0D0D',
-            card: '#161616',
-            cream: '#F9F6F0',
-            muted: '#A3A3A3'
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veloura — An Extraordinary Dining Experience</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Supabase JS Client CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              gold: '#D4AF37',
+              goldHover: '#C5A028',
+              goldLight: '#F3E5AB',
+              dark: '#0D0D0D',
+              card: '#161616',
+              cream: '#F9F6F0',
+              muted: '#A3A3A3',
+              border: '#2A2A2A'
+            }
+          },
+          fontFamily: {
+            serif: ['Cormorant Garamond', 'serif'],
+            sans: ['Manrope', 'sans-serif'],
           }
-        },
-        fontFamily: {
-          serif: ['Cormorant Garamond', 'serif'],
-          sans: ['Manrope', 'sans-serif'],
         }
       }
     }
-  }
-</script>
-</head>
-<body class="bg-brand-dark text-brand-cream font-sans antialiased overflow-x-hidden">
-
-<!-- NAVBAR -->
-<header class="fixed top-0 left-0 right-0 z-50 bg-brand-dark/90 backdrop-blur-md border-b border-white/10 transition-all">
-  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-    <a href="index.html" class="font-serif text-2xl tracking-[0.3em] font-semibold text-brand-gold">VELOURA</a>
-    
-    <nav class="hidden md:flex items-center space-x-8 text-sm tracking-widest uppercase">
-      <a href="index.html" class="text-brand-gold">Home</a>
-      <a href="menu.html" class="hover:text-brand-gold transition">Menu</a>
-      <a href="about.html" class="hover:text-brand-gold transition">About</a>
-      <a href="gallery.html" class="hover:text-brand-gold transition">Gallery</a>
-      <a href="reservation.html" class="hover:text-brand-gold transition">Reservations</a>
-      <a href="contact.html" class="hover:text-brand-gold transition">Contact</a>
-    </nav>
-
-    <div class="flex items-center space-x-5">
-      <a href="reservation.html" class="hidden sm:inline-block bg-brand-gold text-brand-dark px-5 py-2 rounded-full font-medium text-xs tracking-wider uppercase hover:bg-brand-goldLight transition">Book A Table</a>
-      <a href="cart.html" class="relative p-2 text-brand-cream hover:text-brand-gold">
-        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-        <span class="cart-count absolute -top-1 -right-1 bg-brand-gold text-brand-dark text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-      </a>
-      <a href="login.html" class="p-2 text-brand-cream hover:text-brand-gold"><i data-lucide="user" class="w-5 h-5"></i></a>
-    </div>
-  </div>
-</header>
-
-<!-- HERO -->
-<section class="relative min-h-screen flex items-center justify-center pt-20 px-6 text-center">
-  <div class="max-w-3xl mx-auto z-10">
-    <p class="text-brand-gold tracking-[0.4em] uppercase text-xs mb-4">Curated Gastronomy</p>
-    <h1 class="font-serif text-5xl md:text-7xl font-normal leading-tight mb-6">Explore Our <br/><span class="italic text-brand-gold">Signature Menu</span></h1>
-    <p class="text-brand-muted text-base max-w-lg mx-auto mb-10">Select a category to view our meticulously plated creations.</p>
-    
-    <!-- DYNAMIC CATEGORY BUTTONS -->
-    <div class="flex flex-wrap justify-center gap-3 mb-12">
-      <button onclick="filterCategory('BBQ & Grill')" class="cat-btn bg-brand-gold text-brand-dark px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">BBQ & Grill</button>
-      <button onclick="filterCategory('Starters')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Starters</button>
-      <button onclick="filterCategory('Main Course')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Main Course</button>
-      <button onclick="filterCategory('Burgers')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Burgers</button>
-      <button onclick="filterCategory('Pizza')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Pizza</button>
-      <button onclick="filterCategory('Desi Cuisine')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Desi Cuisine</button>
-      <button onclick="filterCategory('Chinese')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Chinese</button>
-      <button onclick="filterCategory('Pasta')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Pasta</button>
-      <button onclick="filterCategory('Seafood')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Seafood</button>
-      <button onclick="filterCategory('Desserts')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Desserts</button>
-      <button onclick="filterCategory('Beverages')" class="cat-btn border border-white/20 hover:border-brand-gold px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition">Beverages</button>
-    </div>
-  </div>
-</section>
-
-<!-- MENU ITEMS DISPLAY FROM SUPABASE -->
-<section class="max-w-7xl mx-auto px-6 py-12">
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="featured-dish-grid">
-    <!-- Items from Supabase will load here automatically -->
-  </div>
-</section>
-
-<script src="js/supabase-client.js"></script>
-<script src="js/main.js"></script>
-<script src="js/index.js"></script>
-<script>
-  lucide.createIcons();
-  
-  function filterCategory(categoryName) {
-    if (window.loadCategoryDishes) {
-      window.loadCategoryDishes(categoryName);
+  </script>
+  <style>
+    .glass-nav {
+      background: rgba(13, 13, 13, 0.85);
+      backdrop-filter: blur(12px);
     }
-  }
-</script>
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #161616;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #D4AF37;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-brand-dark text-brand-cream font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brand-gold selection:text-brand-dark">
+
+  <!-- NAVIGATION -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-brand-border/60 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="index.html" class="font-serif text-2xl md:text-3xl tracking-[0.3em] font-semibold text-brand-gold hover:opacity-90 transition">
+        VELOURA
+      </a>
+      
+      <nav class="hidden md:flex items-center space-x-8 text-xs tracking-[0.2em] uppercase font-medium">
+        <a href="index.html" class="text-brand-gold">Home</a>
+        <a href="menu.html" class="hover:text-brand-gold transition-colors">Menu</a>
+        <a href="about.html" class="hover:text-brand-gold transition-colors">About</a>
+        <a href="gallery.html" class="hover:text-brand-gold transition-colors">Gallery</a>
+        <a href="reservation.html" class="hover:text-brand-gold transition-colors">Reservations</a>
+        <a href="contact.html" class="hover:text-brand-gold transition-colors">Contact</a>
+      </nav>
+
+      <div class="flex items-center space-x-4">
+        <a href="reservation.html" class="hidden sm:inline-block bg-brand-gold text-brand-dark px-5 py-2.5 rounded-full font-semibold text-xs tracking-wider uppercase hover:bg-brand-goldHover transition duration-300 shadow-md hover:shadow-brand-gold/20">
+          Book A Table
+        </a>
+        <a href="cart.html" class="relative p-2 text-brand-cream hover:text-brand-gold transition-colors" title="View Cart">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          <span id="cart-badge-count" class="absolute -top-1 -right-1 bg-brand-gold text-brand-dark text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </a>
+        <a href="login.html" class="p-2 text-brand-cream hover:text-brand-gold transition-colors" title="Account Login">
+          <i data-lucide="user" class="w-5 h-5"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO & CATEGORY NAVIGATION -->
+  <main class="flex-grow pt-28 pb-16">
+    <section class="max-w-7xl mx-auto px-6 text-center pt-8 pb-6">
+      <div class="max-w-3xl mx-auto">
+        <div class="inline-flex items-center space-x-2 text-brand-gold tracking-[0.35em] uppercase text-xs mb-3 font-semibold">
+          <i data-lucide="utensils" class="w-4 h-4"></i>
+          <span>Curated Gastronomy</span>
+        </div>
+        <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-tight mb-4 tracking-tight">
+          Explore Our <br/><span class="italic text-brand-gold">Signature Menu</span>
+        </h1>
+        <p class="text-brand-muted text-sm sm:text-base max-w-lg mx-auto font-light">
+          Select a category below to discover our freshly prepared dishes and house specials.
+        </p>
+      </div>
+
+      <!-- ALL CATEGORY BUTTONS -->
+      <div class="mt-8 flex items-center justify-start md:justify-center gap-2.5 overflow-x-auto pb-4 custom-scrollbar px-2" id="category-bar">
+        <button onclick="selectCategory('ALL')" class="cat-btn bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300 shadow-lg" data-cat="ALL">
+          All Dishes
+        </button>
+        <button onclick="selectCategory('BBQ & Grill')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="BBQ & Grill">
+          BBQ & Grill
+        </button>
+        <button onclick="selectCategory('Starters')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="Starters">
+          Starters
+        </button>
+        <button onclick="selectCategory('Main Course')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="Main Course">
+          Main Course
+        </button>
+        <button onclick="selectCategory('Burgers')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="Burgers">
+          Burgers
+        </button>
+        <button onclick="selectCategory('Pizza')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="Pizza">
+          Pizza
+        </button>
+        <button onclick="selectCategory('Desi Cuisine')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="Desi Cuisine">
+          Desi Cuisine
+        </button>
+        <button onclick="selectCategory('Chinese')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="Chinese">
+          Chinese
+        </button>
+        <button onclick="selectCategory('Pasta')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="Pasta">
+          Pasta
+        </button>
+        <button onclick="selectCategory('Seafood')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="Seafood">
+          Seafood
+        </button>
+        <button onclick="selectCategory('Desserts')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="Desserts">
+          Desserts
+        </button>
+        <button onclick="selectCategory('Beverages')" class="cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300" data-cat="Beverages">
+          Beverages
+        </button>
+      </div>
+    </section>
+
+    <!-- DYNAMIC MENU ITEMS GRID -->
+    <section class="max-w-7xl mx-auto px-6 py-6">
+      <div id="loading-state" class="text-center py-16">
+        <div class="inline-block w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin mb-3"></div>
+        <p class="text-brand-muted text-sm tracking-widest uppercase">Fetching dishes from database...</p>
+      </div>
+
+      <div id="menu-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Dish cards rendered here via JavaScript -->
+      </div>
+
+      <div id="empty-state" class="hidden text-center py-20 bg-brand-card/40 rounded-3xl border border-brand-border max-w-xl mx-auto px-6">
+        <i data-lucide="soup" class="w-12 h-12 text-brand-gold/60 mx-auto mb-4"></i>
+        <h3 class="font-serif text-2xl text-brand-cream mb-2">No Items Found</h3>
+        <p id="empty-state-msg" class="text-brand-muted text-sm font-light mb-6">There are currently no items listed in this category.</p>
+        <button onclick="selectCategory('ALL')" class="bg-brand-gold text-brand-dark px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-goldHover transition">
+          View All Items
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-brand-card border-t border-brand-border/80 py-12 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <div>
+        <span class="font-serif text-2xl tracking-[0.25em] text-brand-gold">VELOURA</span>
+        <p class="text-xs text-brand-muted mt-1 font-light">Fine Dining & Culinary Excellence</p>
+      </div>
+      <p class="text-xs text-brand-muted font-light">
+        &copy; 2026 Veloura Fine Dining. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPT INTEGRATION & SUPABASE LOGIC -->
+  <script>
+    // 1. SUPABASE CLIENT CONFIGURATION
+    const SUPABASE_URL = 'https://owyyxnrumposabelapid.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93eXl4bnJ1bXBvc2FiZWxhcGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgzNjY3NjMsImV4cCI6MjA3Mzk0Mjc2M30.4sUpG6pTz_jAnBAn7Lvhb3xJ5v5uG4xX4q_7zI4n-vM';
+    
+    let supabaseClient = null;
+    if (window.supabase) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+
+    let allMenuItems = [];
+    let activeCategory = 'ALL';
+
+    // FALLBACK PLACEHOLDER IMAGE
+    const DEFAULT_IMAGE = 'https://placehold.co/600x400/161616/D4AF37?text=Veloura+Special';
+
+    // 2. FETCH MENU ITEMS FROM SUPABASE
+    async function fetchMenuItems() {
+      const loadingEl = document.getElementById('loading-state');
+      const gridEl = document.getElementById('menu-grid');
+      const emptyEl = document.getElementById('empty-state');
+
+      loadingEl.classList.remove('hidden');
+      gridEl.classList.add('hidden');
+      emptyEl.classList.add('hidden');
+
+      try {
+        if (!supabaseClient) throw new Error("Supabase client not initialized.");
+
+        const { data, error } = await supabaseClient
+          .from('menu_items')
+          .select('*')
+          .order('id', { ascending: false });
+
+        if (error) throw error;
+
+        allMenuItems = data || [];
+        renderDishes();
+      } catch (err) {
+        console.warn("Supabase fetch failed or empty:", err);
+        // Fallback sample data if DB is empty or fails
+        allMenuItems = [
+          {
+            id: 1,
+            name: "Mix Mozzarella",
+            category: "BBQ & Grill",
+            price: 1999,
+            image_url: DEFAULT_IMAGE,
+            description: "Delicious grilled mozzarella selection prepared with signature house herbs and cheese.",
+            is_popular: true,
+            is_available: true
+          },
+          {
+            id: 2,
+            name: "Fried Chicken Chop with French Fries",
+            category: "BBQ & Grill",
+            price: 999,
+            image_url: DEFAULT_IMAGE,
+            description: "Crispy fried chicken chops served with golden seasoned french fries and garlic dip.",
+            is_popular: false,
+            is_available: true
+          }
+        ];
+        renderDishes();
+      }
+    }
+
+    // 3. RENDER DISHES GRID
+    function renderDishes() {
+      const loadingEl = document.getElementById('loading-state');
+      const gridEl = document.getElementById('menu-grid');
+      const emptyEl = document.getElementById('empty-state');
+
+      loadingEl.classList.add('hidden');
+
+      // Filter by category
+      let filteredItems = allMenuItems;
+      if (activeCategory !== 'ALL') {
+        filteredItems = allMenuItems.filter(item => {
+          if (!item.category) return false;
+          return item.category.trim().toLowerCase() === activeCategory.trim().toLowerCase();
+        });
+      }
+
+      if (filteredItems.length === 0) {
+        gridEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        document.getElementById('empty-state-msg').innerText = `No dishes found under "${activeCategory}".`;
+        return;
+      }
+
+      emptyEl.classList.add('hidden');
+      gridEl.classList.remove('hidden');
+
+      gridEl.innerHTML = filteredItems.map(item => {
+        // Fix image URL format
+        let imgSrc = item.image_url || item.image || DEFAULT_IMAGE;
+        if (!imgSrc.startsWith('http') && !imgSrc.startsWith('data:')) {
+          imgSrc = DEFAULT_IMAGE;
+        }
+
+        const priceText = typeof item.price === 'number' 
+          ? `Rs ${item.price.toLocaleString()}` 
+          : (item.price || 'Rs 0');
+
+        return `
+          <div class="bg-brand-card rounded-2xl border border-brand-border overflow-hidden group hover:border-brand-gold/60 transition duration-500 flex flex-col justify-between shadow-xl">
+            <div class="relative overflow-hidden aspect-[4/3]">
+              <img 
+                src="${imgSrc}" 
+                alt="${item.name || 'Dish'}"
+                onerror="this.onerror=null; this.src='${DEFAULT_IMAGE}';"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out"
+              />
+              ${item.is_popular ? `<span class="absolute top-3 left-3 bg-brand-gold text-brand-dark font-bold text-[10px] tracking-wider uppercase px-3 py-1 rounded-full shadow">Popular</span>` : ''}
+              ${item.category ? `<span class="absolute bottom-3 right-3 bg-brand-dark/80 backdrop-blur-md text-brand-gold text-[11px] font-medium tracking-wider uppercase px-3 py-1 rounded-full border border-brand-gold/30">${item.category}</span>` : ''}
+            </div>
+
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="font-serif text-2xl text-brand-cream group-hover:text-brand-gold transition duration-300 font-medium mb-2">
+                  ${item.name || 'Unnamed Dish'}
+                </h3>
+                <p class="text-brand-muted text-xs line-clamp-2 mb-4 font-light leading-relaxed">
+                  ${item.description || 'Prepared fresh with fine ingredients by our master chefs.'}
+                </p>
+              </div>
+
+              <div class="flex items-center justify-between pt-4 border-t border-brand-border/60">
+                <span class="font-serif text-xl font-semibold text-brand-gold">
+                  ${priceText}
+                </span>
+                <button 
+                  onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price || 0})"
+                  class="bg-brand-dark hover:bg-brand-gold hover:text-brand-dark text-brand-gold border border-brand-gold/50 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition duration-300 flex items-center space-x-1.5"
+                >
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                  <span>Add</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // 4. CATEGORY SELECTION HANDLER
+    function selectCategory(categoryName) {
+      activeCategory = categoryName;
+
+      // Update button active styling
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        const cat = btn.getAttribute('data-cat');
+        if (cat === categoryName) {
+          btn.className = 'cat-btn bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300 shadow-lg';
+        } else {
+          btn.className = 'cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300';
+        }
+      });
+
+      renderDishes();
+    }
+
+    // 5. ADD TO CART HANDLER
+    function addToCart(name, price) {
+      let cart = JSON.parse(localStorage.getItem('veloura_cart') || '[]');
+      const existing = cart.find(i => i.name === name);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ name, price, quantity: 1 });
+      }
+      localStorage.setItem('veloura_cart', JSON.stringify(cart));
+      updateCartCount();
+    }
+
+    function updateCartCount() {
+      let cart = JSON.parse(localStorage.getItem('veloura_cart') || '[]');
+      const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const badge = document.getElementById('cart-badge-count');
+      if (badge) badge.innerText = totalCount;
+    }
+
+    // INITIAL LOAD
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      updateCartCount();
+      fetchMenuItems();
+    });
+  </script>
 </body>
 </html>
