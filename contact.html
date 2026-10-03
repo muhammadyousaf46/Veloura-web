@@ -3,118 +3,238 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Contact — Veloura</title>
-<meta name="description" content="Get in touch with Veloura." />
+<title>Contact Concierge — Veloura Luxury Dining</title>
+<meta name="description" content="Get in touch with Veloura in Ramtali, Gujrat. Direct telephone, reservation inquiry, and live Google Map." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
+<!-- TOP ANNOUNCEMENT BAR -->
+<div class="top-announcement-bar">
+  <div class="top-bar-left">
+    <span class="live-status-pill"><span class="pulse-dot"></span> Open Today</span>
+    <span>Opening Hours: <strong>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
+  </div>
+  <div class="top-bar-right">
+    <a href="tel:+923000000000" class="phone-quick-link">
+      <i data-lucide="phone" style="width:13px;height:13px;"></i>
+      <span>+92 300 0000000</span>
+    </a>
+    <a href="account.html" class="role-badge-btn">
+      <i data-lucide="user-check" style="width:13px;height:13px;"></i>
+      <span id="role-display-text">Role: Customer</span>
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
 <header class="navbar">
-  <a href="index.html" class="logo">VELOURA</a>
-  <nav aria-label="Primary">
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="menu.html">Menu</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="reservation.html">Reservations</a></li>
-      <li><a href="contact.html" aria-current="page">Contact</a></li>
-    </ul>
-  </nav>
-  <div class="nav-actions">
-    <a href="cart.html" class="icon-btn" aria-label="Cart">&#128717;<span class="cart-count">0</span></a>
-    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
-    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav-container">
+    <a href="index.html" class="logo">VELOURA</a>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservations</a></li>
+        <li><a href="contact.html" aria-current="page" class="active">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="reservation.html" class="btn-book-nav">Book A Table</a>
+      <a href="cart.html" class="icon-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-count">0</span>
+      </a>
+      <a href="account.html" class="icon-btn" aria-label="Account">
+        <i data-lucide="user" style="width:18px;height:18px;"></i>
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
+<!-- MOBILE MENU DRAWER -->
 <div class="mobile-menu">
   <a href="index.html">Home</a>
   <a href="menu.html">Menu</a>
   <a href="about.html">About</a>
   <a href="gallery.html">Gallery</a>
   <a href="reservation.html">Reservations</a>
-  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="active">Contact</a>
+  <a href="account.html">My Account &amp; Rewards</a>
 </div>
 
+<!-- PAGE HERO -->
 <section class="page-hero">
   <div class="container">
-    <p class="hero-eyebrow" style="color:var(--gold);">Contact</p>
+    <p class="hero-eyebrow">Concierge &amp; Host Desk</p>
     <h1>Get in Touch</h1>
+    <p style="margin:0 auto;max-width:540px;">We are delighted to assist you with table reservations, private catering, and special gastronomic events in Gujrat.</p>
   </div>
 </section>
 
+<!-- MAIN CONTACT CONTENT -->
 <section class="section-tight">
   <div class="container">
-    <div class="contact-layout">
+    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:2.5rem;align-items:start;">
+      
+      <!-- CONTACT INFO & MAP -->
       <div>
-        <div class="contact-info-item">
-          <h4>Address</h4>
-          <p><strong>Gujrat, Ramtalai, Pakistan</strong></p>
+        <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-md);padding:2rem;margin-bottom:2rem;box-shadow:var(--shadow-luxury);">
+          <h3 style="margin-bottom:1.5rem;color:var(--gold-primary);">Restaurant Details</h3>
+
+          <div style="display:flex;flex-direction:column;gap:1.25rem;">
+            
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Address</div>
+              <p style="color:var(--text-primary);font-size:1.05rem;font-weight:600;margin-top:0.2rem;">
+                Ramtali, Gujrat, Punjab, Pakistan
+              </p>
+            </div>
+
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Direct Phone &amp; Reservations</div>
+              <div style="margin-top:0.35rem;">
+                <a href="tel:+923000000000" class="btn btn-outline" style="font-size:0.85rem;padding:0.6rem 1.25rem;">
+                  <i data-lucide="phone" style="width:15px;height:15px;"></i> Call +92 300 0000000
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Email Inquiries</div>
+              <p style="margin-top:0.2rem;">
+                <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);font-weight:600;text-decoration:underline;">
+                  shahyousaf2004@gmail.com
+                </a>
+              </p>
+            </div>
+
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Opening Hours</div>
+              <p style="color:var(--text-cream);font-weight:700;margin-top:0.2rem;">
+                Monday &ndash; Sunday: 10:00 AM &ndash; 12:00 AM (Midnight)
+              </p>
+            </div>
+
+          </div>
         </div>
-        <div class="contact-info-item">
-          <h4>Phone</h4>
-          <p><a href="tel:03285733872" style="color:var(--gold);font-weight:600;">03285733872</a></p>
-        </div>
-        <div class="contact-info-item">
-          <h4>Email</h4>
-          <p><a href="mailto:shahousaf2004@gmail.com" style="color:var(--gold);font-weight:600;">shahousaf2004@gmail.com</a></p>
-        </div>
-        <div class="contact-info-item">
-          <h4>Opening Hours</h4>
-          <p>Monday &ndash; Sunday: 12:00 PM &ndash; 11:30 PM</p>
-        </div>
-        <div class="map-placeholder" style="aspect-ratio:16/9;overflow:hidden;border-radius:var(--radius);border:1px solid var(--ivory-dim);">
+
+        <!-- Live Google Map Iframe Pinpointed to Ramtali, Gujrat, Punjab, Pakistan -->
+        <div style="height:320px;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border-gold);box-shadow:var(--shadow-luxury);">
           <iframe 
-            src="https://maps.google.com/maps?q=Ramtalai,+Gujrat,+Pakistan&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+            src="https://maps.google.com/maps?q=Ramtali,+Gujrat,+Punjab,+Pakistan&t=&z=15&ie=UTF8&iwloc=&output=embed" 
             width="100%" 
             height="100%" 
             style="border:0;" 
             allowfullscreen="" 
             loading="lazy" 
             referrerpolicy="no-referrer-when-downgrade"
-            title="Veloura Location - Gujrat, Ramtalai, Pakistan"
+            title="Veloura Location - Ramtali, Gujrat, Punjab, Pakistan"
           ></iframe>
-        </div>
-        <div class="social-icons" style="margin-top:1.5rem;">
-          <a href="#" aria-label="Instagram" style="color:var(--umber);">Instagram</a>
-          <a href="#" aria-label="Facebook" style="color:var(--umber);">Facebook</a>
-          <a href="#" aria-label="TikTok" style="color:var(--umber);">TikTok</a>
         </div>
       </div>
 
-      <form id="contact-form" novalidate>
-        <div class="field" style="margin-bottom:1rem;"><label for="name">Name</label><input id="name" name="name" type="text" required /></div>
-        <div class="field" style="margin-bottom:1rem;"><label for="email">Email</label><input id="email" name="email" type="email" required /></div>
-        <div class="field" style="margin-bottom:1rem;"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" /></div>
-        <div class="field" style="margin-bottom:1rem;"><label for="message">Message</label><textarea id="message" name="message" required></textarea></div>
-        <button type="submit" class="btn btn-primary">Send Message</button>
-        <p class="form-status" role="status" style="margin-top:0.75rem;"></p>
-      </form>
+      <!-- INQUIRY FORM -->
+      <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-md);padding:2.25rem;box-shadow:var(--shadow-luxury);">
+        <h3 style="margin-bottom:1rem;color:var(--gold-primary);">Send Us a Message</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
+          Have questions regarding an upcoming private dining experience, executive catering, or feedback? Send our management team a direct message.
+        </p>
+
+        <form id="contact-form" novalidate>
+          <div class="field" style="margin-bottom:1.25rem;">
+            <label for="contact-name">Full Name *</label>
+            <input id="contact-name" name="name" type="text" placeholder="e.g. Muhammad Yousaf" required />
+          </div>
+
+          <div class="field" style="margin-bottom:1.25rem;">
+            <label for="contact-email">Email Address *</label>
+            <input id="contact-email" name="email" type="email" placeholder="e.g. shahyousaf2004@gmail.com" required />
+          </div>
+
+          <div class="field" style="margin-bottom:1.25rem;">
+            <label for="contact-phone">Phone Number</label>
+            <input id="contact-phone" name="phone" type="tel" placeholder="e.g. +92 300 0000000" />
+          </div>
+
+          <div class="field" style="margin-bottom:1.5rem;">
+            <label for="contact-message">Message *</label>
+            <textarea id="contact-message" name="message" required placeholder="How may our concierge team assist you?"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;padding:1rem;">
+            <i data-lucide="send" style="width:16px;height:16px;"></i> Send Message
+          </button>
+          
+          <p class="form-status" role="status" style="margin-top:1rem;text-align:center;font-size:0.85rem;"></p>
+        </form>
+      </div>
+
     </div>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><p class="logo">VELOURA</p><p>"Where Every Flavor Tells a Story."</p></div>
-      <div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
-      <div><h4>Guest</h4><ul><li><a href="reservation.html">Reservations</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
-      <div><h4>Follow</h4><div class="social-icons"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="TikTok">TT</a></div></div>
+      <div>
+        <p class="logo">VELOURA</p>
+        <p style="margin-top:0.75rem;font-size:0.85rem;">Fine Dining &amp; Curated Culinary Excellence.</p>
+        <p style="margin-top:0.5rem;font-size:0.82rem;color:var(--gold-primary);">Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guest Services</h4>
+        <ul>
+          <li><a href="reservation.html">Table Reservations</a></li>
+          <li><a href="cart.html">View Dining Cart</a></li>
+          <li><a href="account.html">My Account &amp; Rewards</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Concierge</h4>
+        <p style="color:var(--text-cream);font-size:0.85rem;">Ramtali, Gujrat, Punjab, Pakistan</p>
+        <p style="font-size:0.85rem;margin:0.25rem 0;">Phone: <a href="tel:+923000000000" style="color:var(--gold-primary);font-weight:700;">+92 300 0000000</a></p>
+        <p style="font-size:0.85rem;">Email: <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);">shahyousaf2004@gmail.com</a></p>
+      </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Veloura. All rights reserved.</span>
-      <span>Gujrat, Ramtalai, Pakistan &bull; Phone: <a href="tel:03285733872" style="color:var(--gold);">03285733872</a> &bull; Email: <a href="mailto:shahousaf2004@gmail.com" style="color:var(--gold);">shahousaf2004@gmail.com</a></span>
+      <span>&copy; 2026 Veloura Luxury Dining. All rights reserved.</span>
+      <span>Ramtali, Gujrat, Punjab, Pakistan</span>
     </div>
   </div>
 </footer>
 
+<div class="toast"></div>
+
 <script src="js/supabase-client.js"></script>
+<script src="js/data-store.js"></script>
 <script src="js/main.js"></script>
 <script src="js/contact.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
 </body>
 </html>

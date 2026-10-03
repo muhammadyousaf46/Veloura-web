@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Account & Loyalty Rewards — Veloura Luxury Dining</title>
+<meta name="description" content="View your Veloura loyalty points, saved addresses, past orders, and manage your account tier." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- TOP ANNOUNCEMENT BAR -->
+<div class="top-announcement-bar">
+  <div class="top-bar-left">
+    <span class="live-status-pill"><span class="pulse-dot"></span> Open Today</span>
+    <span>Opening Hours: <strong>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
+  </div>
+  <div class="top-bar-right">
+    <a href="tel:+923000000000" class="phone-quick-link">
+      <i data-lucide="phone" style="width:13px;height:13px;"></i>
+      <span>+92 300 0000000</span>
+    </a>
+    <span class="role-badge-btn" id="current-role-badge">
+      <i data-lucide="user-check" style="width:13px;height:13px;"></i>
+      <span id="role-display-text">Role: Customer</span>
+    </span>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">VELOURA</a>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservations</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="reservation.html" class="btn-book-nav">Book A Table</a>
+      <a href="cart.html" class="icon-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-count">0</span>
+      </a>
+      <a href="account.html" class="icon-btn" aria-label="Account" aria-current="page" style="border-color:var(--gold-primary);">
+        <i data-lucide="user" style="width:18px;height:18px;color:var(--gold-primary);"></i>
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <p class="hero-eyebrow">Epicurean Privileges</p>
+    <h1>Patron Account &amp; Rewards</h1>
+    <p style="margin:0 auto;max-width:540px;">Manage your profile, redeem exclusive dining rewards, and view live order statuses.</p>
+  </div>
+</section>
+
+<!-- MAIN ACCOUNT SECTION -->
+<section class="section-tight">
+  <div class="container">
+    
+    <!-- 1. LOYALTY REWARDS CARD -->
+    <div class="loyalty-banner">
+      <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+        <div class="loyalty-points-circle">
+          <span class="loyalty-points-val" id="user-points-val">520</span>
+          <span class="loyalty-points-lbl">Points</span>
+        </div>
+        <div>
+          <span class="badge badge-chef" id="user-tier-badge" style="margin-bottom:0.4rem;">
+            Gold Epicurean Member
+          </span>
+          <h2 style="font-size:1.85rem;" id="user-greeting-name">Muhammad Yousaf</h2>
+          <p style="font-size:0.85rem;color:var(--text-muted);">
+            Earn 10 points for every Rs 100 spent on dining and takeaway. 80 points away from Platinum Tier!
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Role Mode Switcher -->
+      <div style="background:var(--bg-surface);border:1px solid var(--border-gold);border-radius:var(--radius-sm);padding:1rem;display:flex;flex-direction:column;gap:0.5rem;min-width:240px;">
+        <span style="font-size:0.75rem;text-transform:uppercase;color:var(--gold-primary);font-weight:700;">Account Testing Mode:</span>
+        <div style="display:flex;gap:0.4rem;">
+          <button class="btn btn-dark" style="font-size:0.7rem;padding:0.4rem 0.65rem;" onclick="setRoleAndReload('admin')">Admin</button>
+          <button class="btn btn-primary" style="font-size:0.7rem;padding:0.4rem 0.65rem;" onclick="setRoleAndReload('registered')">Registered</button>
+          <button class="btn btn-outline" style="font-size:0.7rem;padding:0.4rem 0.65rem;" onclick="setRoleAndReload('guest')">Guest</button>
+        </div>
+        <a href="admin/index.html" style="font-size:0.75rem;color:var(--gold-light);text-decoration:underline;margin-top:0.25rem;">
+          Go to Admin Dashboard &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- 2. REDEEMABLE VOUCHERS -->
+    <div style="margin-bottom:3rem;">
+      <h3 style="margin-bottom:1rem;color:var(--gold-primary);display:flex;align-items:center;gap:0.5rem;">
+        <i data-lucide="gift" style="width:20px;height:20px;"></i>
+        <span>Redeemable Loyalty Vouchers</span>
+      </h3>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1.25rem;">
+        
+        <!-- Voucher 1 -->
+        <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-sm);padding:1.25rem;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <strong style="color:var(--text-primary);display:block;">Complimentary Saffron Mocktail</strong>
+            <span style="font-size:0.75rem;color:var(--text-muted);">Strands of Persian saffron &amp; Damascus rose</span>
+            <div style="font-size:0.8rem;color:var(--gold-primary);font-weight:700;margin-top:0.25rem;">200 Points</div>
+          </div>
+          <button class="btn btn-primary" style="font-size:0.72rem;padding:0.4rem 0.85rem;" onclick="redeemPerk('Complimentary Saffron Mocktail', 200)">Redeem</button>
+        </div>
+
+        <!-- Voucher 2 -->
+        <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-sm);padding:1.25rem;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <strong style="color:var(--text-primary);display:block;">Rs 500 Dining Discount</strong>
+            <span style="font-size:0.75rem;color:var(--text-muted);">Valid on all orders above Rs 2,500</span>
+            <div style="font-size:0.8rem;color:var(--gold-primary);font-weight:700;margin-top:0.25rem;">450 Points</div>
+          </div>
+          <button class="btn btn-primary" style="font-size:0.72rem;padding:0.4rem 0.85rem;" onclick="redeemPerk('Rs 500 Discount Voucher', 450)">Redeem</button>
+        </div>
+
+        <!-- Voucher 3 -->
+        <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-sm);padding:1.25rem;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <strong style="color:var(--text-primary);display:block;">Valrhona Chocolate Fondant</strong>
+            <span style="font-size:0.75rem;color:var(--text-muted);">Molten French dark chocolate dessert</span>
+            <div style="font-size:0.8rem;color:var(--gold-primary);font-weight:700;margin-top:0.25rem;">300 Points</div>
+          </div>
+          <button class="btn btn-primary" style="font-size:0.72rem;padding:0.4rem 0.85rem;" onclick="redeemPerk('Valrhona Chocolate Fondant', 300)">Redeem</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3. TWO-COLUMN LAYOUT: SAVED ADDRESSES & ORDER HISTORY -->
+    <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:2.5rem;align-items:start;">
+      
+      <!-- SAVED ADDRESSES -->
+      <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-md);padding:1.75rem;">
+        <h3 style="margin-bottom:1.25rem;color:var(--gold-primary);display:flex;align-items:center;gap:0.5rem;">
+          <i data-lucide="map-pin" style="width:18px;height:18px;"></i>
+          <span>Saved Delivery Addresses</span>
+        </h3>
+
+        <div id="addresses-list" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;">
+          <!-- Dynamically populated -->
+        </div>
+
+        <form id="add-address-form" onsubmit="addNewAddress(event)" style="border-top:1px solid var(--border-subtle);padding-top:1.25rem;">
+          <div style="font-size:0.82rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.75rem;">
+            + Add New Address
+          </div>
+          <div class="field" style="margin-bottom:0.65rem;">
+            <input type="text" id="new-addr-label" placeholder="Label (e.g. Home, Office)" required />
+          </div>
+          <div class="field" style="margin-bottom:0.75rem;">
+            <input type="text" id="new-addr-text" placeholder="Full Address in Gujrat" required />
+          </div>
+          <button type="submit" class="btn btn-outline" style="width:100%;font-size:0.75rem;padding:0.6rem;">
+            Save Address
+          </button>
+        </form>
+      </div>
+
+      <!-- PAST ORDER HISTORY -->
+      <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-md);padding:1.75rem;">
+        <h3 style="margin-bottom:1.25rem;color:var(--gold-primary);display:flex;align-items:center;gap:0.5rem;">
+          <i data-lucide="receipt" style="width:18px;height:18px;"></i>
+          <span>Recent Dining Orders</span>
+        </h3>
+
+        <div id="order-history-list" style="display:flex;flex-direction:column;gap:1rem;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <p class="logo">VELOURA</p>
+        <p style="margin-top:0.75rem;font-size:0.85rem;">Fine Dining &amp; Curated Culinary Excellence.</p>
+        <p style="margin-top:0.5rem;font-size:0.82rem;color:var(--gold-primary);">Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guest Services</h4>
+        <ul>
+          <li><a href="reservation.html">Table Reservations</a></li>
+          <li><a href="cart.html">View Dining Cart</a></li>
+          <li><a href="order-tracker.html">Live Order Tracking</a></li>
+          <li><a href="contact.html">Contact Concierge</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p style="font-size:0.85rem;color:var(--text-cream);">Ramtali, Gujrat, Punjab, Pakistan</p>
+        <p style="font-size:0.85rem;margin:0.25rem 0;">Phone: <a href="tel:+923000000000" style="color:var(--gold-primary);font-weight:700;">+92 300 0000000</a></p>
+        <p style="font-size:0.85rem;">Email: <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);">shahyousaf2004@gmail.com</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Veloura Luxury Dining. All rights reserved.</span>
+      <span>Ramtali, Gujrat, Punjab, Pakistan</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast"></div>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/data-store.js"></script>
+<script src="js/main.js"></script>
+<script src="js/account.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
+</body>
+</html>

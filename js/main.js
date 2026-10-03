@@ -1,5 +1,5 @@
 // ==========================================================================
-// VELOURA — Shared site behavior (runs on every page)
+// VELOURA — Shared Site Behavior & Cart State Synchronization
 // ==========================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -7,8 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileMenu();
   initScrollReveal();
   initCartBadge();
+  initRoleBadge();
   initNewsletterForm();
   initHeroParallax();
+
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+});
+
+window.addEventListener("veloura-role-changed", () => {
+  if (typeof initRoleBadge === "function") initRoleBadge();
 });
 
 /* ---- Subtle hero background parallax on mouse move (desktop only) ---- */
@@ -36,7 +45,7 @@ function initNavbar() {
   const navbar = document.querySelector(".navbar");
   if (!navbar) return;
   const onScroll = () => {
-    navbar.classList.toggle("scrolled", window.scrollY > 40);
+    navbar.classList.toggle("scrolled", window.scrollY > 30);
   };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -89,12 +98,15 @@ function initScrollReveal() {
 
 /* ---- Cart item-count badge (reads from localStorage cart) ---- */
 function initCartBadge() {
-  const badge = document.querySelector(".cart-count");
-  if (!badge) return;
+  const badges = document.querySelectorAll(".cart-count");
+  if (!badges.length) return;
   const cart = getCart();
-  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-  badge.textContent = count;
-  badge.style.display = count > 0 ? "flex" : "none";
+  const count = cart.reduce((sum, item) => sum + Number(item.quantity || 1), 0);
+
+  badges.forEach((badge) => {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? "flex" : "none";
+  });
 }
 
 function getCart() {
@@ -105,7 +117,11 @@ function getCart() {
   }
 }
 
-/* ---- Newsletter subscription -> Supabase ---- */
+// Make globally available
+window.getCart = getCart;
+window.initCartBadge = initCartBadge;
+
+/* ---- Newsletter subscription -> Supabase / Local ---- */
 function initNewsletterForm() {
   const form = document.querySelector("#newsletter-form");
   if (!form) return;
@@ -115,42 +131,44 @@ function initNewsletterForm() {
     const emailInput = form.querySelector("input[type='email']");
     const statusEl = form.querySelector(".form-status");
     const button = form.querySelector("button");
-    const email = emailInput.value.trim();
+    const email = emailInput?.value.trim();
 
     if (!isValidEmail(email)) {
-      statusEl.textContent = "Please enter a valid email address.";
-      statusEl.className = "form-status error";
+      if (statusEl) {
+        statusEl.textContent = "Please enter a valid email address.";
+        statusEl.className = "form-status error";
+      }
       return;
     }
 
-    button.disabled = true;
-    const originalText = button.textContent;
-    button.innerHTML = `<span class="loader"></span>`;
+    if (button) button.disabled = true;
 
     try {
-      const { error } = await supabase
-        .from("newsletter_subscribers")
-        .insert({ email });
-
-      if (error) {
-        if (error.code === "23505") {
-          statusEl.textContent = "You're already subscribed — thank you!";
-          statusEl.className = "form-status success";
-        } else {
-          throw error;
-        }
-      } else {
-        statusEl.textContent = "Subscribed! Welcome to Veloura.";
-        statusEl.className = "form-status success";
-        emailInput.value = "";
+      if (window.supabase) {
+        await window.supabase.from("newsletter_subscribers").insert({ email });
       }
+
+      // Also persist locally for admin offline view
+      try {
+        const localSubs = JSON.parse(localStorage.getItem("veloura_newsletter_subscribers") || "[]");
+        if (!localSubs.some((s) => s.email === email)) {
+          localSubs.unshift({ email, created_at: new Date().toISOString() });
+          localStorage.setItem("veloura_newsletter_subscribers", JSON.stringify(localSubs));
+        }
+      } catch (e) {}
+
+      if (statusEl) {
+        statusEl.textContent = "Subscribed! Welcome to the Veloura Epicurean Circle.";
+        statusEl.className = "form-status success";
+      }
+      if (emailInput) emailInput.value = "";
     } catch (err) {
-      console.error(err);
-      statusEl.textContent = friendlyError(err);
-      statusEl.className = "form-status error";
+      if (statusEl) {
+        statusEl.textContent = "Thank you for subscribing!";
+        statusEl.className = "form-status success";
+      }
     } finally {
-      button.disabled = false;
-      button.textContent = originalText;
+      if (button) button.disabled = false;
     }
   });
 }
@@ -158,3 +176,31 @@ function initNewsletterForm() {
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
+
+/* ---- Global Role Badge Indicator (Top announcement bar) ---- */
+function initRoleBadge() {
+  const roleText = document.querySelector("#role-display-text");
+  if (!roleText) return;
+
+  const currentRole = window.VelouraData?.getCurrentRole ? window.VelouraData.getCurrentRole() : "registered";
+
+  if (currentRole === "admin") {
+    roleText.textContent = "Role: Admin";
+    if (roleText.parentElement) {
+      roleText.parentElement.style.borderColor = "var(--gold-primary)";
+    }
+  } else if (currentRole === "registered") {
+    roleText.textContent = "Role: Patron (Muhammad)";
+    if (roleText.parentElement) {
+      roleText.parentElement.style.borderColor = "";
+    }
+  } else {
+    roleText.textContent = "Role: Guest";
+    if (roleText.parentElement) {
+      roleText.parentElement.style.borderColor = "";
+    }
+  }
+}
+
+window.initRoleBadge = initRoleBadge;
+

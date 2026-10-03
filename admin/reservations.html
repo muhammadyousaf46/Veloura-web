@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Reservation Management — Veloura Admin</title>
+<title>Reservations — Veloura Admin</title>
 <meta name="robots" content="noindex, nofollow" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="../css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -14,37 +17,57 @@
 
 <div id="admin-guard" class="admin-guard-block">
   <div id="admin-guard-inner">
-    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
-    <h2>Checking access&hellip;</h2>
-    <p>Verifying administrator permissions.</p>
+    <h2>Verifying access...</h2>
   </div>
 </div>
 
 <div class="admin-shell" style="display:none;">
-<aside class="admin-sidebar">
-  <a href="index.html" class="logo">VELOURA</a>
-  <nav class="admin-nav">
-    <a href="index.html">Overview</a>
-    <a href="menu-management.html">Menu Management</a>
-    <a href="categories.html">Categories</a>
-    <a href="deals.html">Deals</a>
-    <a href="orders.html">Orders</a>
-    <a href="reservations.html" aria-current="page">Reservations</a>
-    <a href="customers.html">Customers</a>
-    <a href="messages.html">Contact Messages</a>
-    <a href="newsletter.html">Newsletter</a>
-    <a href="#" class="signout" data-logout="admin">Sign Out</a>
-    <a href="../index.html" style="margin-top:0.5rem;">&larr; Back to Site</a>
-  </nav>
-</aside>
+  <aside class="admin-sidebar">
+    <div>
+      <a href="../index.html" class="logo">VELOURA</a>
+      <div style="font-size:0.75rem;color:var(--gold-primary);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.25rem;">Management Console</div>
+      
+      <nav class="admin-nav">
+        <a href="index.html">Overview</a>
+        <a href="menu-management.html">Menu &amp; Stock Toggle</a>
+        <a href="orders.html">Live Orders</a>
+        <a href="reservations.html" aria-current="page">Reservations</a>
+        <a href="../index.html">&larr; Back to Site</a>
+      </nav>
+    </div>
+
+    <div>
+      <a href="#" class="btn btn-outline" style="width:100%;font-size:0.72rem;padding:0.5rem;" data-logout="admin">Sign Out</a>
+    </div>
+  </aside>
 
   <main class="admin-main">
-    <div class="admin-topbar">
-      <h1 style="font-size:1.8rem;">Reservation Management</h1>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <h1 style="font-size:2rem;color:var(--text-primary);">Table Reservations &amp; Slot Management</h1>
+        <p style="font-size:0.85rem;color:var(--text-muted);">Manage table booking slots, approve seating requests, and monitor dining reservations in Ramtali, Gujrat.</p>
+      </div>
+      <div>
+        <a href="../reservation.html" class="btn btn-outline" target="_blank">
+          <i data-lucide="calendar" style="width:15px;height:15px;"></i> Public Reservation Form
+        </a>
+      </div>
     </div>
+
     <div class="admin-table-wrap">
       <table class="admin-table">
-        <thead><tr><th>Name</th><th>Phone</th><th>Date</th><th>Time</th><th>Guests</th><th>Request</th><th>Status</th><th>Actions</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Guest Name</th>
+            <th>Phone</th>
+            <th>Booking Date</th>
+            <th>Time Slot</th>
+            <th>Party Size</th>
+            <th>Special Requests</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
         <tbody id="reservations-table-body"></tbody>
       </table>
     </div>
@@ -52,9 +75,14 @@
   </main>
 </div>
 
+<div class="toast"></div>
+
 <script src="../js/supabase-client.js"></script>
-<script src="../js/auth.js"></script>
+<script src="../js/data-store.js"></script>
 <script src="js/admin-guard.js"></script>
 <script src="js/reservations.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
 </body>
 </html>

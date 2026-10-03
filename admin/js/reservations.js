@@ -1,62 +1,61 @@
 // ==========================================================================
-// VELOURA — Admin: Reservation Management
+// VELOURA — Admin: Reservation Slots & Booking Management
 // ==========================================================================
 
 document.addEventListener("admin-authorized", loadReservations);
-
-async function loadReservations() {
-  const tbody = document.querySelector("#reservations-table-body");
-  tbody.innerHTML = `<tr><td colspan="8">Loading...</td></tr>`;
-
-  const { data, error } = await supabase
-    .from("reservations")
-    .select("*")
-    .order("reservation_date", { ascending: true });
-
-  if (error) {
-    console.error(error);
-    tbody.innerHTML = `<tr><td colspan="8">Failed to load reservations.</td></tr>`;
-    return;
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.VelouraData?.getCurrentRole() === "admin") {
+    loadReservations();
   }
+});
+
+function loadReservations() {
+  const tbody = document.querySelector("#reservations-table-body");
+  if (!tbody) return;
+
+  const data = window.VelouraData?.getReservations ? window.VelouraData.getReservations() : [];
 
   if (!data || data.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8">No reservations yet.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:2rem;">No reservation bookings currently recorded.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = data
-    .map(
-      (r) => `
+    .map((r) => {
+      const isApproved = r.status === "approved";
+      const statusColor = isApproved ? "#34d399" : r.status === "rejected" ? "#f87171" : "#f59e0b";
+
+      return `
     <tr>
-      <td>${r.name}</td>
-      <td>${r.phone}</td>
-      <td>${r.reservation_date}</td>
-      <td>${r.reservation_time}</td>
-      <td>${r.guests}</td>
-      <td>${r.special_request || "—"}</td>
-      <td><span class="status-pill ${r.status}">${r.status}</span></td>
-      <td class="admin-actions">
-        ${r.status !== "approved" ? `<button data-action="approved" data-id="${r.id}">Approve</button>` : ""}
-        ${r.status !== "rejected" ? `<button data-action="rejected" data-id="${r.id}">Reject</button>` : ""}
-        ${r.status !== "completed" ? `<button data-action="completed" data-id="${r.id}">Complete</button>` : ""}
+      <td><strong>${r.name}</strong></td>
+      <td><span style="color:var(--text-muted);">${r.phone}</span></td>
+      <td style="font-weight:700;">${r.reservation_date}</td>
+      <td style="color:var(--gold-primary);font-weight:700;">${r.reservation_time}</td>
+      <td><strong>${r.guests} Guests</strong></td>
+      <td style="font-size:0.8rem;color:var(--text-dim);max-width:180px;white-space:normal;">
+        ${r.special_request || "Standard Table"}
       </td>
-    </tr>`
-    )
+      <td>
+        <span style="color:${statusColor};border:1px solid ${statusColor};padding:2px 8px;border-radius:999px;font-size:0.75rem;font-weight:800;text-transform:uppercase;">
+          ${r.status}
+        </span>
+      </td>
+      <td>
+        ${r.status !== "approved" ? `<button class="btn btn-outline" style="font-size:0.68rem;padding:0.25rem 0.5rem;margin-right:4px;" onclick="updateResStatus('${r.id}', 'approved')">Approve</button>` : ""}
+        ${r.status !== "rejected" ? `<button class="btn btn-dark" style="font-size:0.68rem;padding:0.25rem 0.5rem;margin-right:4px;color:#f87171;border-color:#ef4444;" onclick="updateResStatus('${r.id}', 'rejected')">Reject</button>` : ""}
+        ${r.status !== "completed" ? `<button class="btn btn-primary" style="font-size:0.68rem;padding:0.25rem 0.5rem;" onclick="updateResStatus('${r.id}', 'completed')">Complete</button>` : ""}
+      </td>
+    </tr>`;
+    })
     .join("");
-
-  tbody.querySelectorAll("[data-action]").forEach((btn) =>
-    btn.addEventListener("click", () => updateReservationStatus(btn.dataset.id, btn.dataset.action))
-  );
 }
 
-async function updateReservationStatus(id, status) {
-  try {
-    const { error } = await supabase.from("reservations").update({ status }).eq("id", id);
-    if (error) throw error;
-    showToast("Reservation updated");
-    loadReservations();
-  } catch (err) {
-    console.error(err);
-    showToast(friendlyError(err), "error");
+window.updateResStatus = function (id, status) {
+  if (window.VelouraData?.updateReservationStatus) {
+    window.VelouraData.updateReservationStatus(id, status);
   }
-}
+  loadReservations();
+  if (window.showToast) {
+    window.showToast(`Reservation #${id} marked as ${status.toUpperCase()}`);
+  }
+};

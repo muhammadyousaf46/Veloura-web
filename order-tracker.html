@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dynamic Order Tracker — Veloura Luxury Dining</title>
+<meta name="description" content="Track your Veloura dining order status live from our culinary kitchen to your doorstep." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- TOP ANNOUNCEMENT BAR -->
+<div class="top-announcement-bar">
+  <div class="top-bar-left">
+    <span class="live-status-pill"><span class="pulse-dot"></span> Open Today</span>
+    <span>Opening Hours: <strong>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
+  </div>
+  <div class="top-bar-right">
+    <a href="tel:+923000000000" class="phone-quick-link">
+      <i data-lucide="phone" style="width:13px;height:13px;"></i>
+      <span>+92 300 0000000</span>
+    </a>
+    <a href="account.html" class="role-badge-btn" id="current-role-badge">
+      <i data-lucide="user-check" style="width:13px;height:13px;"></i>
+      <span id="role-display-text">Role: Customer</span>
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">VELOURA</a>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservations</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="cart.html" class="icon-btn" aria-label="Cart" title="Cart">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-count">0</span>
+      </a>
+      <a href="account.html" class="icon-btn" aria-label="Account">
+        <i data-lucide="user" style="width:18px;height:18px;"></i>
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE MENU DRAWER -->
+<div class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="about.html">About</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="reservation.html">Reservations</a>
+  <a href="contact.html">Contact</a>
+  <a href="account.html">My Account &amp; Rewards</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <p class="hero-eyebrow">Realtime Kitchen Dispatch</p>
+    <h1>Dynamic Order Tracker</h1>
+    <p style="margin:0 auto;max-width:540px;">Follow your culinary dishes from preparation by master chefs to doorstep arrival.</p>
+  </div>
+</section>
+
+<!-- MAIN TRACKER CONTAINER -->
+<section class="section-tight">
+  <div class="container">
+    <div class="order-tracker-card">
+      
+      <!-- HEADER WITH ORDER ID & STATUS -->
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border-gold);">
+        <div>
+          <span style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.1em;font-weight:700;">Live Tracking</span>
+          <h2 style="font-size:1.85rem;color:var(--gold-primary);" id="track-order-id">Loading Order...</h2>
+        </div>
+        <div style="text-align:right;">
+          <span id="track-status-pill" class="live-status-pill" style="font-size:0.8rem;padding:0.4rem 1rem;">
+            Pending
+          </span>
+          <div id="track-placed-time" style="font-size:0.75rem;color:var(--text-dim);margin-top:0.35rem;">Placed recently</div>
+        </div>
+      </div>
+
+      <!-- ETA COUNTDOWN BOX -->
+      <div class="eta-box" style="margin-top:1.5rem;">
+        <div>
+          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">Estimated Delivery</span>
+          <div class="eta-time" id="track-eta">28 mins</div>
+          <div style="font-size:0.75rem;color:#34d399;display:flex;align-items:center;gap:4px;margin-top:2px;">
+            <i data-lucide="clock" style="width:13px;height:13px;"></i> On time &bull; Dispatched from Ramtali, Gujrat
+          </div>
+        </div>
+        <div>
+          <a href="tel:+923000000000" class="btn btn-outline" style="font-size:0.75rem;padding:0.5rem 1rem;">
+            <i data-lucide="phone" style="width:13px;height:13px;"></i> Call Concierge
+          </a>
+        </div>
+      </div>
+
+      <!-- DYNAMIC 4-STAGE STEPPER -->
+      <div class="tracker-stepper">
+        <div class="tracker-progress-fill" id="stepper-progress-fill" style="width: 10%;"></div>
+
+        <!-- Stage 1 -->
+        <div class="tracker-step" id="step-pending" data-step="1">
+          <div class="step-node"><i data-lucide="receipt" style="width:16px;height:16px;"></i></div>
+          <div class="step-title">Order Received</div>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="tracker-step" id="step-preparing" data-step="2">
+          <div class="step-node"><i data-lucide="chef-hat" style="width:16px;height:16px;"></i></div>
+          <div class="step-title">Preparing</div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="tracker-step" id="step-out_for_delivery" data-step="3">
+          <div class="step-node"><i data-lucide="bike" style="width:16px;height:16px;"></i></div>
+          <div class="step-title">Out for Delivery</div>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="tracker-step" id="step-delivered" data-step="4">
+          <div class="step-node"><i data-lucide="check-check" style="width:16px;height:16px;"></i></div>
+          <div class="step-title">Delivered</div>
+        </div>
+      </div>
+
+      <!-- STATUS DESCRIPTION CALLOUT -->
+      <div id="step-description-box" style="background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:1.25rem;margin-bottom:2rem;text-align:center;">
+        <h4 id="status-title" style="color:var(--gold-primary);margin-bottom:0.25rem;">Order Verified by Kitchen</h4>
+        <p id="status-desc" style="font-size:0.85rem;color:var(--text-muted);margin:0 auto;max-width:500px;">
+          Our master culinary team has accepted your ticket. Fresh artisanal ingredients are being prepared at our kitchen in Ramtali, Gujrat.
+        </p>
+      </div>
+
+      <!-- LIVE SIMULATION CONTROLS FOR TESTING -->
+      <div style="background:#1b1510;border:1px dashed var(--border-gold);border-radius:var(--radius-sm);padding:1rem;margin-bottom:2rem;text-align:center;">
+        <span style="font-size:0.75rem;text-transform:uppercase;color:var(--gold-primary);letter-spacing:0.1em;font-weight:700;">
+          Interactive Live Status Simulator
+        </span>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin:0.25rem 0 0.75rem;">
+          Click any stage below to simulate status updates in real-time:
+        </p>
+        <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;">
+          <button class="btn btn-dark" style="font-size:0.7rem;padding:0.4rem 0.85rem;" onclick="simulateOrderStatus('pending')">1. Pending</button>
+          <button class="btn btn-dark" style="font-size:0.7rem;padding:0.4rem 0.85rem;" onclick="simulateOrderStatus('preparing')">2. Preparing</button>
+          <button class="btn btn-dark" style="font-size:0.7rem;padding:0.4rem 0.85rem;" onclick="simulateOrderStatus('out_for_delivery')">3. Out for Delivery</button>
+          <button class="btn btn-dark" style="font-size:0.7rem;padding:0.4rem 0.85rem;" onclick="simulateOrderStatus('delivered')">4. Delivered</button>
+        </div>
+      </div>
+
+      <!-- ORDER DETAILS CARD -->
+      <div style="background:var(--bg-surface);border:1px solid var(--border-gold);border-radius:var(--radius-sm);padding:1.5rem;">
+        <h4 style="margin-bottom:1rem;color:var(--text-primary);border-bottom:1px solid var(--border-subtle);padding-bottom:0.5rem;">Order Summary Details</h4>
+        
+        <div id="tracker-items-list" style="margin-bottom:1rem;"></div>
+
+        <div class="summary-row">
+          <span class="label-text">Recipient:</span>
+          <span id="tracker-recipient" class="value-text">-</span>
+        </div>
+        <div class="summary-row">
+          <span class="label-text">Delivery Address:</span>
+          <span id="tracker-address" class="value-text">-</span>
+        </div>
+        <div class="summary-row">
+          <span class="label-text">Payment Method:</span>
+          <span id="tracker-payment" class="value-text">-</span>
+        </div>
+        <div class="summary-row total">
+          <span class="label-text">Total Paid:</span>
+          <span id="tracker-total" class="value-text">Rs 0</span>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem;text-align:center;">
+        <a href="menu.html" class="btn btn-outline" style="margin-right:0.75rem;">Browse Menu</a>
+        <a href="index.html" class="btn btn-primary">Back to Homepage</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <p class="logo">VELOURA</p>
+        <p style="margin-top:0.75rem;font-size:0.85rem;">Fine Dining &amp; Curated Culinary Excellence.</p>
+        <p style="margin-top:0.5rem;font-size:0.82rem;color:var(--gold-primary);">Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guest Services</h4>
+        <ul>
+          <li><a href="reservation.html">Reservations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="account.html">My Account &amp; Rewards</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p style="font-size:0.85rem;color:var(--text-cream);">Ramtali, Gujrat, Punjab, Pakistan</p>
+        <p style="font-size:0.85rem;margin:0.25rem 0;">Phone: <a href="tel:+923000000000" style="color:var(--gold-primary);font-weight:700;">+92 300 0000000</a></p>
+        <p style="font-size:0.85rem;">Email: <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);">shahyousaf2004@gmail.com</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Veloura Luxury Dining. All rights reserved.</span>
+      <span>Ramtali, Gujrat, Punjab, Pakistan</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/data-store.js"></script>
+<script src="js/main.js"></script>
+<script src="js/order-tracker.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
+</body>
+</html>

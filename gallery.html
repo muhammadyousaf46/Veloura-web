@@ -3,87 +3,236 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Gallery — Veloura</title>
-<meta name="description" content="A visual look at Veloura's food, interior, chefs, and events." />
+<title>Visual Gallery — Veloura Luxury Dining</title>
+<meta name="description" content="A visual look into Veloura's artisanal dishes, royal interior, chef craftsmanship, and dining moments in Gujrat." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  .gallery-masonry {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .gallery-card {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold);
+    aspect-ratio: 4 / 3;
+    cursor: pointer;
+    box-shadow: var(--shadow-luxury);
+    transition: all var(--transition-smooth);
+  }
+  .gallery-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold-primary);
+    box-shadow: var(--shadow-hover);
+  }
+  .gallery-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .gallery-card:hover img {
+    transform: scale(1.08);
+  }
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(10,9,7,0.95) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.25rem;
+    opacity: 0.9;
+  }
+  .lightbox-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 5, 4, 0.95);
+    backdrop-filter: blur(16px);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-fast);
+  }
+  .lightbox-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>
 </head>
 <body>
 
+<!-- TOP ANNOUNCEMENT BAR -->
+<div class="top-announcement-bar">
+  <div class="top-bar-left">
+    <span class="live-status-pill"><span class="pulse-dot"></span> Open Today</span>
+    <span>Opening Hours: <strong>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
+  </div>
+  <div class="top-bar-right">
+    <a href="tel:+923000000000" class="phone-quick-link">
+      <i data-lucide="phone" style="width:13px;height:13px;"></i>
+      <span>+92 300 0000000</span>
+    </a>
+    <a href="account.html" class="role-badge-btn">
+      <i data-lucide="user-check" style="width:13px;height:13px;"></i>
+      <span id="role-display-text">Role: Customer</span>
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
 <header class="navbar">
-  <a href="index.html" class="logo">VELOURA</a>
-  <nav aria-label="Primary">
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="menu.html">Menu</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="gallery.html" aria-current="page">Gallery</a></li>
-      <li><a href="reservation.html">Reservations</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-  <div class="nav-actions">
-    <a href="cart.html" class="icon-btn" aria-label="Cart">&#128717;<span class="cart-count">0</span></a>
-    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
-    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav-container">
+    <a href="index.html" class="logo">VELOURA</a>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html" aria-current="page" class="active">Gallery</a></li>
+        <li><a href="reservation.html">Reservations</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="reservation.html" class="btn-book-nav">Book A Table</a>
+      <a href="cart.html" class="icon-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-count">0</span>
+      </a>
+      <a href="account.html" class="icon-btn" aria-label="Account">
+        <i data-lucide="user" style="width:18px;height:18px;"></i>
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
+<!-- MOBILE MENU DRAWER -->
 <div class="mobile-menu">
   <a href="index.html">Home</a>
   <a href="menu.html">Menu</a>
   <a href="about.html">About</a>
-  <a href="gallery.html">Gallery</a>
+  <a href="gallery.html" class="active">Gallery</a>
   <a href="reservation.html">Reservations</a>
   <a href="contact.html">Contact</a>
+  <a href="account.html">My Account &amp; Rewards</a>
 </div>
 
+<!-- PAGE HERO -->
 <section class="page-hero">
   <div class="container">
-    <p class="hero-eyebrow" style="color:var(--gold);">Gallery</p>
+    <p class="hero-eyebrow">Visual Symphony</p>
     <h1>Moments at Veloura</h1>
-    <p>Food, interior, chef, events, and dining — a look inside the experience.</p>
+    <p style="margin:0 auto;max-width:540px;">Explore high-definition imagery of our culinary creations, royal chandeliers, master chefs at work, and evening ambiance.</p>
   </div>
 </section>
 
+<!-- MAIN GALLERY SECTION -->
 <section class="section-tight">
   <div class="container">
-    <div id="gallery-chips" class="filter-chips" style="justify-content:center;"></div>
-    <div id="gallery-grid" class="gallery-grid"></div>
+    
+    <!-- GALLERY CATEGORY CHIPS -->
+    <div id="gallery-chips" class="filter-chips" style="justify-content:center;margin-bottom:2.5rem;">
+      <!-- Populated by js/gallery.js -->
+    </div>
+
+    <!-- GALLERY GRID -->
+    <div id="gallery-grid" class="gallery-masonry">
+      <!-- Populated by js/gallery.js -->
+    </div>
+
   </div>
 </section>
 
-<div id="lightbox" class="lightbox">
-  <button id="lightbox-close" class="lightbox-close" aria-label="Close">&times;</button>
-  <div class="lightbox-frame">
-    <!-- IMAGE PLACEHOLDER: render the full-size image here, sourced from images/gallery/ -->
-    <span id="lightbox-caption"></span>
+<!-- FULLSCREEN LIGHTBOX MODAL -->
+<div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-modal="true" aria-label="Image Preview">
+  <button onclick="closeLightbox()" class="modal-close-btn" aria-label="Close image preview">&times;</button>
+  
+  <div style="position:relative;max-width:900px;max-height:80vh;display:flex;flex-direction:column;align-items:center;">
+    <img id="lightbox-img" src="" alt="Full preview" style="max-height:70vh;border-radius:var(--radius-sm);border:1px solid var(--border-gold);" />
+    <div style="text-align:center;margin-top:1rem;">
+      <h3 id="lightbox-title" style="color:var(--gold-primary);font-size:1.4rem;"></h3>
+      <p id="lightbox-caption" style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem;"></p>
+    </div>
   </div>
-  <div class="lightbox-nav">
-    <button id="lightbox-prev" aria-label="Previous image">&#8592;</button>
-    <button id="lightbox-next" aria-label="Next image">&#8594;</button>
+
+  <div style="display:flex;gap:1.5rem;margin-top:1.5rem;">
+    <button class="arrow-btn" onclick="prevLightboxImage()" aria-label="Previous">
+      <i data-lucide="chevron-left" style="width:20px;height:20px;"></i>
+    </button>
+    <button class="arrow-btn" onclick="nextLightboxImage()" aria-label="Next">
+      <i data-lucide="chevron-right" style="width:20px;height:20px;"></i>
+    </button>
   </div>
 </div>
 
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><p class="logo">VELOURA</p><p>"Where Every Flavor Tells a Story."</p></div>
-      <div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
-      <div><h4>Guest</h4><ul><li><a href="reservation.html">Reservations</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
-      <div><h4>Follow</h4><div class="social-icons"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="TikTok">TT</a></div></div>
+      <div>
+        <p class="logo">VELOURA</p>
+        <p style="margin-top:0.75rem;font-size:0.85rem;">Fine Dining &amp; Curated Culinary Excellence.</p>
+        <p style="margin-top:0.5rem;font-size:0.82rem;color:var(--gold-primary);">Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guest Services</h4>
+        <ul>
+          <li><a href="reservation.html">Table Reservations</a></li>
+          <li><a href="cart.html">View Dining Cart</a></li>
+          <li><a href="account.html">Loyalty Rewards</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Concierge</h4>
+        <p style="color:var(--text-cream);font-size:0.85rem;">Ramtali, Gujrat, Punjab, Pakistan</p>
+        <p style="font-size:0.85rem;margin:0.25rem 0;">Phone: <a href="tel:+923000000000" style="color:var(--gold-primary);font-weight:700;">+92 300 0000000</a></p>
+        <p style="font-size:0.85rem;">Email: <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);">shahyousaf2004@gmail.com</a></p>
+      </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Veloura. All rights reserved.</span>
-      <span>Gujrat, Ramtalai, Pakistan &bull; Phone: <a href="tel:03285733872" style="color:var(--gold);">03285733872</a> &bull; Email: <a href="mailto:shahousaf2004@gmail.com" style="color:var(--gold);">shahousaf2004@gmail.com</a></span>
+      <span>&copy; 2026 Veloura Luxury Dining. All rights reserved.</span>
+      <span>Ramtali, Gujrat, Punjab, Pakistan</span>
     </div>
   </div>
 </footer>
 
+<div class="toast"></div>
+
 <script src="js/supabase-client.js"></script>
+<script src="js/data-store.js"></script>
 <script src="js/main.js"></script>
 <script src="js/gallery.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
 </body>
 </html>

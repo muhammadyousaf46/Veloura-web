@@ -3,38 +3,74 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Your Cart — Veloura</title>
-<meta name="description" content="Review the items in your Veloura cart before checkout." />
+<title>Your Dining Cart — Veloura Luxury Dining</title>
+<meta name="description" content="Review your curated selections in the Veloura dining cart. Apply promo codes and proceed to checkout." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-<header class="navbar">
-  <a href="index.html" class="logo">VELOURA</a>
-  <nav aria-label="Primary">
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="menu.html">Menu</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="reservation.html">Reservations</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-  <div class="nav-actions">
-    <button class="icon-btn" aria-label="Search">&#128269;</button>
-    <a href="cart.html" class="icon-btn" aria-label="Cart" aria-current="page">
-      &#128717;
-      <span class="cart-count">0</span>
+<!-- TOP ANNOUNCEMENT & OPERATING HOURS BAR -->
+<div class="top-announcement-bar">
+  <div class="top-bar-left">
+    <span class="live-status-pill"><span class="pulse-dot"></span> Open Today</span>
+    <span>Opening Hours: <strong>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
+  </div>
+  <div class="top-bar-right">
+    <a href="tel:+923000000000" class="phone-quick-link" title="Call restaurant hotline">
+      <i data-lucide="phone" style="width:13px;height:13px;"></i>
+      <span>+92 300 0000000</span>
     </a>
-    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
-    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <a href="account.html" class="role-badge-btn" id="current-role-badge">
+      <i data-lucide="user-check" style="width:13px;height:13px;"></i>
+      <span id="role-display-text">Role: Customer</span>
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">
+      <span>VELOURA</span>
+    </a>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservations</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="reservation.html" class="btn-book-nav">Book A Table</a>
+
+      <a href="cart.html" class="icon-btn" aria-label="Cart" aria-current="page" title="View Cart">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-count">0</span>
+      </a>
+
+      <a href="account.html" class="icon-btn" aria-label="Account" title="User Account">
+        <i data-lucide="user" style="width:18px;height:18px;"></i>
+      </a>
+
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
+<!-- MOBILE MENU DRAWER -->
 <div class="mobile-menu">
   <a href="index.html">Home</a>
   <a href="menu.html">Menu</a>
@@ -42,58 +78,167 @@
   <a href="gallery.html">Gallery</a>
   <a href="reservation.html">Reservations</a>
   <a href="contact.html">Contact</a>
+  <a href="account.html">My Account &amp; Rewards</a>
+  <div class="mobile-actions">
+    <a href="reservation.html" class="btn btn-primary" style="width:100%;">Book A Table</a>
+    <a href="tel:+923000000000" class="btn btn-outline" style="width:100%;">Call +92 300 0000000</a>
+  </div>
 </div>
 
+<!-- PAGE HERO -->
 <section class="page-hero">
   <div class="container">
-    <p class="hero-eyebrow" style="color:var(--gold);">Order</p>
-    <h1>Your Cart</h1>
+    <p class="hero-eyebrow">Curated Culinary Selection</p>
+    <h1>Your Dining Cart</h1>
+    <p style="margin:0 auto;max-width:540px;">Review your gourmet dishes, enter your exclusive promo code, and proceed smoothly to checkout.</p>
   </div>
 </section>
 
+<!-- MAIN CART SECTION -->
 <section class="section-tight">
   <div class="container">
     <div class="cart-layout">
+      
+      <!-- CART ITEMS LIST -->
       <div>
-        <div id="cart-list"></div>
-        <div id="cart-empty" class="empty-state" style="display:none;">
-          <p>Your cart is empty.</p>
-          <a href="menu.html" class="btn btn-dark" style="margin-top:1.5rem;">Browse the Menu</a>
+        <div class="cart-items-wrapper">
+          <div class="cart-table-header" id="cart-table-header" style="display:none;">
+            <span>Dish</span>
+            <span>Details</span>
+            <span style="text-align:center;">Quantity</span>
+            <span class="th-actions">Line Total</span>
+          </div>
+
+          <div id="cart-list"></div>
+
+          <div id="cart-empty" class="empty-state" style="display:none;text-align:center;padding:3rem 1.5rem;">
+            <div style="width:64px;height:64px;border-radius:50%;background:rgba(212,175,55,0.1);border:1px solid var(--border-gold);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;color:var(--gold-primary);">
+              <i data-lucide="shopping-bag" style="width:32px;height:32px;"></i>
+            </div>
+            <h3 style="margin-bottom:0.5rem;">Your Cart is Empty</h3>
+            <p style="margin:0 auto 1.5rem;max-width:400px;">Explore our signature dishes handcrafted by master chefs and add your favorite cuisine.</p>
+            <a href="menu.html" class="btn btn-primary">Explore Full Menu</a>
+          </div>
         </div>
-        <button id="clear-cart" class="remove-line" style="margin-top:1rem;">Clear cart</button>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem;">
+          <a href="menu.html" class="btn btn-outline" style="font-size:0.75rem;padding:0.6rem 1.25rem;">&larr; Add More Dishes</a>
+          <button id="clear-cart" class="clear-cart-btn" style="display:none;">
+            <i data-lucide="trash-2" style="width:14px;height:14px;"></i> Clear Entire Cart
+          </button>
+        </div>
       </div>
 
-      <div class="summary-box">
-        <h3 style="margin-bottom:1.25rem;">Order Summary</h3>
-        <div class="summary-row"><span>Subtotal</span><span id="summary-subtotal">Rs 0</span></div>
-        <div class="summary-row"><span>Delivery Fee</span><span id="summary-delivery">Rs 0</span></div>
-        <div class="summary-row total"><span>Total</span><span id="summary-total">Rs 0</span></div>
-        <a href="checkout.html" id="go-to-checkout" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:1rem;">Proceed to Checkout</a>
+      <!-- ORDER SUMMARY SECTION (FIXED OVERLAP & PROPER ALIGNMENT) -->
+      <div>
+        <div class="summary-box">
+          <h3>
+            <span>Order Summary</span>
+            <span id="summary-items-count" style="font-size:0.85rem;color:var(--gold-primary);font-weight:600;">(0 items)</span>
+          </h3>
+
+          <!-- Promo Code Section -->
+          <div class="promo-box">
+            <label style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:0.4rem;font-weight:700;">Promo Code</label>
+            <form id="promo-form" class="promo-form" onsubmit="return false;">
+              <input type="text" id="promo-input" placeholder="e.g. VELOURA10" autocomplete="off" />
+              <button type="button" id="apply-promo-btn">Apply</button>
+            </form>
+            <div id="promo-message" class="promo-feedback"></div>
+            <p style="font-size:0.72rem;color:var(--text-dim);margin-top:0.4rem;">Tip: Use <strong>VELOURA10</strong> for 10% off your order.</p>
+          </div>
+
+          <!-- Price Breakdown with Explicit Labels & Space-Between Alignment -->
+          <div class="summary-row">
+            <span class="label-text">Subtotal:</span>
+            <span id="summary-subtotal" class="value-text">Rs 0</span>
+          </div>
+
+          <div class="summary-row discount-row" id="summary-discount-row" style="display:none;">
+            <span class="label-text">Promo Discount:</span>
+            <span id="summary-discount" class="value-text">-Rs 0</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="label-text">GST / Sales Tax (5%):</span>
+            <span id="summary-tax" class="value-text">Rs 0</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="label-text">Estimated Delivery Fee:</span>
+            <span id="summary-delivery" class="value-text">Rs 250</span>
+          </div>
+
+          <div class="summary-row total">
+            <span class="label-text">Total:</span>
+            <span id="summary-total" class="value-text">Rs 0</span>
+          </div>
+
+          <a href="checkout.html" id="go-to-checkout" class="btn btn-primary" style="width:100%;margin-top:1.5rem;padding:1rem;">
+            Proceed to Checkout &rarr;
+          </a>
+
+          <div style="margin-top:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;color:var(--text-dim);font-size:0.75rem;">
+            <i data-lucide="shield-check" style="width:14px;height:14px;color:var(--gold-primary);"></i>
+            <span>Guaranteed Freshness &amp; Contactless Delivery</span>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand">
-        <p class="logo">VELOURA</p>
-        <p>"Where Every Flavor Tells a Story."</p>
+      <div>
+        <a href="index.html" class="logo">VELOURA</a>
+        <p style="margin-top:0.75rem;font-size:0.88rem;line-height:1.6;">Where every flavor tells an opulent culinary story. Crafted with master technique and organic artisanal ingredients in Gujrat.</p>
+        <p style="margin-top:0.75rem;font-size:0.82rem;color:var(--gold-primary);font-weight:600;">Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</p>
       </div>
-      <div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
-      <div><h4>Guest</h4><ul><li><a href="reservation.html">Reservations</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
-      <div><h4>Follow</h4><div class="social-icons"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="TikTok">TT</a></div></div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Signature Menu</a></li>
+          <li><a href="about.html">Our Heritage</a></li>
+          <li><a href="gallery.html">Visual Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dining &amp; Guest</h4>
+        <ul>
+          <li><a href="reservation.html">Table Reservations</a></li>
+          <li><a href="cart.html">View Cart</a></li>
+          <li><a href="account.html">Loyalty Rewards</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact &amp; Location</h4>
+        <p style="color:var(--text-cream);font-weight:600;margin-bottom:0.4rem;">Ramtali, Gujrat, Punjab, Pakistan</p>
+        <p style="margin-bottom:0.4rem;">Hotline: <a href="tel:+923000000000" style="color:var(--gold-primary);font-weight:700;">+92 300 0000000</a></p>
+        <p style="margin-bottom:0.75rem;">Email: <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);">shahyousaf2004@gmail.com</a></p>
+        <a href="tel:+923000000000" class="btn btn-outline" style="font-size:0.75rem;padding:0.5rem 1rem;">
+          <i data-lucide="phone-call" style="width:14px;height:14px;"></i> Call Restaurant
+        </a>
+      </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Veloura. All rights reserved.</span>
-      <span>Gujrat, Ramtalai, Pakistan &bull; Phone: <a href="tel:03285733872" style="color:var(--gold);">03285733872</a> &bull; Email: <a href="mailto:shahousaf2004@gmail.com" style="color:var(--gold);">shahousaf2004@gmail.com</a></span>
+      <span>&copy; 2026 Veloura Luxury Dining &amp; Cuisine. All rights reserved.</span>
+      <span>Ramtali, Gujrat, Punjab, Pakistan</span>
     </div>
   </div>
 </footer>
 
 <script src="js/supabase-client.js"></script>
+<script src="js/data-store.js"></script>
 <script src="js/main.js"></script>
 <script src="js/cart.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
 </body>
 </html>

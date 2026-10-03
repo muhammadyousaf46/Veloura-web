@@ -3,34 +3,68 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Checkout — Veloura</title>
-<meta name="description" content="Complete your Veloura order." />
+<title>Checkout — Veloura Luxury Dining</title>
+<meta name="description" content="Complete your Veloura order with contactless delivery or pickup." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
+<!-- TOP ANNOUNCEMENT BAR -->
+<div class="top-announcement-bar">
+  <div class="top-bar-left">
+    <span class="live-status-pill"><span class="pulse-dot"></span> Open Today</span>
+    <span>Opening Hours: <strong>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
+  </div>
+  <div class="top-bar-right">
+    <a href="tel:+923000000000" class="phone-quick-link">
+      <i data-lucide="phone" style="width:13px;height:13px;"></i>
+      <span>+92 300 0000000</span>
+    </a>
+    <a href="account.html" class="role-badge-btn" id="current-role-badge">
+      <i data-lucide="user-check" style="width:13px;height:13px;"></i>
+      <span id="role-display-text">Role: Customer</span>
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
 <header class="navbar">
-  <a href="index.html" class="logo">VELOURA</a>
-  <nav aria-label="Primary">
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="menu.html">Menu</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="reservation.html">Reservations</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-  <div class="nav-actions">
-    <a href="cart.html" class="icon-btn" aria-label="Cart">&#128717;<span class="cart-count">0</span></a>
-    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
-    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav-container">
+    <a href="index.html" class="logo">VELOURA</a>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservations</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="cart.html" class="icon-btn" aria-label="Cart" title="Back to Cart">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-count">0</span>
+      </a>
+      <a href="account.html" class="icon-btn" aria-label="Account">
+        <i data-lucide="user" style="width:18px;height:18px;"></i>
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
+<!-- MOBILE MENU DRAWER -->
 <div class="mobile-menu">
   <a href="index.html">Home</a>
   <a href="menu.html">Menu</a>
@@ -38,126 +72,245 @@
   <a href="gallery.html">Gallery</a>
   <a href="reservation.html">Reservations</a>
   <a href="contact.html">Contact</a>
+  <a href="account.html">My Account &amp; Rewards</a>
 </div>
 
+<!-- PAGE HERO -->
 <section class="page-hero">
   <div class="container">
-    <p class="hero-eyebrow" style="color:var(--gold);">Order</p>
-    <h1>Checkout</h1>
+    <p class="hero-eyebrow">Seamless Gastronomy Checkout</p>
+    <h1>Complete Your Order</h1>
   </div>
 </section>
 
+<!-- MAIN CHECKOUT SECTION -->
 <section class="section-tight">
   <div class="container">
 
-    <div id="checkout-empty" class="empty-state" style="display:none;">
-      <p>Your cart is empty — add something delicious first.</p>
-      <a href="menu.html" class="btn btn-dark" style="margin-top:1.5rem;">Browse the Menu</a>
+    <div id="checkout-empty" class="empty-state" style="display:none;text-align:center;padding:3rem 1rem;">
+      <p style="font-size:1.1rem;margin-bottom:1rem;">Your dining cart is empty — add something delicious first.</p>
+      <a href="menu.html" class="btn btn-primary">Browse Signature Dishes</a>
     </div>
 
     <div id="checkout-content" class="cart-layout">
+      
+      <!-- CHECKOUT FORM -->
       <form id="checkout-form" novalidate>
-        <h3 style="margin-bottom:1rem;">Order Type</h3>
+        <h3 style="margin-bottom:1rem;">1. Select Fulfillment Type</h3>
         <div class="order-type-toggle">
-          <button type="button" data-type="delivery" class="active">Delivery</button>
-          <button type="button" data-type="pickup">Pickup</button>
+          <button type="button" data-type="delivery" class="active" id="type-delivery-btn">
+            <i data-lucide="truck" style="width:14px;height:14px;margin-right:4px;"></i> Home Delivery
+          </button>
+          <button type="button" data-type="pickup" id="type-pickup-btn">
+            <i data-lucide="store" style="width:14px;height:14px;margin-right:4px;"></i> Restaurant Pickup
+          </button>
         </div>
 
-        <h3 style="margin:2rem 0 1rem;">Your Details</h3>
+        <h3 style="margin:2rem 0 1rem;">2. Guest &amp; Delivery Details</h3>
         <div class="form-grid">
           <div class="field">
-            <label for="full_name">Full Name</label>
-            <input id="full_name" name="full_name" type="text" required />
+            <label for="full_name">Full Name *</label>
+            <input id="full_name" name="full_name" type="text" placeholder="e.g. Muhammad Yousaf" required />
             <p class="field-error" id="full_name-error"></p>
           </div>
+
           <div class="field">
-            <label for="phone">Phone Number</label>
-            <input id="phone" name="phone" type="tel" required />
+            <label for="phone">Phone Number *</label>
+            <input id="phone" name="phone" type="tel" placeholder="e.g. +92 300 0000000" required />
             <p class="field-error" id="phone-error"></p>
           </div>
+
           <div class="field full">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" required />
+            <label for="email">Email Address *</label>
+            <input id="email" name="email" type="email" placeholder="e.g. shahyousaf2004@gmail.com" required />
             <p class="field-error" id="email-error"></p>
           </div>
+
           <div class="field full" id="address-field">
-            <label for="address">Delivery Address</label>
-            <input id="address" name="address" type="text" />
+            <label for="address">Delivery Address *</label>
+            <input id="address" name="address" type="text" placeholder="House/Apartment #, Street, Area in Gujrat" />
             <p class="field-error" id="address-error"></p>
           </div>
-          <div class="field">
-            <label for="city">City</label>
-            <input id="city" name="city" type="text" />
+
+          <div class="field" id="city-field">
+            <label for="city">City *</label>
+            <input id="city" name="city" type="text" value="Gujrat" />
             <p class="field-error" id="city-error"></p>
           </div>
+
+          <div class="field">
+            <label for="preferred_time">Preferred Time</label>
+            <select id="preferred_time" name="preferred_time">
+              <option value="asap">Deliver as soon as prepared (35-45 mins)</option>
+              <option value="schedule_lunch">Lunch (12:30 PM - 2:00 PM)</option>
+              <option value="schedule_dinner">Dinner (7:30 PM - 9:00 PM)</option>
+              <option value="schedule_late">Late Night (10:00 PM - 11:30 PM)</option>
+            </select>
+          </div>
+
           <div class="field full">
-            <label for="notes">Additional Instructions</label>
-            <textarea id="notes" name="notes" placeholder="Optional"></textarea>
+            <label for="notes">Special Culinary Instructions (Optional)</label>
+            <textarea id="notes" name="notes" placeholder="Dietary preferences, gate codes, cutlery requirements..."></textarea>
           </div>
         </div>
 
-        <h3 style="margin:2rem 0 1rem;">Payment Method</h3>
+        <h3 style="margin:2.5rem 0 1rem;">3. Select Payment Method</h3>
         <div class="payment-options">
           <div class="payment-option selected" data-method="cod">
-            <input type="radio" name="payment_display" checked readonly /> Cash on Delivery
+            <input type="radio" name="payment_choice" value="cod" checked id="pay-cod" />
+            <label for="pay-cod" style="font-weight:700;cursor:pointer;flex-grow:1;">Cash on Delivery / Card at Doorstep</label>
           </div>
-          <div class="payment-detail">Pay in cash when your order arrives, or at pickup.</div>
+          <div class="payment-detail">Pay with cash or POS card machine upon receipt of your gourmet order.</div>
 
           <div class="payment-option" data-method="jazzcash">
-            <input type="radio" name="payment_display" readonly /> JazzCash
+            <input type="radio" name="payment_choice" value="jazzcash" id="pay-jazzcash" />
+            <label for="pay-jazzcash" style="font-weight:700;cursor:pointer;flex-grow:1;">JazzCash Mobile Wallet</label>
           </div>
-          <div class="payment-detail">You'll receive JazzCash payment instructions after placing the order. Live payment gateway integration is coming soon — your order is recorded with payment status "Pending" until then.</div>
+          <div class="payment-detail">Instant confirmation. Send payment to Veloura Merchant Till: <strong>0300 0000000</strong>.</div>
 
           <div class="payment-option" data-method="easypaisa">
-            <input type="radio" name="payment_display" readonly /> Easypaisa
+            <input type="radio" name="payment_choice" value="easypaisa" id="pay-easypaisa" />
+            <label for="pay-easypaisa" style="font-weight:700;cursor:pointer;flex-grow:1;">Easypaisa Mobile Account</label>
           </div>
-          <div class="payment-detail">You'll receive Easypaisa payment instructions after placing the order. Live payment gateway integration is coming soon — your order is recorded with payment status "Pending" until then.</div>
+          <div class="payment-detail">Instant confirmation. Send payment to Veloura Account: <strong>0300 0000000</strong>.</div>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:1rem;">Place Order</button>
+        <button type="submit" id="submit-order-btn" class="btn btn-primary" style="width:100%;padding:1.1rem;font-size:0.95rem;margin-top:1rem;">
+          Place Dining Order &rarr;
+        </button>
       </form>
 
-      <div class="summary-box">
-        <h3 style="margin-bottom:1.25rem;">Order Review</h3>
-        <div id="checkout-items"></div>
-        <div class="summary-row" style="margin-top:1rem;"><span>Subtotal</span><span id="checkout-subtotal">Rs 0</span></div>
-        <div class="summary-row"><span>Delivery Fee</span><span id="checkout-delivery">Rs 0</span></div>
-        <div class="summary-row total"><span>Total</span><span id="checkout-total">Rs 0</span></div>
-      </div>
-    </div>
+      <!-- ORDER REVIEW SUMMARY (FIXED TEXT OVERLAPPING ISSUES) -->
+      <div>
+        <div class="summary-box">
+          <h3>Order Review</h3>
+          
+          <div id="checkout-items" style="max-height:260px;overflow-y:auto;padding-right:0.5rem;margin-bottom:1rem;"></div>
 
-    <div id="order-confirmation" class="confirmation-box" style="display:none;">
-      <p class="hero-eyebrow" style="color:var(--gold);">Success</p>
-      <h1 style="font-size:2.4rem;">Order Placed Successfully</h1>
-      <hr class="rule" />
-      <p>Order #<strong id="confirm-order-number"></strong></p>
-      <div class="order-summary-list" id="confirm-items"></div>
-      <div class="summary-row total"><span>Total</span><span id="confirm-total"></span></div>
-      <div class="summary-row"><span>Payment Method</span><span id="confirm-payment"></span></div>
-      <div class="summary-row"><span>Status</span><span id="confirm-status"></span></div>
-      <a href="index.html" class="btn btn-dark" style="margin-top:1.5rem;">Back to Home</a>
+          <div class="summary-row">
+            <span class="label-text">Subtotal:</span>
+            <span id="checkout-subtotal" class="value-text">Rs 0</span>
+          </div>
+
+          <div class="summary-row discount-row" id="checkout-discount-row" style="display:none;">
+            <span class="label-text">Promo Discount:</span>
+            <span id="checkout-discount" class="value-text">-Rs 0</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="label-text">GST / Sales Tax (5%):</span>
+            <span id="checkout-tax" class="value-text">Rs 0</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="label-text">Delivery Fee:</span>
+            <span id="checkout-delivery" class="value-text">Rs 250</span>
+          </div>
+
+          <div class="summary-row total">
+            <span class="label-text">Total:</span>
+            <span id="checkout-total" class="value-text">Rs 0</span>
+          </div>
+
+          <div style="margin-top:1.5rem;padding:0.85rem;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);font-size:0.75rem;color:var(--text-muted);">
+            <div style="color:var(--gold-primary);font-weight:700;margin-bottom:0.25rem;">✨ Loyalty Points Reward:</div>
+            Earn <strong id="checkout-loyalty-earn" style="color:var(--text-primary);">0</strong> points on this order towards complimentary dishes!
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
 </section>
 
+<!-- MOCK WHATSAPP & EMAIL ORDER CONFIRMATION MODAL -->
+<div id="order-notification-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="modal-box" style="max-width:540px;">
+    <button type="button" class="modal-close-icon" aria-label="Close confirmation modal">&times;</button>
+    
+    <div style="text-align:center;margin-bottom:1.25rem;">
+      <div style="width:54px;height:54px;border-radius:50%;background:rgba(16,185,129,0.15);border:2px solid #10b981;color:#34d399;display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem;">
+        <i data-lucide="check" style="width:30px;height:30px;"></i>
+      </div>
+      <h2 style="font-size:1.85rem;margin-bottom:0.25rem;">Order Confirmed!</h2>
+      <p style="font-size:0.85rem;color:var(--text-muted);">Order <strong id="modal-order-id" style="color:var(--gold-primary);">#VEL-00000</strong> has been dispatched to our kitchen.</p>
+    </div>
+
+    <!-- Mock WhatsApp Card -->
+    <div class="whatsapp-card" style="margin-bottom:1.5rem;">
+      <div class="whatsapp-header">
+        <div class="whatsapp-avatar">V</div>
+        <div>
+          <div style="font-weight:700;font-size:0.85rem;">Veloura Fine Dining Concierge</div>
+          <div style="font-size:0.7rem;color:#8696a0;">Official WhatsApp Notification</div>
+        </div>
+      </div>
+      <div class="whatsapp-body">
+        <div class="whatsapp-bubble" id="whatsapp-message-bubble">
+          <!-- Populated by checkout.js -->
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;flex-direction:column;">
+      <a href="order-tracker.html" id="modal-track-order-btn" class="btn btn-primary" style="width:100%;">
+        <i data-lucide="compass" style="width:16px;height:16px;"></i> Track Live Status
+      </a>
+      <a href="index.html" class="btn btn-dark" style="width:100%;">
+        Return to Homepage
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><p class="logo">VELOURA</p><p>"Where Every Flavor Tells a Story."</p></div>
-      <div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
-      <div><h4>Guest</h4><ul><li><a href="reservation.html">Reservations</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
-      <div><h4>Follow</h4><div class="social-icons"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="TikTok">TT</a></div></div>
+      <div>
+        <p class="logo">VELOURA</p>
+        <p style="margin-top:0.75rem;font-size:0.85rem;">Fine Dining &amp; Curated Culinary Excellence.</p>
+        <p style="margin-top:0.5rem;font-size:0.82rem;color:var(--gold-primary);">Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guest Services</h4>
+        <ul>
+          <li><a href="reservation.html">Reservations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="account.html">My Account &amp; Rewards</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p style="font-size:0.85rem;color:var(--text-cream);">Ramtali, Gujrat, Punjab, Pakistan</p>
+        <p style="font-size:0.85rem;margin:0.25rem 0;">Phone: <a href="tel:+923000000000" style="color:var(--gold-primary);font-weight:700;">+92 300 0000000</a></p>
+        <p style="font-size:0.85rem;">Email: <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);">shahyousaf2004@gmail.com</a></p>
+      </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Veloura. All rights reserved.</span>
-      <span>Gujrat, Ramtalai, Pakistan &bull; Phone: <a href="tel:03285733872" style="color:var(--gold);">03285733872</a> &bull; Email: <a href="mailto:shahousaf2004@gmail.com" style="color:var(--gold);">shahousaf2004@gmail.com</a></span>
+      <span>&copy; 2026 Veloura Luxury Dining. All rights reserved.</span>
+      <span>Ramtali, Gujrat, Punjab, Pakistan</span>
     </div>
   </div>
 </footer>
 
 <script src="js/supabase-client.js"></script>
+<script src="js/data-store.js"></script>
 <script src="js/main.js"></script>
 <script src="js/checkout.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
 </body>
 </html>

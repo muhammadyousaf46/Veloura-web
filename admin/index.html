@@ -6,7 +6,10 @@
 <title>Admin Overview — Veloura</title>
 <meta name="robots" content="noindex, nofollow" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="../css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -14,50 +17,121 @@
 
 <div id="admin-guard" class="admin-guard-block">
   <div id="admin-guard-inner">
-    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
-    <h2>Checking access&hellip;</h2>
-    <p>Verifying administrator permissions.</p>
+    <h2>Verifying access...</h2>
   </div>
 </div>
 
 <div class="admin-shell" style="display:none;">
-<aside class="admin-sidebar">
-  <a href="index.html" class="logo">VELOURA</a>
-  <nav class="admin-nav">
-    <a href="index.html" aria-current="page">Overview</a>
-    <a href="menu-management.html">Menu Management</a>
-    <a href="categories.html">Categories</a>
-    <a href="deals.html">Deals</a>
-    <a href="orders.html">Orders</a>
-    <a href="reservations.html">Reservations</a>
-    <a href="customers.html">Customers</a>
-    <a href="messages.html">Contact Messages</a>
-    <a href="newsletter.html">Newsletter</a>
-    <a href="#" class="signout" data-logout="admin">Sign Out</a>
-    <a href="../index.html" style="margin-top:0.5rem;">&larr; Back to Site</a>
-  </nav>
-</aside>
+  <aside class="admin-sidebar">
+    <div>
+      <a href="../index.html" class="logo">VELOURA</a>
+      <div style="font-size:0.75rem;color:var(--gold-primary);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.25rem;">Management Console</div>
+      
+      <nav class="admin-nav">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="menu-management.html">Menu &amp; Stock Toggle</a>
+        <a href="orders.html">Live Orders</a>
+        <a href="reservations.html">Reservations</a>
+        <a href="../index.html">&larr; Back to Site</a>
+      </nav>
+    </div>
+
+    <div>
+      <a href="#" class="btn btn-outline" style="width:100%;font-size:0.72rem;padding:0.5rem;" data-logout="admin">Sign Out</a>
+    </div>
+  </aside>
 
   <main class="admin-main">
-    <div class="admin-topbar">
-      <h1 style="font-size:1.8rem;">Overview</h1>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <h1 style="font-size:2rem;color:var(--text-primary);">Dashboard Overview</h1>
+        <p style="font-size:0.85rem;color:var(--text-muted);">Real-time performance, active culinary orders, and table bookings for Veloura Gujrat.</p>
+      </div>
+      <div>
+        <a href="menu-management.html" class="btn btn-primary">
+          <i data-lucide="utensils" style="width:15px;height:15px;"></i> Manage Menu &amp; Stock
+        </a>
+      </div>
     </div>
+
     <div class="stat-grid" id="stat-grid">
-      <div class="stat-card"><div class="stat-value skeleton" style="height:2rem;width:60px;"></div><div class="stat-label">Total Orders</div></div>
-      <div class="stat-card"><div class="stat-value skeleton" style="height:2rem;width:60px;"></div><div class="stat-label">Today's Orders</div></div>
-      <div class="stat-card"><div class="stat-value skeleton" style="height:2rem;width:60px;"></div><div class="stat-label">Total Customers</div></div>
-      <div class="stat-card"><div class="stat-value skeleton" style="height:2rem;width:80px;"></div><div class="stat-label">Total Revenue</div></div>
-      <div class="stat-card"><div class="stat-value skeleton" style="height:2rem;width:60px;"></div><div class="stat-label">Pending Orders</div></div>
-      <div class="stat-card"><div class="stat-value skeleton" style="height:2rem;width:60px;"></div><div class="stat-label">Pending Reservations</div></div>
+      <div class="stat-card">
+        <div class="stat-value skeleton" style="height:2.2rem;width:60px;"></div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value skeleton" style="height:2.2rem;width:80px;"></div>
+        <div class="stat-label">Today's Kitchen Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value skeleton" style="height:2.2rem;width:60px;"></div>
+        <div class="stat-label">Menu Dishes Active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value skeleton" style="height:2.2rem;width:100px;"></div>
+        <div class="stat-label">Total Gross Revenue</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value skeleton" style="height:2.2rem;width:60px;"></div>
+        <div class="stat-label">Pending Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value skeleton" style="height:2.2rem;width:60px;"></div>
+        <div class="stat-label">Pending Reservations</div>
+      </div>
     </div>
-    <p style="color:var(--stone);font-size:0.9rem;">Use the sidebar to manage menu items, orders, reservations, customers, messages, and newsletter subscribers.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem;">
+      <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-sm);padding:1.5rem;">
+        <h3 style="font-size:1.25rem;color:var(--gold-primary);margin-bottom:0.75rem;">Direct Management Links</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem;">Navigate to live management sections below:</p>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+          <a href="menu-management.html" class="btn btn-outline" style="justify-content:flex-start;">
+            <i data-lucide="toggle-right" style="width:16px;height:16px;"></i> Menu Items &amp; Stock Availability Toggles
+          </a>
+          <a href="orders.html" class="btn btn-outline" style="justify-content:flex-start;">
+            <i data-lucide="receipt" style="width:16px;height:16px;"></i> Live Orders &amp; Delivery Tracker Updates
+          </a>
+          <a href="reservations.html" class="btn btn-outline" style="justify-content:flex-start;">
+            <i data-lucide="calendar" style="width:16px;height:16px;"></i> Table Reservations &amp; Slot Approvals
+          </a>
+        </div>
+      </div>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-sm);padding:1.5rem;">
+        <h3 style="font-size:1.25rem;color:var(--gold-primary);margin-bottom:0.75rem;">Restaurant Operating Status</h3>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;font-size:0.85rem;">
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-subtle);padding-bottom:0.5rem;">
+            <span style="color:var(--text-muted);">Current Timings:</span>
+            <strong style="color:var(--text-primary);">10:00 AM &ndash; 12:00 AM (Midnight)</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-subtle);padding-bottom:0.5rem;">
+            <span style="color:var(--text-muted);">Physical Location:</span>
+            <strong style="color:var(--text-primary);">Ramtali, Gujrat, Punjab, Pakistan</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-subtle);padding-bottom:0.5rem;">
+            <span style="color:var(--text-muted);">Concierge Phone:</span>
+            <strong style="color:var(--gold-primary);">+92 300 0000000</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="color:var(--text-muted);">Management Email:</span>
+            <strong style="color:var(--gold-primary);">shahyousaf2004@gmail.com</strong>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </main>
 </div>
 
+<div class="toast"></div>
+
 <script src="../js/supabase-client.js"></script>
-<script src="../js/auth.js"></script>
+<script src="../js/data-store.js"></script>
 <script src="js/admin-guard.js"></script>
 <script src="js/overview.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
 </body>
 </html>

@@ -1,99 +1,113 @@
 // ==========================================================================
-// VELOURA — Gallery: category filter + lightbox
+// VELOURA — Visual Gallery Controller with Unsplash Photography & Lightbox
 // ==========================================================================
 
-const GALLERY_ITEMS = [
-  { name: "Signature Plating", category: "Food" },
-  { name: "Herb-Crusted Rack", category: "Food" },
-  { name: "Dining Room", category: "Interior" },
-  { name: "Bar Area", category: "Interior" },
-  { name: "Head Chef at Work", category: "Chef" },
-  { name: "Kitchen Pass", category: "Chef" },
-  { name: "Private Dinner", category: "Events" },
-  { name: "Anniversary Table", category: "Events" },
-  { name: "Evening Ambiance", category: "Dining" },
-  { name: "Window Seating", category: "Dining" },
-  { name: "Dessert Course", category: "Food" },
-  { name: "Entrance", category: "Interior" },
-];
-// IMAGE PLACEHOLDER: replace this array-driven grid with real photos —
-// add an `image: "images/gallery/xxx.jpg"` field per item and render an
-// <img> instead of the text label in galleryItemTemplate() below.
+let activeGalleryCategory = "All";
+let currentLightboxIdx = 0;
+let displayedGalleryItems = [];
 
-let currentFilter = "All";
-let currentIndex = 0;
-let filteredItems = [...GALLERY_ITEMS];
+document.addEventListener("DOMContentLoaded", initGalleryPage);
 
-document.addEventListener("DOMContentLoaded", initGallery);
+function initGalleryPage() {
+  const collection = window.VelouraData?.GALLERY_COLLECTION || [];
+  displayedGalleryItems = collection;
 
-function initGallery() {
-  const grid = document.querySelector("#gallery-grid");
-  if (!grid) return;
+  renderGalleryChips(collection);
+  renderGalleryGrid();
+}
 
-  const categories = ["All", ...new Set(GALLERY_ITEMS.map((i) => i.category))];
-  const chipWrap = document.querySelector("#gallery-chips");
-  chipWrap.innerHTML = categories
-    .map((c) => `<button class="chip ${c === currentFilter ? "active" : ""}" data-cat="${c}">${c}</button>`)
+function renderGalleryChips(collection) {
+  const container = document.querySelector("#gallery-chips");
+  if (!container) return;
+
+  const categories = ["All", ...new Set(collection.map((item) => item.category))];
+
+  container.innerHTML = categories
+    .map(
+      (cat) => `
+    <button class="chip ${cat === activeGalleryCategory ? "active" : ""}" onclick="filterGallery('${cat}')">
+      <span>${cat}</span>
+    </button>
+  `
+    )
     .join("");
+}
 
-  chipWrap.querySelectorAll(".chip").forEach((chip) => {
-    chip.addEventListener("click", () => {
-      currentFilter = chip.dataset.cat;
-      chipWrap.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
-      chip.classList.add("active");
-      renderGalleryGrid();
-    });
-  });
+window.filterGallery = function (cat) {
+  activeGalleryCategory = cat;
+  const collection = window.VelouraData?.GALLERY_COLLECTION || [];
+
+  renderGalleryChips(collection);
+
+  if (cat === "All") {
+    displayedGalleryItems = collection;
+  } else {
+    displayedGalleryItems = collection.filter((i) => i.category === cat);
+  }
 
   renderGalleryGrid();
-  initLightbox();
-}
+};
 
 function renderGalleryGrid() {
   const grid = document.querySelector("#gallery-grid");
-  filteredItems = currentFilter === "All" ? [...GALLERY_ITEMS] : GALLERY_ITEMS.filter((i) => i.category === currentFilter);
+  if (!grid) return;
 
-  grid.innerHTML = filteredItems
-    .map((item, idx) => `<div class="gallery-item reveal is-visible" data-index="${idx}"><span>${item.name}</span></div>`)
+  grid.innerHTML = displayedGalleryItems
+    .map(
+      (item, index) => `
+    <div class="gallery-card" onclick="openLightbox(${index})" title="${item.name}">
+      <img src="${item.image}" alt="${item.name}" loading="lazy" />
+      <div class="gallery-overlay">
+        <span class="badge badge-chef" style="align-self:flex-start;margin-bottom:0.4rem;">${item.category}</span>
+        <h4 style="font-size:1.15rem;color:var(--text-primary);">${item.name}</h4>
+        <p style="font-size:0.75rem;color:var(--gold-light);">${item.caption}</p>
+      </div>
+    </div>
+  `
+    )
     .join("");
 
-  grid.querySelectorAll(".gallery-item").forEach((el) => {
-    el.addEventListener("click", () => openLightbox(Number(el.dataset.index)));
-  });
+  if (window.lucide) window.lucide.createIcons();
 }
 
-function initLightbox() {
-  const lightbox = document.querySelector("#lightbox");
-  document.querySelector("#lightbox-close").addEventListener("click", closeLightbox);
-  document.querySelector("#lightbox-prev").addEventListener("click", () => navigateLightbox(-1));
-  document.querySelector("#lightbox-next").addEventListener("click", () => navigateLightbox(1));
-  lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
-  document.addEventListener("keydown", (e) => {
-    if (!lightbox.classList.contains("open")) return;
-    if (e.key === "Escape") closeLightbox();
-    if (e.key === "ArrowRight") navigateLightbox(1);
-    if (e.key === "ArrowLeft") navigateLightbox(-1);
-  });
-}
+window.openLightbox = function (index) {
+  currentLightboxIdx = index;
+  const modal = document.querySelector("#lightbox-modal");
+  const imgEl = document.querySelector("#lightbox-img");
+  const titleEl = document.querySelector("#lightbox-title");
+  const captionEl = document.querySelector("#lightbox-caption");
 
-function openLightbox(index) {
-  currentIndex = index;
-  updateLightboxContent();
-  document.querySelector("#lightbox").classList.add("open");
+  if (!modal || !displayedGalleryItems[index]) return;
+
+  const item = displayedGalleryItems[index];
+  if (imgEl) imgEl.src = item.image;
+  if (titleEl) titleEl.textContent = item.name;
+  if (captionEl) captionEl.textContent = item.caption;
+
+  modal.classList.add("show");
   document.body.style.overflow = "hidden";
-}
+  if (window.lucide) window.lucide.createIcons();
+};
 
-function closeLightbox() {
-  document.querySelector("#lightbox").classList.remove("open");
+window.closeLightbox = function () {
+  const modal = document.querySelector("#lightbox-modal");
+  if (modal) modal.classList.remove("show");
   document.body.style.overflow = "";
-}
+};
 
-function navigateLightbox(delta) {
-  currentIndex = (currentIndex + delta + filteredItems.length) % filteredItems.length;
-  updateLightboxContent();
-}
+window.nextLightboxImage = function () {
+  currentLightboxIdx = (currentLightboxIdx + 1) % displayedGalleryItems.length;
+  openLightbox(currentLightboxIdx);
+};
 
-function updateLightboxContent() {
-  const item = filteredItems[currentIndex];
-  document.querySelector("#lightbox-caption").textContent = `${item.name} — ${item.category}`;
-}
+window.prevLightboxImage = function () {
+  currentLightboxIdx = (currentLightboxIdx - 1 + displayedGalleryItems.length) % displayedGalleryItems.length;
+  openLightbox(currentLightboxIdx);
+};
+
+// Close on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowRight") nextLightboxImage();
+  if (e.key === "ArrowLeft") prevLightboxImage();
+});

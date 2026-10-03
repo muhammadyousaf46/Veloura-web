@@ -3,86 +3,287 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Reservations — Veloura</title>
-<meta name="description" content="Reserve your table at Veloura." />
+<title>Table Reservations — Veloura Luxury Dining</title>
+<meta name="description" content="Reserve an exquisite dining table at Veloura. Choose date, guest count, and seating area in Ramtali, Gujrat." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
+<!-- TOP ANNOUNCEMENT BAR -->
+<div class="top-announcement-bar">
+  <div class="top-bar-left">
+    <span class="live-status-pill"><span class="pulse-dot"></span> Open Today</span>
+    <span>Opening Hours: <strong>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
+  </div>
+  <div class="top-bar-right">
+    <a href="tel:+923000000000" class="phone-quick-link">
+      <i data-lucide="phone" style="width:13px;height:13px;"></i>
+      <span>+92 300 0000000</span>
+    </a>
+    <a href="account.html" class="role-badge-btn">
+      <i data-lucide="user-check" style="width:13px;height:13px;"></i>
+      <span id="role-display-text">Role: Customer</span>
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
 <header class="navbar">
-  <a href="index.html" class="logo">VELOURA</a>
-  <nav aria-label="Primary">
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="menu.html">Menu</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="reservation.html" aria-current="page">Reservations</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-  <div class="nav-actions">
-    <a href="cart.html" class="icon-btn" aria-label="Cart">&#128717;<span class="cart-count">0</span></a>
-    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
-    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav-container">
+    <a href="index.html" class="logo">VELOURA</a>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html" aria-current="page" class="active">Reservations</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="cart.html" class="icon-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-count">0</span>
+      </a>
+      <a href="account.html" class="icon-btn" aria-label="Account">
+        <i data-lucide="user" style="width:18px;height:18px;"></i>
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
+<!-- MOBILE MENU DRAWER -->
 <div class="mobile-menu">
   <a href="index.html">Home</a>
   <a href="menu.html">Menu</a>
   <a href="about.html">About</a>
   <a href="gallery.html">Gallery</a>
-  <a href="reservation.html">Reservations</a>
+  <a href="reservation.html" class="active">Reservations</a>
   <a href="contact.html">Contact</a>
+  <a href="account.html">My Account &amp; Rewards</a>
 </div>
 
+<!-- PAGE HERO -->
 <section class="page-hero">
   <div class="container">
-    <p class="hero-eyebrow" style="color:var(--gold);">Reservations</p>
-    <h1>Book Your Table</h1>
-    <p>We recommend booking at least 48 hours in advance for weekend evenings.</p>
+    <p class="hero-eyebrow">Bespoke Hospitality</p>
+    <h1>Reserve Your Table</h1>
+    <p style="margin:0 auto;max-width:540px;">Experience culinary artistry in an intimate candlelit setting. We recommend reserving at least 24 hours in advance.</p>
   </div>
 </section>
 
+<!-- RESERVATION INTERACTIVE BOOKING FORM -->
 <section class="section-tight">
-  <div class="container" style="max-width:640px;">
-    <form id="reservation-form" novalidate>
-      <div class="form-grid">
-        <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" required /></div>
-        <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" required /></div>
-        <div class="field full"><label for="email">Email</label><input id="email" name="email" type="email" /></div>
-        <div class="field"><label for="reservation_date">Date</label><input id="reservation_date" name="reservation_date" type="date" required /></div>
-        <div class="field"><label for="reservation_time">Time</label><input id="reservation_time" name="reservation_time" type="time" required /></div>
-        <div class="field"><label for="guests">Number of Guests</label><input id="guests" name="guests" type="number" min="1" max="20" value="2" required /></div>
-        <div class="field full"><label for="special_request">Special Request</label><textarea id="special_request" name="special_request" placeholder="Anniversary, dietary needs, seating preference..."></textarea></div>
+  <div class="container" style="max-width:760px;">
+
+    <!-- OPERATING HOURS & SEATING NOTICE -->
+    <div style="margin-bottom:1.5rem;padding:0.85rem 1.25rem;background:var(--bg-surface);border:1px solid var(--border-gold);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;font-size:0.82rem;">
+      <div style="display:flex;align-items:center;gap:0.5rem;color:var(--text-cream);">
+        <i data-lucide="clock" style="width:16px;height:16px;color:var(--gold-primary);"></i>
+        <span>Opening Hours: <strong>Monday to Sunday: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
       </div>
-      <button type="submit" class="btn btn-primary" style="margin-top:1.5rem;">Request Reservation</button>
-      <p class="form-status" role="status" style="margin-top:0.75rem;"></p>
-    </form>
+      <div style="color:var(--gold-primary);font-weight:700;">
+        Ramtali, Gujrat &bull; Tel: <a href="tel:+923000000000" style="text-decoration:underline;">+92 300 0000000</a>
+      </div>
+    </div>
+    
+    <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-md);padding:2.5rem;box-shadow:var(--shadow-luxury);">
+      
+      <form id="reservation-form" novalidate>
+        
+        <!-- STEP 1: PARTY SIZE -->
+        <div style="margin-bottom:2rem;">
+          <label style="font-size:0.82rem;font-weight:700;text-transform:uppercase;color:var(--gold-primary);display:block;margin-bottom:0.75rem;letter-spacing:0.08em;">
+            1. Number of Guests
+          </label>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;" id="guest-pills">
+            <button type="button" class="chip active" data-guests="2">2 Guests</button>
+            <button type="button" class="chip" data-guests="4">4 Guests</button>
+            <button type="button" class="chip" data-guests="6">6 Guests</button>
+            <button type="button" class="chip" data-guests="8">8 Guests</button>
+            <button type="button" class="chip" data-guests="12">12+ Party</button>
+          </div>
+          <input type="hidden" id="selected-guests" value="2" />
+        </div>
+
+        <!-- STEP 2: DATE & TIME SLOTS -->
+        <div style="margin-bottom:2rem;">
+          <div class="form-grid">
+            <div class="field">
+              <label for="reservation_date">2. Reservation Date *</label>
+              <input id="reservation_date" name="reservation_date" type="date" required />
+            </div>
+
+            <div class="field">
+              <label for="seating_zone">3. Seating Area</label>
+              <select id="seating_zone" name="seating_zone">
+                <option value="Main Dining Hall">Royal Main Dining Hall (Chandeliers)</option>
+                <option value="Candlelit Balcony">Romantic Candlelit Balcony</option>
+                <option value="Chefs Table">Chef's Table (Kitchen View)</option>
+                <option value="VIP Suite">VIP Executive Private Suite</option>
+                <option value="Outdoor Terrace">Starlit Outdoor Terrace</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Time Slots -->
+          <div style="margin-top:1.25rem;">
+            <label style="font-size:0.82rem;font-weight:700;text-transform:uppercase;color:var(--gold-primary);display:block;margin-bottom:0.75rem;letter-spacing:0.08em;">
+              4. Preferred Dining Time Slot *
+            </label>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;" id="time-slot-pills">
+              <button type="button" class="chip" data-time="12:00">12:00 PM</button>
+              <button type="button" class="chip" data-time="13:30">1:30 PM</button>
+              <button type="button" class="chip" data-time="15:00">3:00 PM</button>
+              <button type="button" class="chip" data-time="18:00">6:00 PM</button>
+              <button type="button" class="chip active" data-time="19:30">7:30 PM</button>
+              <button type="button" class="chip" data-time="20:30">8:30 PM</button>
+              <button type="button" class="chip" data-time="21:45">9:45 PM</button>
+              <button type="button" class="chip" data-time="23:00">11:00 PM</button>
+            </div>
+            <input type="hidden" id="selected-time" value="19:30" />
+          </div>
+        </div>
+
+        <!-- STEP 3: CONTACT DETAILS -->
+        <div style="margin-bottom:2rem;">
+          <label style="font-size:0.82rem;font-weight:700;text-transform:uppercase;color:var(--gold-primary);display:block;margin-bottom:0.75rem;letter-spacing:0.08em;">
+            5. Primary Guest Contact
+          </label>
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">Full Name *</label>
+              <input id="name" name="name" type="text" placeholder="e.g. Muhammad Yousaf" required />
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone Number *</label>
+              <input id="phone" name="phone" type="tel" placeholder="e.g. +92 300 0000000" required />
+            </div>
+
+            <div class="field full">
+              <label for="email">Email Address *</label>
+              <input id="email" name="email" type="email" placeholder="e.g. shahyousaf2004@gmail.com" required />
+            </div>
+
+            <div class="field full">
+              <label for="special_request">Special Occasion or Dietary Preferences</label>
+              <textarea id="special_request" name="special_request" placeholder="Anniversary, birthday cake arrangement, quiet seating, nut allergy..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="reserve-btn" class="btn btn-primary" style="width:100%;padding:1.1rem;font-size:0.92rem;">
+          <i data-lucide="calendar-check" style="width:18px;height:18px;"></i>
+          Confirm Table Reservation &rarr;
+        </button>
+
+        <p class="form-status" role="status" style="margin-top:1rem;text-align:center;font-size:0.85rem;"></p>
+      </form>
+
+    </div>
+
   </div>
 </section>
 
+<!-- MOCK WHATSAPP / EMAIL RESERVATION CONFIRMATION MODAL -->
+<div id="reservation-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="modal-box" style="max-width:540px;">
+    <button type="button" class="modal-close-icon" aria-label="Close reservation modal">&times;</button>
+    <div style="text-align:center;margin-bottom:1.25rem;">
+      <div style="width:54px;height:54px;border-radius:50%;background:rgba(16,185,129,0.15);border:2px solid #10b981;color:#34d399;display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem;">
+        <i data-lucide="check" style="width:28px;height:28px;"></i>
+      </div>
+      <h2 style="font-size:1.8rem;margin-bottom:0.25rem;">Table Reserved!</h2>
+      <p style="font-size:0.85rem;color:var(--text-muted);">Reservation <strong id="res-confirm-id" style="color:var(--gold-primary);">#RES-106</strong> has been confirmed.</p>
+    </div>
+
+    <!-- WhatsApp Confirmation Preview -->
+    <div class="whatsapp-card" style="margin-bottom:1.5rem;">
+      <div class="whatsapp-header">
+        <div class="whatsapp-avatar">V</div>
+        <div>
+          <div style="font-weight:700;font-size:0.85rem;">Veloura Concierge &amp; Host</div>
+          <div style="font-size:0.7rem;color:#8696a0;">Official Booking Confirmation</div>
+        </div>
+      </div>
+      <div class="whatsapp-body">
+        <div class="whatsapp-bubble" id="res-whatsapp-bubble">
+          <!-- Populated by reservation.js -->
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;flex-direction:column;">
+      <a href="menu.html" class="btn btn-primary" style="width:100%;">
+        Pre-select Dishes from Menu
+      </a>
+      <a href="index.html" class="btn btn-dark" style="width:100%;">
+        Return to Homepage
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><p class="logo">VELOURA</p><p>"Where Every Flavor Tells a Story."</p></div>
-      <div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
-      <div><h4>Guest</h4><ul><li><a href="reservation.html">Reservations</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
-      <div><h4>Follow</h4><div class="social-icons"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="TikTok">TT</a></div></div>
+      <div>
+        <p class="logo">VELOURA</p>
+        <p style="margin-top:0.75rem;font-size:0.85rem;">Fine Dining &amp; Curated Culinary Excellence.</p>
+        <p style="margin-top:0.5rem;font-size:0.82rem;color:var(--gold-primary);">Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guest Services</h4>
+        <ul>
+          <li><a href="reservation.html">Table Reservations</a></li>
+          <li><a href="cart.html">View Dining Cart</a></li>
+          <li><a href="account.html">My Account &amp; Rewards</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Concierge</h4>
+        <p style="color:var(--text-cream);font-size:0.85rem;">Ramtali, Gujrat, Punjab, Pakistan</p>
+        <p style="font-size:0.85rem;margin:0.25rem 0;">Phone: <a href="tel:+923000000000" style="color:var(--gold-primary);font-weight:700;">+92 300 0000000</a></p>
+        <p style="font-size:0.85rem;">Email: <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);">shahyousaf2004@gmail.com</a></p>
+      </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Veloura. All rights reserved.</span>
-      <span>Gujrat, Ramtalai, Pakistan &bull; Phone: <a href="tel:03285733872" style="color:var(--gold);">03285733872</a> &bull; Email: <a href="mailto:shahousaf2004@gmail.com" style="color:var(--gold);">shahousaf2004@gmail.com</a></span>
+      <span>&copy; 2026 Veloura Luxury Dining. All rights reserved.</span>
+      <span>Ramtali, Gujrat, Punjab, Pakistan</span>
     </div>
   </div>
 </footer>
 
 <script src="js/supabase-client.js"></script>
+<script src="js/data-store.js"></script>
 <script src="js/main.js"></script>
 <script src="js/reservation.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
 </body>
 </html>

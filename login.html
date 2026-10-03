@@ -3,78 +3,137 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Login — Veloura</title>
-<meta name="description" content="Log in to your Veloura account." />
+<title>Login — Veloura Luxury Dining</title>
+<meta name="description" content="Sign in to your Veloura patron account to track orders and manage loyalty points." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
+<!-- TOP ANNOUNCEMENT BAR -->
+<div class="top-announcement-bar">
+  <div class="top-bar-left">
+    <span class="live-status-pill"><span class="pulse-dot"></span> Open Today</span>
+    <span>Opening Hours: <strong>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
+  </div>
+  <div class="top-bar-right">
+    <a href="tel:+923000000000" class="phone-quick-link">
+      <i data-lucide="phone" style="width:13px;height:13px;"></i>
+      <span>+92 300 0000000</span>
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
 <header class="navbar">
-  <a href="index.html" class="logo">VELOURA</a>
-  <nav aria-label="Primary">
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="menu.html">Menu</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="reservation.html">Reservations</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-  <div class="nav-actions">
-    <a href="cart.html" class="icon-btn" aria-label="Cart">&#128717;<span class="cart-count">0</span></a>
-    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav-container">
+    <a href="index.html" class="logo">VELOURA</a>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservations</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="cart.html" class="icon-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-count">0</span>
+      </a>
+      <a href="account.html" class="icon-btn" aria-label="Account" style="border-color:var(--gold-primary);">
+        <i data-lucide="user" style="width:18px;height:18px;color:var(--gold-primary);"></i>
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
-<div class="mobile-menu">
-  <a href="index.html">Home</a>
-  <a href="menu.html">Menu</a>
-  <a href="about.html">About</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="reservation.html">Reservations</a>
-  <a href="contact.html">Contact</a>
-</div>
-
-<section class="section auth-card" style="margin-top:5rem;">
-  <div class="container" style="max-width:420px;">
-    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
-    <h1 style="text-align:center;font-size:2.2rem;margin-bottom:0.5rem;">Welcome Back</h1>
-    <p style="text-align:center;margin:0 auto 2rem;">Log in to track orders and manage your reservations.</p>
-
-    <form id="login-form" novalidate>
-      <div class="field" style="margin-bottom:1rem;">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required />
+<section class="section" style="padding-top:4rem;">
+  <div class="container" style="max-width:440px;">
+    
+    <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-md);padding:2.5rem;box-shadow:var(--shadow-luxury);">
+      <div style="text-align:center;margin-bottom:1.5rem;">
+        <p class="hero-eyebrow">Epicurean Access</p>
+        <h1 style="font-size:2rem;margin-bottom:0.4rem;">Welcome Back</h1>
+        <p style="font-size:0.85rem;color:var(--text-muted);">Sign in to track live orders and manage your reservations.</p>
       </div>
-      <div class="field" style="margin-bottom:0.5rem;">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required />
-      </div>
-      <p style="text-align:right;margin-bottom:1rem;">
-        <a href="#" id="forgot-password-link" style="font-size:0.85rem;color:var(--stone);text-decoration:underline;">Forgot password?</a>
-      </p>
-      <button type="submit" class="btn btn-primary">Log In</button>
-      <p class="form-status" role="status" style="text-align:center;margin-top:0.75rem;"></p>
-    </form>
 
-    <p class="auth-switch">Don't have an account? <a href="signup.html">Sign up</a></p>
+      <!-- Quick Role Selection for Demonstration -->
+      <div style="background:var(--bg-surface);border:1px dashed var(--border-gold);border-radius:var(--radius-sm);padding:0.85rem;margin-bottom:1.5rem;text-align:center;">
+        <span style="font-size:0.75rem;text-transform:uppercase;color:var(--gold-primary);font-weight:700;display:block;margin-bottom:0.4rem;">
+          Fast Demo Role Sign-in:
+        </span>
+        <div style="display:flex;gap:0.4rem;justify-content:center;">
+          <button type="button" class="btn btn-dark" style="font-size:0.7rem;padding:0.4rem 0.65rem;" onclick="quickDemoLogin('admin')">Admin</button>
+          <button type="button" class="btn btn-primary" style="font-size:0.7rem;padding:0.4rem 0.65rem;" onclick="quickDemoLogin('registered')">Patron</button>
+          <button type="button" class="btn btn-outline" style="font-size:0.7rem;padding:0.4rem 0.65rem;" onclick="quickDemoLogin('guest')">Guest</button>
+        </div>
+      </div>
+
+      <form id="login-form" novalidate>
+        <div class="field" style="margin-bottom:1rem;">
+          <label for="email">Email Address</label>
+          <input id="email" name="email" type="email" value="shahyousaf2004@gmail.com" required />
+        </div>
+        <div class="field" style="margin-bottom:0.5rem;">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" value="veloura123" required />
+        </div>
+        
+        <p style="text-align:right;margin-bottom:1.25rem;">
+          <a href="#" id="forgot-password-link" style="font-size:0.82rem;color:var(--gold-primary);text-decoration:underline;">Forgot password?</a>
+        </p>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;padding:0.85rem;">Sign In</button>
+        <p class="form-status" role="status" style="text-align:center;margin-top:0.75rem;font-size:0.85rem;"></p>
+      </form>
+
+      <div style="text-align:center;margin-top:1.5rem;border-top:1px solid var(--border-subtle);padding-top:1rem;font-size:0.85rem;color:var(--text-muted);">
+        Don't have an account? <a href="signup.html" style="color:var(--gold-primary);font-weight:700;text-decoration:underline;">Create Account</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-bottom" style="border-top:none;justify-content:center;">
-      <span>&copy; 2026 Veloura. All rights reserved.</span>
+      <span>&copy; 2026 Veloura Luxury Dining. Ramtali, Gujrat, Punjab, Pakistan</span>
     </div>
   </div>
 </footer>
 
 <script src="js/supabase-client.js"></script>
+<script src="js/data-store.js"></script>
 <script src="js/main.js"></script>
 <script src="js/auth.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+
+  window.quickDemoLogin = function(role) {
+    if (window.VelouraData?.setCurrentRole) {
+      window.VelouraData.setCurrentRole(role);
+    }
+    if (role === 'admin') {
+      window.location.href = "admin/index.html";
+    } else {
+      window.location.href = "account.html";
+    }
+  };
+</script>
 </body>
 </html>

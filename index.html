@@ -3,390 +3,738 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Veloura — Luxury Dining & Curated Gastronomy</title>
-<meta name="description" content="Discover Veloura's signature dishes, handcrafted by master chefs with artisanal ingredients. Explore our curated menu and reserve your table." />
+<title>VELOURA — Luxury Dining & Curated Gastronomy | Gujrat, Pakistan</title>
+<meta name="description" content="Discover Veloura — where artisanal ingredients meet master culinary art. Savor prime Wagyu cuts, fresh seafood, and decadent desserts in Ramtali, Gujrat." />
 
-<!-- Tailwind CSS CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
-<!-- Lucide Icons -->
-<script src="https://unpkg.com/lucide@latest"></script>
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- Main Luxury Stylesheet (Warm Charcoal, Amber & Imperial Gold) -->
+<link rel="stylesheet" href="css/style.css" />
+
 <!-- Supabase JS Client CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        brand: {
-          gold: '#D4AF37',
-          goldHover: '#C5A028',
-          goldLight: '#F3E5AB',
-          goldDark: '#997A15',
-          dark: '#0D0D0D',
-          darker: '#070707',
-          card: '#161616',
-          cardHover: '#1c1b18',
-          cream: '#F9F6F0',
-          muted: '#A3A3A3',
-          border: '#2A2A2A',
-          borderGold: 'rgba(212, 175, 55, 0.35)'
-        }
-      },
-      fontFamily: {
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans: ['Manrope', 'sans-serif'],
-      }
-    }
-  }
-}
-</script>
-
-<style>
-  /* Glassmorphism navigation & surfaces */
-  .glass-nav { 
-    background: rgba(13, 13, 13, 0.88); 
-    backdrop-filter: blur(16px); 
-    -webkit-backdrop-filter: blur(16px);
-  }
-  .glass-card {
-    background: rgba(22, 22, 22, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  /* Custom luxury scrollbar for horizontal category scrolling */
-  .custom-scrollbar::-webkit-scrollbar { height: 4px; }
-  .custom-scrollbar::-webkit-scrollbar-track { background: #161616; border-radius: 4px; }
-  .custom-scrollbar::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #F3E5AB; }
-
-  /* Animated Card entrance */
-  @keyframes cardEntrance {
-    0% {
-      opacity: 0;
-      transform: translateY(22px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .card-animate {
-    animation: cardEntrance 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  /* Shimmer animation for skeleton loaders */
-  @keyframes shimmerWave {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-  .skeleton-shimmer {
-    background: linear-gradient(90deg, #181818 25%, #252422 50%, #181818 75%);
-    background-size: 200% 100%;
-    animation: shimmerWave 1.8s infinite ease-in-out;
-  }
-
-  /* Pulsing live dot */
-  @keyframes pulseGlow {
-    0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
-    50% { transform: scale(1.15); opacity: 0.85; box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
-  }
-  .live-dot {
-    animation: pulseGlow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
-  }
-
-  /* Hamburger toggle button bar transformations */
-  #mobile-nav-toggle.is-active .hamburger-bar:nth-child(1) {
-    transform: translateY(6px) rotate(45deg);
-  }
-  #mobile-nav-toggle.is-active .hamburger-bar:nth-child(2) {
-    opacity: 0;
-    transform: scale(0);
-  }
-  #mobile-nav-toggle.is-active .hamburger-bar:nth-child(3) {
-    transform: translateY(-6px) rotate(-45deg);
-  }
-
-  /* Toast notification styling */
-  .toast {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: #181612;
-    color: #F9F6F0;
-    border: 1px solid rgba(212, 175, 55, 0.5);
-    padding: 0.85rem 1.5rem;
-    border-radius: 9999px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.8), 0 0 15px rgba(212, 175, 55, 0.2);
-    z-index: 100;
-    transform: translateY(100px);
-    opacity: 0;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .toast.show {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .toast.error {
-    border-color: #ef4444;
-    color: #fca5a5;
-  }
-</style>
 </head>
 
-<body class="bg-brand-dark text-brand-cream font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brand-gold selection:text-brand-dark overflow-x-hidden">
+<body>
 
 <!-- ========================================================================== -->
-<!-- 1. NAVIGATION BAR (RESPONSIVE WITH MOBILE HAMBURGER) -->
+<!-- 1. TOP ANNOUNCEMENT & OPERATING HOURS BAR -->
 <!-- ========================================================================== -->
-<header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-brand-border/60 transition-all duration-300">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-    <!-- Brand Logo -->
-    <a href="index.html" class="font-serif text-2xl sm:text-3xl tracking-[0.28em] font-semibold text-brand-gold hover:opacity-90 transition-opacity">
-      VELOURA
+<div class="top-announcement-bar">
+  <div class="top-bar-left">
+    <span class="live-status-pill">
+      <span class="pulse-dot"></span> Open Today
+    </span>
+    <span>Opening Hours: <strong>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
+  </div>
+
+  <div class="top-bar-right">
+    <a href="tel:+923000000000" class="phone-quick-link" title="Call Restaurant">
+      <i data-lucide="phone" style="width:13px;height:13px;"></i>
+      <span>+92 300 0000000</span>
     </a>
 
-    <!-- Desktop Navigation Links (>= md) -->
-    <nav class="hidden md:flex items-center space-x-8 text-xs tracking-[0.2em] uppercase font-medium" aria-label="Desktop Navigation">
-      <a href="index.html" class="text-brand-gold relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-brand-gold">Home</a>
-      <a href="menu.html" class="text-brand-cream/80 hover:text-brand-gold transition-colors py-1">Menu</a>
-      <a href="about.html" class="text-brand-cream/80 hover:text-brand-gold transition-colors py-1">About</a>
-      <a href="gallery.html" class="text-brand-cream/80 hover:text-brand-gold transition-colors py-1">Gallery</a>
-      <a href="reservation.html" class="text-brand-cream/80 hover:text-brand-gold transition-colors py-1">Reservations</a>
-      <a href="contact.html" class="text-brand-cream/80 hover:text-brand-gold transition-colors py-1">Contact</a>
+    <!-- Role Switcher Trigger -->
+    <button class="role-badge-btn" onclick="openRoleModal()" title="Switch User Role (Admin / Registered / Guest)">
+      <i data-lucide="shield" style="width:13px;height:13px;"></i>
+      <span id="role-display-text">Role: Customer</span>
+    </button>
+  </div>
+</div>
+
+<!-- ========================================================================== -->
+<!-- 2. LUXURY NAVBAR -->
+<!-- ========================================================================== -->
+<header class="navbar">
+  <div class="nav-container">
+    <!-- Brand Logo -->
+    <a href="index.html" class="logo">
+      <span>VELOURA</span>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="nav-links" aria-label="Primary Navigation">
+      <a href="index.html" aria-current="page" class="active">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="about.html">About</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="reservation.html">Reservations</a>
+      <a href="contact.html">Contact</a>
     </nav>
 
-    <!-- Header Action Icons & Mobile Toggle -->
-    <div class="flex items-center space-x-3 sm:space-x-4">
-      <!-- Book A Table CTA (Desktop / Tablet) -->
-      <a href="reservation.html" class="hidden sm:inline-flex items-center space-x-1.5 bg-brand-gold text-brand-dark px-4 sm:px-5 py-2 rounded-full font-bold text-xs tracking-wider uppercase hover:bg-brand-goldHover transition duration-300 shadow-md hover:shadow-brand-gold/25">
+    <!-- Header Action Buttons -->
+    <div class="nav-actions">
+      <!-- Book Table CTA -->
+      <a href="reservation.html" class="btn-book-nav">
+        <i data-lucide="calendar" style="width:14px;height:14px;"></i>
         <span>Book A Table</span>
       </a>
 
-      <!-- Shopping Cart Button -->
-      <a href="cart.html" class="relative p-2.5 rounded-full text-brand-cream hover:text-brand-gold hover:bg-brand-card/80 transition-all" title="View Cart">
-        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-        <span id="cart-badge-count" class="cart-count absolute -top-1 -right-1 bg-brand-gold text-brand-dark text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center transition-all">0</span>
+      <!-- Shopping Cart Button with Clear Non-Overlapping Badge -->
+      <a href="cart.html" class="icon-btn" aria-label="Cart" title="View Cart">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-count">0</span>
       </a>
 
-      <!-- User Account Login -->
-      <a href="login.html" class="p-2.5 rounded-full text-brand-cream hover:text-brand-gold hover:bg-brand-card/80 transition-all" title="Account / Sign In">
-        <i data-lucide="user" class="w-5 h-5"></i>
+      <!-- User Account / Role Center -->
+      <a href="account.html" class="icon-btn" aria-label="Account" title="Loyalty & Account">
+        <i data-lucide="user" style="width:18px;height:18px;"></i>
       </a>
 
-      <!-- Mobile Hamburger Toggle Button (< md) -->
-      <button 
-        id="mobile-nav-toggle" 
-        class="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-full border border-brand-border/90 bg-brand-card text-brand-gold hover:border-brand-gold/60 transition-all duration-300 focus:outline-none"
-        aria-label="Toggle navigation menu"
-        aria-expanded="false"
-      >
-        <span class="hamburger-bar block w-5 h-0.5 bg-brand-gold transition-all duration-300 origin-center my-0.5"></span>
-        <span class="hamburger-bar block w-5 h-0.5 bg-brand-gold transition-all duration-300 origin-center my-0.5"></span>
-        <span class="hamburger-bar block w-5 h-0.5 bg-brand-gold transition-all duration-300 origin-center my-0.5"></span>
+      <!-- Mobile Hamburger Toggle Button -->
+      <button class="hamburger" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 </header>
 
 <!-- ========================================================================== -->
-<!-- 2. FULLSCREEN MOBILE NAVIGATION DRAWER -->
+<!-- 3. MOBILE NAVIGATION DRAWER -->
 <!-- ========================================================================== -->
-<div 
-  id="mobile-nav-drawer" 
-  class="fixed inset-0 z-40 bg-brand-darker/98 backdrop-blur-2xl transition-all duration-400 opacity-0 pointer-events-none -translate-y-full md:hidden flex flex-col justify-between pt-24 pb-8 px-6 overflow-y-auto"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Mobile Navigation"
->
-  <div class="my-auto py-6 space-y-6 text-center">
-    <div class="inline-flex items-center space-x-2 text-brand-gold tracking-[0.3em] uppercase text-xs font-semibold">
-      <i data-lucide="utensils" class="w-3.5 h-3.5"></i>
-      <span>Veloura Gastronomy</span>
-    </div>
-
-    <!-- Navigation Links -->
-    <nav class="flex flex-col space-y-4 font-serif text-2xl tracking-[0.15em] uppercase">
-      <a href="index.html" class="text-brand-gold font-medium py-1 transition-colors">Home</a>
-      <a href="menu.html" class="text-brand-cream/80 hover:text-brand-gold py-1 transition-colors">Menu</a>
-      <a href="about.html" class="text-brand-cream/80 hover:text-brand-gold py-1 transition-colors">About</a>
-      <a href="gallery.html" class="text-brand-cream/80 hover:text-brand-gold py-1 transition-colors">Gallery</a>
-      <a href="reservation.html" class="text-brand-cream/80 hover:text-brand-gold py-1 transition-colors">Reservations</a>
-      <a href="contact.html" class="text-brand-cream/80 hover:text-brand-gold py-1 transition-colors">Contact</a>
-    </nav>
-
-    <!-- Mobile Drawer Actions -->
-    <div class="pt-6 flex flex-col gap-3 max-w-xs mx-auto">
-      <a href="reservation.html" class="bg-brand-gold text-brand-dark py-3.5 rounded-full font-bold text-xs tracking-widest uppercase hover:bg-brand-goldHover transition shadow-lg shadow-brand-gold/25 flex items-center justify-center space-x-2">
-        <i data-lucide="calendar" class="w-4 h-4"></i>
-        <span>Book A Table</span>
-      </a>
-      <a href="cart.html" class="border border-brand-border bg-brand-card/80 text-brand-cream py-3 rounded-full text-xs font-semibold tracking-widest uppercase hover:border-brand-gold/60 transition flex items-center justify-center space-x-2">
-        <i data-lucide="shopping-bag" class="w-4 h-4 text-brand-gold"></i>
-        <span>View Cart (<span class="mobile-cart-count font-bold text-brand-gold">0</span>)</span>
-      </a>
-      <a href="login.html" class="text-xs text-brand-muted hover:text-brand-gold tracking-wider uppercase py-2 flex items-center justify-center space-x-1.5 transition">
-        <i data-lucide="user" class="w-3.5 h-3.5"></i>
-        <span>Customer Account & Orders</span>
-      </a>
-    </div>
+<div class="mobile-menu" id="mobile-nav-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+  <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.25em;color:var(--gold-primary);font-weight:700;margin-bottom:1rem;">
+    Veloura Gastronomy
   </div>
+  <a href="index.html" class="active">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="about.html">About</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="reservation.html">Reservations</a>
+  <a href="contact.html">Contact</a>
+  <a href="account.html">My Account &amp; Rewards</a>
 
-  <div class="text-center pt-4 border-t border-brand-border/40 text-[11px] text-brand-muted tracking-widest uppercase">
-    Veloura Fine Dining &bull; Master Crafted
+  <div class="mobile-actions">
+    <a href="reservation.html" class="btn btn-primary" style="width:100%;">Book A Table</a>
+    <a href="tel:+923000000000" class="btn btn-outline" style="width:100%;">Call +92 300 0000000</a>
   </div>
 </div>
 
 <!-- ========================================================================== -->
-<!-- 3. HERO & DISHES SHOWCASE -->
+<!-- 4. HERO SECTION -->
 <!-- ========================================================================== -->
-<main class="flex-grow pt-24 sm:pt-28 pb-16">
-  <!-- HERO BANNER -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 text-center pt-6 sm:pt-8 pb-4">
-    <div class="max-w-3xl mx-auto">
-      <!-- Live Sync Status Badge -->
-      <div class="inline-flex items-center space-x-2.5 bg-brand-card/90 border border-brand-border/90 px-4 py-1.5 rounded-full text-xs font-medium text-brand-gold mb-4 shadow-inner">
-        <span id="sync-indicator" class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span>
-        <span class="tracking-widest uppercase text-[11px] font-semibold">Live Menu</span>
-        <span class="text-brand-muted/40">•</span>
-        <span id="dishes-count-badge" class="text-brand-cream/80 text-[11px] font-normal">Loading dishes...</span>
+<section style="position:relative;min-height:85vh;display:flex;align-items:center;background:linear-gradient(180deg, rgba(10,9,7,0.7) 0%, rgba(10,9,7,0.92) 100%), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=85') center/cover no-repeat;border-bottom:1px solid var(--border-gold);">
+  <div class="container" style="text-align:center;padding-top:3rem;padding-bottom:3rem;">
+    <div style="max-width:820px;margin:0 auto;">
+      
+      <!-- Live Synchronized Badge -->
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(28,24,19,0.85);border:1px solid var(--border-gold);padding:0.4rem 1.25rem;border-radius:var(--radius-full);margin-bottom:1.5rem;box-shadow:var(--shadow-luxury);">
+        <span class="pulse-dot"></span>
+        <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.18em;font-weight:700;color:var(--gold-primary);">
+          Culinary Mastery in Ramtali, Gujrat
+        </span>
       </div>
 
       <!-- Main Headline -->
-      <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-[1.1] mb-4 tracking-tight">
-        Explore Our <br class="sm:hidden"/><span class="italic text-brand-gold font-light">Signature Menu</span>
+      <h1 style="margin-bottom:1.25rem;">
+        Where Every Flavor <br/>
+        <span style="color:var(--gold-primary);font-style:italic;font-weight:400;">Tells an Opulent Story</span>
       </h1>
-      
-      <p class="text-brand-muted text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed mb-6">
-        Handcrafted with passion and fresh ingredients. Select any category or search below to explore dishes live from our kitchen.
+
+      <p style="font-size:clamp(1rem, 2vw, 1.2rem);line-height:1.7;margin:0 auto 2.5rem;max-width:640px;color:var(--text-cream);">
+        Handcrafted dishes created with pure passion and master culinary technique. Enjoy premium charcoal-grilled steaks, coastal seafood, artisanal fast food, and decadent confections.
       </p>
 
-      <!-- Instant Dish Search -->
-      <div class="max-w-md mx-auto relative mb-6">
-        <i data-lucide="search" class="w-4 h-4 text-brand-muted absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-        <input 
-          id="dish-search" 
-          type="text" 
-          placeholder="Search by dish name, flavor, or ingredient..." 
-          class="w-full bg-brand-card/90 border border-brand-border/80 rounded-full pl-11 pr-4 py-2.5 text-xs text-brand-cream placeholder-brand-muted/60 focus:outline-none focus:border-brand-gold/80 transition-colors shadow-inner"
-        />
+      <!-- Action Buttons -->
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="#menu-showcase" class="btn btn-primary" style="padding:1rem 2.25rem;font-size:0.85rem;">
+          <i data-lucide="utensils" style="width:16px;height:16px;"></i> Explore Live Menu
+        </a>
+        <a href="reservation.html" class="btn btn-outline" style="padding:1rem 2.25rem;font-size:0.85rem;">
+          <i data-lucide="calendar" style="width:16px;height:16px;"></i> Reserve A Table
+        </a>
+      </div>
+
+      <!-- Operating Hours Quick Strip -->
+      <div style="margin-top:3rem;display:inline-flex;align-items:center;gap:1.5rem;flex-wrap:wrap;justify-content:center;background:rgba(20,17,13,0.7);backdrop-filter:blur(10px);border:1px solid var(--border-subtle);padding:0.85rem 1.75rem;border-radius:var(--radius-full);font-size:0.82rem;">
+        <div style="display:flex;align-items:center;gap:0.4rem;color:var(--text-cream);">
+          <i data-lucide="clock" style="width:15px;height:15px;color:var(--gold-primary);"></i>
+          <span>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.4rem;color:var(--text-cream);">
+          <i data-lucide="map-pin" style="width:15px;height:15px;color:var(--gold-primary);"></i>
+          <span>Ramtali, Gujrat, Punjab</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================== -->
+<!-- 5. CHEF'S DAILY SPECIALS CAROUSEL -->
+<!-- ========================================================================== -->
+<section class="specials-section">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:2.5rem;">
+      <p class="hero-eyebrow">Handcrafted Signature Creations</p>
+      <h2>Chef's Daily Specials</h2>
+      <div class="rule center"></div>
+      <p style="margin:0 auto;max-width:540px;">Selected daily by our executive culinary masters. Each special is paired with botanical mocktails.</p>
+    </div>
+
+    <!-- Active Carousel Card -->
+    <div class="specials-card" id="specials-carousel-container">
+      <div class="specials-media">
+        <img id="special-image" src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=1000&q=80" alt="Chef Special" />
+        <span class="badge badge-chef" style="position:absolute;top:1rem;left:1rem;">
+          <i data-lucide="sparkles" style="width:12px;height:12px;"></i> Chef's Signature
+        </span>
+      </div>
+
+      <div class="specials-content">
+        <div class="specials-tagline" id="special-tagline">The Crown Jewel of Veloura</div>
+        <h3 style="font-size:2.2rem;margin-bottom:0.75rem;" id="special-title">Charcoal Seared Wagyu A5 Ribeye</h3>
+        <p style="font-size:0.92rem;line-height:1.7;margin-bottom:1rem;" id="special-desc">
+          Signature cut grilled over imported binchotan charcoal. Finished with edible gold leaf, smoked shallot confit, and 30-year balsamic glaze.
+        </p>
+
+        <div class="specials-pairing-box">
+          <span style="color:var(--gold-primary);font-weight:700;display:block;font-size:0.75rem;text-transform:uppercase;">Recommended Sommelier Pairing:</span>
+          <span id="special-pairing" style="color:var(--text-primary);font-weight:600;">Smoked Rosemary &amp; Blackberry Mocktail</span>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem;flex-wrap:wrap;gap:1rem;">
+          <div style="font-family:var(--font-body);font-size:1.8rem;font-weight:800;color:var(--gold-primary);" id="special-price">
+            Rs 6,850
+          </div>
+          <button id="add-special-btn" class="btn btn-primary" onclick="addCurrentSpecialToCart()">
+            <i data-lucide="plus" style="width:15px;height:15px;"></i> Order Special
+          </button>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="specials-nav-controls">
+          <div class="carousel-dots" id="special-dots"></div>
+          <div class="carousel-arrows">
+            <button class="arrow-btn" onclick="prevSpecial()" aria-label="Previous Special">
+              <i data-lucide="chevron-left" style="width:18px;height:18px;"></i>
+            </button>
+            <button class="arrow-btn" onclick="nextSpecial()" aria-label="Next Special">
+              <i data-lucide="chevron-right" style="width:18px;height:18px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================== -->
+<!-- 6. DYNAMIC INTERACTIVE MENU (5 CANONICAL CATEGORIES & LIVE SEARCH) -->
+<!-- ========================================================================== -->
+<section class="section" id="menu-showcase">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:2rem;">
+      <p class="hero-eyebrow">Gastronomy &amp; Cuisine</p>
+      <h2>Explore Our Signature Menu</h2>
+      <div class="rule center"></div>
+      <p style="margin:0 auto;max-width:560px;">Filtered across Starters, Main Course, Fast Food, Desserts, and Beverages. Real-time availability from our kitchen.</p>
+    </div>
+
+    <!-- Search & Sort Toolbar -->
+    <div class="menu-toolbar">
+      <div class="search-box">
+        <i data-lucide="search" class="search-icon" style="width:18px;height:18px;"></i>
+        <input type="text" id="dish-search" placeholder="Search by dish name, ingredient, or flavor profile..." />
+      </div>
+
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <select id="dietary-filter" class="sort-select">
+          <option value="all">All Diets</option>
+          <option value="veg">Vegetarian Only</option>
+          <option value="popular">Popular Dishes</option>
+        </select>
+        <select id="price-sort" class="sort-select">
+          <option value="default">Sort: Recommended</option>
+          <option value="low-to-high">Price: Low to High</option>
+          <option value="high-to-low">Price: High to Low</option>
+        </select>
       </div>
     </div>
 
-    <!-- DYNAMIC CATEGORY BUTTONS (HORIZONTAL TOUCH-SCROLL ON MOBILE) -->
-    <div class="relative max-w-5xl mx-auto">
-      <div 
-        id="category-bar" 
-        class="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-3 pt-1 px-2 custom-scrollbar touch-pan-x"
-      >
-        <button onclick="selectCategory('ALL')" class="cat-btn bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition-all duration-300 shadow-lg shadow-brand-gold/20" data-cat="ALL">
-          All Dishes
-        </button>
-        <!-- Dynamic categories injected by js/index.js -->
-      </div>
-    </div>
-  </section>
-
-  <!-- ======================================================================== -->
-  <!-- 4. DYNAMIC MENU ITEMS GRID (SUPABASE CONNECTED) -->
-  <!-- ======================================================================== -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-    <!-- SKELETON LOADING STATE -->
-    <div id="loading-state" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-      <div class="bg-brand-card/60 rounded-2xl border border-brand-border/60 overflow-hidden flex flex-col justify-between">
-        <div class="aspect-[4/3] skeleton-shimmer"></div>
-        <div class="p-6 space-y-3">
-          <div class="h-6 w-3/4 skeleton-shimmer rounded"></div>
-          <div class="h-4 w-full skeleton-shimmer rounded"></div>
-          <div class="pt-4 flex justify-between items-center border-t border-brand-border/40">
-            <div class="h-6 w-20 skeleton-shimmer rounded"></div>
-            <div class="h-8 w-20 skeleton-shimmer rounded-full"></div>
-          </div>
-        </div>
-      </div>
-      <div class="bg-brand-card/60 rounded-2xl border border-brand-border/60 overflow-hidden flex flex-col justify-between hidden sm:flex">
-        <div class="aspect-[4/3] skeleton-shimmer"></div>
-        <div class="p-6 space-y-3">
-          <div class="h-6 w-2/3 skeleton-shimmer rounded"></div>
-          <div class="h-4 w-full skeleton-shimmer rounded"></div>
-          <div class="pt-4 flex justify-between items-center border-t border-brand-border/40">
-            <div class="h-6 w-20 skeleton-shimmer rounded"></div>
-            <div class="h-8 w-20 skeleton-shimmer rounded-full"></div>
-          </div>
-        </div>
-      </div>
-      <div class="bg-brand-card/60 rounded-2xl border border-brand-border/60 overflow-hidden flex flex-col justify-between hidden lg:flex">
-        <div class="aspect-[4/3] skeleton-shimmer"></div>
-        <div class="p-6 space-y-3">
-          <div class="h-6 w-4/5 skeleton-shimmer rounded"></div>
-          <div class="h-4 w-full skeleton-shimmer rounded"></div>
-          <div class="pt-4 flex justify-between items-center border-t border-brand-border/40">
-            <div class="h-6 w-20 skeleton-shimmer rounded"></div>
-            <div class="h-8 w-20 skeleton-shimmer rounded-full"></div>
-          </div>
-        </div>
-      </div>
+    <!-- 5 CATEGORIES BAR (Starters, Main Course, Fast Food, Desserts, Beverages) -->
+    <div class="filter-chips" id="categories-bar">
+      <!-- Dynamically generated with active category state -->
     </div>
 
     <!-- MAIN DISHES GRID -->
-    <div id="menu-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-      <!-- Dish cards rendered by js/index.js -->
+    <div class="dish-grid" id="dishes-grid">
+      <!-- Injected by js/index.js -->
     </div>
 
-    <!-- EMPTY / NO MATCHES STATE -->
-    <div id="empty-state" class="hidden text-center py-16 px-6 bg-brand-card/60 rounded-3xl border border-brand-border max-w-lg mx-auto my-8">
-      <div class="w-16 h-16 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center mx-auto mb-4 text-brand-gold">
-        <i data-lucide="soup" class="w-8 h-8"></i>
+    <!-- EMPTY / NO MATCH STATE -->
+    <div id="no-dishes-state" style="display:none;text-align:center;padding:4rem 1.5rem;background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-md);max-width:540px;margin:2rem auto;">
+      <div style="width:60px;height:60px;border-radius:50%;background:rgba(212,175,55,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:var(--gold-primary);">
+        <i data-lucide="soup" style="width:28px;height:28px;"></i>
       </div>
-      <h3 class="font-serif text-2xl text-brand-cream mb-2">No Dishes Found</h3>
-      <p id="empty-state-msg" class="text-brand-muted text-xs sm:text-sm font-light leading-relaxed mb-6">
-        There are currently no items matching your selection.
+      <h3 style="margin-bottom:0.5rem;">No Matching Dishes</h3>
+      <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.5rem;" id="no-dishes-text">
+        Try adjusting your search query or select another category.
       </p>
-      <button onclick="selectCategory('ALL')" class="bg-brand-gold hover:bg-brand-goldHover text-brand-dark px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md">
-        View All Dishes
-      </button>
+      <button class="btn btn-primary" onclick="resetFilters()">View All Dishes</button>
     </div>
-  </section>
-</main>
+
+  </div>
+</section>
 
 <!-- ========================================================================== -->
-<!-- 5. LUXURY FOOTER -->
+<!-- 7. SIMULATED GOOGLE PLACES / SEARCH DISCOVERY WIDGET -->
 <!-- ========================================================================== -->
-<footer class="bg-brand-card border-t border-brand-border/80 py-12 px-6">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-    <div>
-      <a href="index.html" class="font-serif text-2xl tracking-[0.25em] text-brand-gold block">VELOURA</a>
-      <p class="text-xs text-brand-muted mt-1 font-light">Fine Dining & Culinary Excellence</p>
+<section class="section" style="background:#110e0b;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:2.5rem;">
+      <p class="hero-eyebrow">Local Discovery &amp; Search Engine Simulation</p>
+      <h2>Find Veloura on Google</h2>
+      <div class="rule center"></div>
+      <p style="margin:0 auto;max-width:580px;">See how Veloura appears in Google Local Search and Places discovery for diners across Punjab, Pakistan.</p>
     </div>
-    <div class="flex flex-wrap justify-center gap-6 text-xs text-brand-muted uppercase tracking-wider">
-      <a href="menu.html" class="hover:text-brand-gold transition">Menu</a>
-      <a href="about.html" class="hover:text-brand-gold transition">About</a>
-      <a href="gallery.html" class="hover:text-brand-gold transition">Gallery</a>
-      <a href="reservation.html" class="hover:text-brand-gold transition">Reservations</a>
-      <a href="contact.html" class="hover:text-brand-gold transition">Contact</a>
-    <div class="flex flex-col md:items-end gap-1 text-xs text-brand-muted font-light">
-      <p class="text-brand-cream/90 font-medium">Gujrat, Ramtalai, Pakistan</p>
-      <p>Phone: <a href="tel:03285733872" class="text-brand-gold hover:underline">03285733872</a> &bull; Email: <a href="mailto:shahousaf2004@gmail.com" class="text-brand-gold hover:underline">shahousaf2004@gmail.com</a></p>
-      <p class="text-[11px] text-brand-muted/70">&copy; 2026 Veloura Fine Dining. All rights reserved.</p>
+
+    <div class="places-simulation-widget">
+      <div class="google-search-container">
+        
+        <!-- Google Search Interactive Bar -->
+        <div class="google-search-bar">
+          <i data-lucide="search" style="width:18px;height:18px;color:#9aa0a6;flex-shrink:0;"></i>
+          <input type="text" id="google-search-input" value="Veloura" placeholder="Search Google or type a query..." autocomplete="off" />
+          <button type="button" id="google-search-clear" class="google-search-clear" title="Clear search" aria-label="Clear search">&times;</button>
+          <div style="display:flex;align-items:center;gap:0.6rem;color:#8ab4f8;">
+            <i data-lucide="mic" style="width:16px;height:16px;cursor:pointer;" title="Search by voice"></i>
+            <i data-lucide="camera" style="width:16px;height:16px;cursor:pointer;" title="Search by image"></i>
+          </div>
+        </div>
+
+        <!-- Quick Query Suggestion Chips -->
+        <div class="google-quick-chips">
+          <span style="font-size:0.75rem;color:#9aa0a6;font-weight:600;margin-right:0.25rem;">Try searching:</span>
+          <button type="button" class="google-chip active" onclick="setGoogleSearchQuery('Veloura')">Veloura</button>
+          <button type="button" class="google-chip" onclick="setGoogleSearchQuery('Veloura Gujrat')">Veloura Gujrat</button>
+          <button type="button" class="google-chip" onclick="setGoogleSearchQuery('Luxury Dining Ramtali')">Luxury Dining Ramtali</button>
+          <button type="button" class="google-chip" onclick="setGoogleSearchQuery('Operating Hours')">Operating Hours</button>
+          <button type="button" class="google-chip" onclick="setGoogleSearchQuery('Wagyu Steak')">Wagyu Steak</button>
+        </div>
+
+        <!-- Google Search Tabs -->
+        <div class="google-search-tabs">
+          <div class="google-tab active"><i data-lucide="search" style="width:14px;height:14px;"></i> All</div>
+          <div class="google-tab" onclick="setGoogleSearchQuery('Veloura Ramtali Map')"><i data-lucide="map" style="width:14px;height:14px;"></i> Maps</div>
+          <div class="google-tab" onclick="window.location.href='menu.html'"><i data-lucide="utensils" style="width:14px;height:14px;"></i> Menu</div>
+          <div class="google-tab" onclick="document.querySelector('#customer-reviews-grid')?.scrollIntoView({behavior:'smooth'})"><i data-lucide="star" style="width:14px;height:14px;"></i> Reviews</div>
+          <div class="google-tab" onclick="window.location.href='gallery.html'"><i data-lucide="image" style="width:14px;height:14px;"></i> Images</div>
+        </div>
+
+        <!-- Dynamic Results Layout: Left Column (Organic Result + Sitelinks + Related) + Right Column (Knowledge Panel) -->
+        <div class="google-layout" id="google-results-view">
+          
+          <!-- LEFT COLUMN: Search Results & Sitelinks -->
+          <div>
+            <div class="google-result-card" id="google-organic-card">
+              <div class="google-cite">
+                <i data-lucide="globe" style="width:14px;height:14px;color:#8ab4f8;"></i>
+                <span>https://www.velouradining.com &rsaquo; gujrat &rsaquo; luxury-dining</span>
+              </div>
+
+              <a href="index.html" class="google-title" id="google-result-title">
+                VELOURA — Luxury Dining &amp; Cuisine | Ramtali, Gujrat
+              </a>
+
+              <!-- Star Rating Snippet -->
+              <div class="google-rich-badge">
+                <span>★★★★★ 4.9</span>
+                <span style="color:#9aa0a6;">(850+ reviews)</span>
+                <span style="color:#9aa0a6;">&bull;</span>
+                <span style="color:#34d399;">$$$$ &bull; Fine Dining Restaurant</span>
+              </div>
+
+              <div class="google-snippet" id="google-result-snippet">
+                Experience world-class culinary craftsmanship at Veloura in Ramtali, Gujrat. Offering charcoal-seared Wagyu beef (A5), fresh Mediterranean lobster risotto, artisanal burgers, confections, and private royal dining rooms.
+              </div>
+
+              <!-- Google Sitelinks -->
+              <div class="google-sitelinks">
+                <a href="menu.html" class="google-sitelink-item">
+                  <strong>Signature Menu</strong>
+                  <div style="color:#9aa0a6;font-size:0.75rem;">Starters, Steaks &amp; Desserts</div>
+                </a>
+                <a href="reservation.html" class="google-sitelink-item">
+                  <strong>Table Reservations</strong>
+                  <div style="color:#9aa0a6;font-size:0.75rem;">Instant online seating booking</div>
+                </a>
+                <a href="cart.html" class="google-sitelink-item">
+                  <strong>Order Online</strong>
+                  <div style="color:#9aa0a6;font-size:0.75rem;">Contactless delivery in Gujrat</div>
+                </a>
+                <a href="contact.html" class="google-sitelink-item">
+                  <strong>Get Directions</strong>
+                  <div style="color:#9aa0a6;font-size:0.75rem;">Pinpointed to Ramtali, Gujrat</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Related Local Searches -->
+            <div style="margin-top:1.25rem;background:#201b15;border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius-sm);padding:1.25rem;">
+              <div style="font-size:0.82rem;font-weight:700;color:var(--text-primary);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.4rem;">
+                <i data-lucide="compass" style="width:14px;height:14px;color:var(--gold-primary);"></i>
+                <span>People also search for in Gujrat</span>
+              </div>
+              <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                <button type="button" class="google-chip" onclick="setGoogleSearchQuery('Best Wagyu steak in Gujrat')">Best Wagyu steak in Gujrat</button>
+                <button type="button" class="google-chip" onclick="setGoogleSearchQuery('Romantic anniversary dinner Gujrat')">Romantic anniversary dinner Gujrat</button>
+                <button type="button" class="google-chip" onclick="setGoogleSearchQuery('Veloura menu prices')">Veloura menu prices</button>
+                <button type="button" class="google-chip" onclick="setGoogleSearchQuery('Fine dining restaurants Ramtali')">Fine dining restaurants Ramtali</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN: Google Places Knowledge Panel -->
+          <div>
+            <div class="google-knowledge-panel" id="google-knowledge-panel">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Veloura Restaurant" class="gkp-header-img" />
+              
+              <div class="gkp-body">
+                <div class="gkp-title">VELOURA</div>
+                <div class="gkp-type">Fine dining restaurant in Ramtali, Gujrat</div>
+                
+                <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;color:#fbbc04;margin-bottom:0.85rem;">
+                  <span>4.9 ★★★★★</span>
+                  <span style="color:#9aa0a6;">(850+ Google reviews)</span>
+                </div>
+
+                <!-- Google Action Buttons -->
+                <div class="gkp-actions">
+                  <a href="index.html" class="gkp-btn">
+                    <i data-lucide="globe" style="width:16px;height:16px;"></i>
+                    <span>Website</span>
+                  </a>
+                  <a href="https://maps.google.com/maps?q=Ramtali,+Gujrat,+Punjab,+Pakistan" target="_blank" class="gkp-btn">
+                    <i data-lucide="navigation" style="width:16px;height:16px;"></i>
+                    <span>Directions</span>
+                  </a>
+                  <a href="reservation.html" class="gkp-btn">
+                    <i data-lucide="calendar" style="width:16px;height:16px;"></i>
+                    <span>Reserve</span>
+                  </a>
+                  <a href="tel:+923000000000" class="gkp-btn">
+                    <i data-lucide="phone" style="width:16px;height:16px;"></i>
+                    <span>Call</span>
+                  </a>
+                </div>
+
+                <!-- Entity Attributes -->
+                <div class="gkp-info-list">
+                  <div class="gkp-info-item">
+                    <i data-lucide="map-pin" style="width:15px;height:15px;color:#ea4335;flex-shrink:0;margin-top:2px;"></i>
+                    <span><strong>Address:</strong> Ramtali, Gujrat, Punjab, Pakistan</span>
+                  </div>
+
+                  <div class="gkp-info-item">
+                    <i data-lucide="clock" style="width:15px;height:15px;color:#34a853;flex-shrink:0;margin-top:2px;"></i>
+                    <div>
+                      <span class="gkp-hours-badge">Open</span> &bull; Closes 12:00 AM (Midnight)
+                      <div style="font-size:0.75rem;color:#9aa0a6;margin-top:2px;">Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM</div>
+                    </div>
+                  </div>
+
+                  <div class="gkp-info-item">
+                    <i data-lucide="phone" style="width:15px;height:15px;color:#4285f4;flex-shrink:0;margin-top:2px;"></i>
+                    <span><strong>Phone:</strong> <a href="tel:+923000000000" style="color:#8ab4f8;">+92 300 0000000</a></span>
+                  </div>
+
+                  <div class="gkp-info-item">
+                    <i data-lucide="check-circle" style="width:15px;height:15px;color:#34d399;flex-shrink:0;margin-top:2px;"></i>
+                    <span><strong>Service options:</strong> Dine-in &bull; Takeaway &bull; Contactless Delivery</span>
+                  </div>
+
+                  <div class="gkp-info-item">
+                    <i data-lucide="utensils" style="width:15px;height:15px;color:var(--gold-primary);flex-shrink:0;margin-top:2px;"></i>
+                    <span><strong>Popular dishes:</strong> Wagyu Ribeye Steak, Saffron Lobster Risotto, 24K Basque Cheesecake</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================== -->
+<!-- 8. CUSTOMER REVIEWS & RATINGS SECTION -->
+<!-- ========================================================================== -->
+<section class="section">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;flex-wrap:wrap;gap:1.5rem;">
+      <div>
+        <p class="hero-eyebrow">Diner Feedback &amp; Gastronomy Reviews</p>
+        <h2>What Our Diners Say</h2>
+        <div class="rule"></div>
+      </div>
+      <div>
+        <button class="btn btn-outline" onclick="openReviewModal()">
+          <i data-lucide="edit-3" style="width:15px;height:15px;"></i> Write A Review
+        </button>
+      </div>
+    </div>
+
+    <div class="reviews-grid" id="customer-reviews-grid">
+      <!-- Populated dynamically by js/index.js -->
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================== -->
+<!-- 9. CONTACT DETAILS & LIVE GOOGLE MAP INTEGRATION -->
+<!-- ========================================================================== -->
+<section class="section" style="background:#13100c;border-top:1px solid var(--border-gold);" id="contact-info-section">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:3rem;">
+      <p class="hero-eyebrow">Visit &amp; Contact Concierge</p>
+      <h2>Find Veloura in Ramtali, Gujrat</h2>
+      <div class="rule center"></div>
+      <p style="margin:0 auto;max-width:540px;">Located at the heart of Ramtali, Gujrat. Reach out directly for table reservations, catering, or inquiries.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:2.5rem;align-items:center;">
+      
+      <!-- Contact Details Card -->
+      <div style="background:var(--bg-card);border:1px solid var(--border-gold);border-radius:var(--radius-md);padding:2.25rem;box-shadow:var(--shadow-luxury);">
+        <h3 style="margin-bottom:1.5rem;color:var(--gold-primary);">Contact Information</h3>
+
+        <div style="display:flex;flex-direction:column;gap:1.5rem;">
+          
+          <!-- Address -->
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(212,175,55,0.1);border:1px solid var(--border-gold);display:flex;align-items:center;justify-content:center;color:var(--gold-primary);flex-shrink:0;">
+              <i data-lucide="map-pin" style="width:20px;height:20px;"></i>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Physical Location</div>
+              <div style="font-weight:600;color:var(--text-primary);font-size:1.05rem;">Ramtali, Gujrat, Punjab, Pakistan</div>
+            </div>
+          </div>
+
+          <!-- Phone (Clickable Call Button) -->
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(212,175,55,0.1);border:1px solid var(--border-gold);display:flex;align-items:center;justify-content:center;color:var(--gold-primary);flex-shrink:0;">
+              <i data-lucide="phone-call" style="width:20px;height:20px;"></i>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Reservations &amp; Hotline</div>
+              <div>
+                <a href="tel:+923000000000" class="btn btn-outline" style="margin-top:0.35rem;padding:0.6rem 1.25rem;font-size:0.85rem;">
+                  <i data-lucide="phone" style="width:14px;height:14px;"></i> Call +92 300 0000000
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(212,175,55,0.1);border:1px solid var(--border-gold);display:flex;align-items:center;justify-content:center;color:var(--gold-primary);flex-shrink:0;">
+              <i data-lucide="mail" style="width:20px;height:20px;"></i>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Concierge Email</div>
+              <div style="margin-top:0.25rem;">
+                <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);font-weight:600;font-size:0.95rem;text-decoration:underline;">
+                  shahyousaf2004@gmail.com
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Operating Hours -->
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(212,175,55,0.1);border:1px solid var(--border-gold);display:flex;align-items:center;justify-content:center;color:var(--gold-primary);flex-shrink:0;">
+              <i data-lucide="clock" style="width:20px;height:20px;"></i>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Operating Hours</div>
+              <div style="font-weight:700;color:var(--text-cream);font-size:0.95rem;margin-top:0.2rem;">
+                Monday to Sunday: 10:00 AM &ndash; 12:00 AM (Midnight)
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Live Google Map Iframe Pinpointed to Ramtali, Gujrat, Punjab, Pakistan -->
+      <div style="height:440px;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border-gold);box-shadow:var(--shadow-luxury);">
+        <iframe 
+          src="https://maps.google.com/maps?q=Ramtali,+Gujrat,+Punjab,+Pakistan&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+          width="100%" 
+          height="100%" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Veloura Location - Ramtali, Gujrat, Punjab, Pakistan"
+        ></iframe>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================== -->
+<!-- 10. MULTI-ROLE SWITCHER MODAL -->
+<!-- ========================================================================== -->
+<div id="role-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="modal-box" style="max-width:480px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+      <h3 style="color:var(--gold-primary);">Select User Experience Role</h3>
+      <button onclick="closeRoleModal()" style="color:var(--text-muted);font-size:1.5rem;line-height:1;">&times;</button>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
+      Test different workflows supported by Veloura:
+    </p>
+
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      <!-- Role: Admin -->
+      <div style="background:var(--bg-surface);border:1px solid var(--border-gold);border-radius:var(--radius-sm);padding:1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="switchRole('admin')">
+        <div>
+          <strong style="color:var(--gold-primary);display:block;font-size:0.95rem;">Administrator Mode</strong>
+          <span style="font-size:0.78rem;color:var(--text-muted);">Manage menu stock, update orders, and view reservation slots.</span>
+        </div>
+        <span class="btn btn-primary" style="font-size:0.7rem;padding:0.4rem 0.85rem;">Switch</span>
+      </div>
+
+      <!-- Role: Registered Customer -->
+      <div style="background:var(--bg-surface);border:1px solid var(--border-gold);border-radius:var(--radius-sm);padding:1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="switchRole('registered')">
+        <div>
+          <strong style="color:var(--text-primary);display:block;font-size:0.95rem;">Registered Patron (Customer)</strong>
+          <span style="font-size:0.78rem;color:var(--text-muted);">520 Loyalty Points, saved delivery addresses, order history.</span>
+        </div>
+        <span class="btn btn-outline" style="font-size:0.7rem;padding:0.4rem 0.85rem;">Switch</span>
+      </div>
+
+      <!-- Role: Guest -->
+      <div style="background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="switchRole('guest')">
+        <div>
+          <strong style="color:var(--text-muted);display:block;font-size:0.95rem;">Guest Diner</strong>
+          <span style="font-size:0.78rem;color:var(--text-muted);">Instant ordering and table reservations without account creation.</span>
+        </div>
+        <span class="btn btn-dark" style="font-size:0.7rem;padding:0.4rem 0.85rem;">Switch</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================================== -->
+<!-- 11. LEAVE A REVIEW MODAL -->
+<!-- ========================================================================== -->
+<div id="review-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <h3 style="color:var(--gold-primary);">Share Your Dining Experience</h3>
+      <button onclick="closeReviewModal()" style="color:var(--text-muted);font-size:1.5rem;">&times;</button>
+    </div>
+    
+    <form id="review-form" onsubmit="submitCustomerReview(event)">
+      <div class="field" style="margin-bottom:1rem;">
+        <label for="rev-name">Your Name</label>
+        <input id="rev-name" type="text" required placeholder="e.g. Zaid Khan" />
+      </div>
+      <div class="field" style="margin-bottom:1rem;">
+        <label for="rev-dish">Favorite Dish</label>
+        <input id="rev-dish" type="text" required placeholder="e.g. Prime Wagyu Ribeye" />
+      </div>
+      <div class="field" style="margin-bottom:1rem;">
+        <label for="rev-rating">Rating</label>
+        <select id="rev-rating">
+          <option value="5">★★★★★ 5 Stars (Exceptional)</option>
+          <option value="4">★★★★☆ 4 Stars (Very Good)</option>
+          <option value="3">★★★☆☆ 3 Stars (Good)</option>
+        </select>
+      </div>
+      <div class="field" style="margin-bottom:1.5rem;">
+        <label for="rev-comment">Review Comments</label>
+        <textarea id="rev-comment" required placeholder="Tell other epicureans about the flavor, plating, or ambiance..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Post Review</button>
+    </form>
+  </div>
+</div>
+
+<!-- ========================================================================== -->
+<!-- 12. LUXURY FOOTER -->
+<!-- ========================================================================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="logo">VELOURA</a>
+        <p style="margin-top:0.75rem;font-size:0.88rem;line-height:1.6;">Where every flavor tells a story. Fine dining, artisan cuisine, and bespoke hospitality in Ramtali, Gujrat.</p>
+        <p style="margin-top:0.75rem;font-size:0.82rem;color:var(--gold-primary);font-weight:700;">
+          Operating Hours: Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)
+        </p>
+      </div>
+
+      <div>
+        <h4>Signature Menus</h4>
+        <ul>
+          <li><a href="menu.html#starters">Starters &amp; Tapas</a></li>
+          <li><a href="menu.html#main-course">Prime Steaks &amp; Mains</a></li>
+          <li><a href="menu.html#fast-food">Gourmet Burgers &amp; Pizzas</a></li>
+          <li><a href="menu.html#desserts">French Patisserie &amp; Cakes</a></li>
+          <li><a href="menu.html#beverages">Artisanal Mocktails</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Patron Services</h4>
+        <ul>
+          <li><a href="reservation.html">Table Reservations</a></li>
+          <li><a href="cart.html">View Dining Cart</a></li>
+          <li><a href="account.html">Loyalty Reward Points</a></li>
+          <li><a href="order-tracker.html">Live Order Tracking</a></li>
+          <li><a href="admin/index.html">Admin Portal</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contact Concierge</h4>
+        <p style="color:var(--text-cream);font-weight:600;margin-bottom:0.4rem;">Ramtali, Gujrat, Punjab, Pakistan</p>
+        <p style="margin-bottom:0.4rem;">Hotline: <a href="tel:+923000000000" style="color:var(--gold-primary);font-weight:700;">+92 300 0000000</a></p>
+        <p style="margin-bottom:0.75rem;">Email: <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);">shahyousaf2004@gmail.com</a></p>
+        <a href="tel:+923000000000" class="btn btn-outline" style="font-size:0.75rem;padding:0.5rem 1rem;">
+          <i data-lucide="phone-call" style="width:14px;height:14px;"></i> Call Concierge
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 Veloura Luxury Dining &amp; Cuisine. All rights reserved.</span>
+      <span>Ramtali, Gujrat, Punjab, Pakistan &bull; Phone: <a href="tel:+923000000000" style="color:var(--gold-primary);">+92 300 0000000</a></span>
     </div>
   </div>
 </footer>
 
-<!-- Shared Supabase Client & App Engine -->
+<!-- Toast Notifications -->
+<div class="toast" id="global-toast"></div>
+
+<!-- Scripts -->
 <script src="js/supabase-client.js"></script>
+<script src="js/data-store.js"></script>
+<script src="js/main.js"></script>
 <script src="js/index.js"></script>
+
+<script>
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+</script>
 </body>
 </html>

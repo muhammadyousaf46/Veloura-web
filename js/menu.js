@@ -1,194 +1,219 @@
 // ==========================================================================
-// VELOURA — Menu page: search, category filters, sort, Supabase data
+// VELOURA — Menu Page Controller
+// Category filtering (Starters, Main Course, Fast Food, Desserts, Beverages),
+// live search, dietary filters, price sorting, and cart actions.
 // ==========================================================================
 
 let ALL_ITEMS = [];
 let ALL_CATEGORIES = [];
-let activeCategory = "all";
-let activeSort = "default";
-let searchTerm = "";
+let activeCat = "all";
+let activeDiet = "all";
+let activeSortOrder = "default";
+let searchWord = "";
 
 document.addEventListener("DOMContentLoaded", initMenuPage);
 
-async function initMenuPage() {
-  const container = document.querySelector("#menu-categories");
-  if (!container) return;
+function initMenuPage() {
+  ALL_CATEGORIES = window.VelouraData?.getCategories ? window.VelouraData.getCategories() : [];
+  ALL_ITEMS = window.VelouraData?.getMenuItems ? window.VelouraData.getMenuItems() : [];
 
-  renderMenuSkeleton(container);
-
-  try {
-    const [{ data: categories, error: catErr }, { data: items, error: itemErr }] = await Promise.all([
-      supabase.from("categories").select("id, name").order("name"),
-      supabase.from("menu_items").select("*"),
-    ]);
-
-    if (catErr) throw catErr;
-    if (itemErr) throw itemErr;
-
-    ALL_CATEGORIES = categories || [];
-    ALL_ITEMS = items || [];
-
-    renderFilterChips();
-    renderMenu();
-    handleHashScroll();
-  } catch (err) {
-    console.error("Failed to load menu:", err);
-    container.innerHTML = `<div class="empty-state">Failed to load menu. Please refresh the page.</div>`;
-  }
-
-  document.querySelector("#menu-search")?.addEventListener("input", (e) => {
-    searchTerm = e.target.value.trim().toLowerCase();
-    renderMenu();
-  });
-
-  document.querySelector("#menu-sort")?.addEventListener("change", (e) => {
-    activeSort = e.target.value;
-    renderMenu();
-  });
+  renderCategoryChips();
+  renderMenuGrid();
+  setupFilterListeners();
 }
 
-function renderMenuSkeleton(container) {
-  container.innerHTML = `
-    <div class="dish-grid">
-      ${Array.from({ length: 6 })
-        .map(
-          () => `
-        <div class="dish-card">
-          <div class="dish-image skeleton"></div>
-          <div class="dish-info"><div class="skeleton" style="height:20px;width:60%;"></div></div>
-        </div>`
-        )
-        .join("")}
-    </div>`;
-}
-
-function renderFilterChips() {
+function renderCategoryChips() {
   const chipWrap = document.querySelector("#category-chips");
   if (!chipWrap) return;
 
-  const chips = [{ id: "all", name: "All" }, ...ALL_CATEGORIES];
-  chipWrap.innerHTML = chips
-    .map(
-      (c) =>
-        `<button class="chip ${c.id === activeCategory ? "active" : ""}" data-cat="${c.id}">${c.name}</button>`
-    )
+  const categories = [{ id: "all", name: "All Dishes" }, ...ALL_CATEGORIES];
+
+  chipWrap.innerHTML = categories
+    .map((c) => {
+      const isSelected = (c.id === "all" && activeCat === "all") || c.name.toLowerCase() === activeCat.toLowerCase();
+      const count =
+        c.id === "all"
+          ? ALL_ITEMS.length
+          : ALL_ITEMS.filter((i) => (i.category_name || "").toLowerCase() === c.name.toLowerCase()).length;
+
+      return `
+      <button class="chip ${isSelected ? "active" : ""}" data-cat="${c.id === "all" ? "all" : c.name}">
+        <span>${c.name} (${count})</span>
+      </button>
+    `;
+    })
     .join("");
 
-  chipWrap.querySelectorAll(".chip").forEach((chip) => {
-    chip.addEventListener("click", () => {
-      activeCategory = chip.dataset.cat;
-      renderFilterChips();
-      renderMenu();
+  chipWrap.querySelectorAll(".chip").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      activeCat = btn.dataset.cat;
+      renderCategoryChips();
+      renderMenuGrid();
     });
   });
 }
 
-function renderMenu() {
+function renderMenuGrid() {
   const container = document.querySelector("#menu-categories");
+  const emptyEl = document.querySelector("#menu-empty");
   if (!container) return;
 
   let items = [...ALL_ITEMS];
 
-  if (searchTerm) {
-    items = items.filter(
-      (i) =>
-        i.name.toLowerCase().includes(searchTerm) ||
-        (i.description || "").toLowerCase().includes(searchTerm)
-    );
+  // 1. Category Filter
+  if (activeCat !== "all") {
+    items = items.filter((i) => (i.category_name || "").toLowerCase() === activeCat.toLowerCase());
   }
 
-  if (activeCategory !== "all") {
-    items = items.filter((i) => i.category_id === activeCategory);
+  // 2. Search filter
+  if (searchWord) {
+    items = items.filter((i) => {
+      const n = (i.name || "").toLowerCase();
+      const d = (i.description || "").toLowerCase();
+      const c = (i.category_name || "").toLowerCase();
+      return n.includes(searchWord) || d.includes(searchWord) || c.includes(searchWord);
+    });
   }
 
-  if (activeSort === "price-asc") items.sort((a, b) => a.price - b.price);
-  if (activeSort === "price-desc") items.sort((a, b) => b.price - a.price);
-  if (activeSort === "popular") items.sort((a, b) => Number(b.is_popular) - Number(a.is_popular));
+  // 3. Dietary Filter
+  if (activeDiet === "veg") {
+    items = items.filter((i) => i.is_vegetarian);
+  } else if (activeDiet === "popular") {
+    items = items.filter((i) => i.is_popular);
+  }
+
+  // 4. Sort
+  if (activeSortOrder === "price-asc") items.sort((a, b) => Number(a.price) - Number(b.price));
+  if (activeSortOrder === "price-desc") items.sort((a, b) => Number(b.price) - Number(a.price));
+  if (activeSortOrder === "popular") items.sort((a, b) => Number(b.is_popular || 0) - Number(a.is_popular || 0));
 
   if (items.length === 0) {
-    container.innerHTML = `<div class="empty-state">No dishes match your search or filters.</div>`;
+    container.style.display = "none";
+    if (emptyEl) emptyEl.style.display = "block";
     return;
   }
 
-  const categoriesToShow =
-    activeCategory === "all"
-      ? ALL_CATEGORIES
-      : ALL_CATEGORIES.filter((c) => c.id === activeCategory);
+  if (emptyEl) emptyEl.style.display = "none";
+  container.style.display = "grid";
 
-  container.innerHTML = categoriesToShow
-    .map((cat) => {
-      const catItems = items.filter((i) => i.category_id === cat.id);
-      if (catItems.length === 0) return "";
-      const slug = slugify(cat.name);
+  container.innerHTML = items
+    .map((item) => {
+      const isAvailable = item.is_available !== false;
+      const safeName = item.name.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      const safeImg = (item.image_url || "").replace(/'/g, "\\'");
+      const stars = "★".repeat(Math.floor(item.rating || 5)) + "☆".repeat(5 - Math.floor(item.rating || 5));
+
       return `
-        <div class="menu-category-block" id="${slug}">
-          <h2>${cat.name}</h2>
-          <div class="dish-grid">
-            ${catItems.map(menuItemTemplate).join("")}
+      <article class="dish-card ${isAvailable ? "" : "out-of-stock"}">
+        <div class="dish-image-wrap">
+          <img src="${item.image_url}" alt="${item.name}" loading="lazy" />
+          
+          <div class="card-badges">
+            ${item.is_popular ? `<span class="badge badge-chef"><i data-lucide="sparkles" style="width:11px;height:11px;"></i> Popular</span>` : ""}
+            ${item.is_vegetarian ? `<span class="badge badge-veg"><i data-lucide="leaf" style="width:11px;height:11px;"></i> Veg</span>` : ""}
           </div>
-        </div>`;
+
+          ${item.category_name ? `<span class="badge-category">${item.category_name}</span>` : ""}
+          ${!isAvailable ? `<div class="out-of-stock-overlay">Out of Stock</div>` : ""}
+        </div>
+
+        <div class="dish-body">
+          <div>
+            <div class="dish-header-row">
+              <h3 class="dish-name">${item.name}</h3>
+            </div>
+            
+            <div class="dish-rating-row">
+              <span class="dish-rating-stars">${stars}</span>
+              <span>${item.rating || 4.9}</span>
+              <span class="dish-reviews-count">(${item.reviews_count || 120})</span>
+            </div>
+
+            <p class="dish-desc">${item.description}</p>
+          </div>
+
+          <div class="dish-footer">
+            <span class="dish-price">Rs ${Number(item.price).toLocaleString()}</span>
+            
+            <button 
+              class="add-btn" 
+              onclick="addToCartFromMenu(this, '${item.id}', '${safeName}', ${item.price}, '${safeImg}')"
+              ${!isAvailable ? "disabled" : ""}
+            >
+              <i data-lucide="plus" style="width:14px;height:14px;"></i>
+              <span>${isAvailable ? "Add" : "Sold Out"}</span>
+            </button>
+          </div>
+        </div>
+      </article>
+    `;
     })
     .join("");
 
-  attachAddToCartHandlers(container);
+  if (window.lucide) window.lucide.createIcons();
 }
 
-function menuItemTemplate(item) {
-  const image = item.image_url
-    ? `<img src="${item.image_url}" alt="${item.name}" loading="lazy" />`
-    : `<div class="skeleton" style="width:100%;height:100%;"></div>`;
+function setupFilterListeners() {
+  const searchInput = document.querySelector("#menu-search");
+  const dietSelect = document.querySelector("#dietary-select");
+  const sortSelect = document.querySelector("#menu-sort");
 
-  return `
-    <article class="dish-card reveal is-visible ${item.is_available ? "" : "unavailable"}">
-      <div class="dish-image">
-        ${image}
-        ${item.is_available ? `<button class="dish-add" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}" aria-label="Add ${item.name} to cart">+</button>` : ""}
-      </div>
-      <div class="dish-info">
-        <h3>
-          ${item.is_vegetarian ? '<span class="veg-badge" title="Vegetarian"></span>' : ""}
-          ${item.name}
-          ${item.is_popular ? '<span class="popular-badge">Popular</span>' : ""}
-        </h3>
-        <span class="dish-price">Rs ${Number(item.price).toLocaleString()}</span>
-      </div>
-      <p class="dish-desc">${item.description ?? ""}</p>
-      ${!item.is_available ? '<p class="unavailable-badge">Currently unavailable</p>' : ""}
-    </article>`;
-}
-
-function attachAddToCartHandlers(container) {
-  container.querySelectorAll(".dish-add").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      addToCart({
-        id: btn.dataset.id,
-        name: btn.dataset.name,
-        price: Number(btn.dataset.price),
-        quantity: 1,
-      });
-      showToast(`${btn.dataset.name} added to cart`);
-      initCartBadge();
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      searchWord = e.target.value.trim().toLowerCase();
+      renderMenuGrid();
     });
-  });
-}
-
-function addToCart(item) {
-  const cart = getCart();
-  const existing = cart.find((c) => c.id === item.id);
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push(item);
   }
-  localStorage.setItem("veloura_cart", JSON.stringify(cart));
+
+  if (dietSelect) {
+    dietSelect.addEventListener("change", (e) => {
+      activeDiet = e.target.value;
+      renderMenuGrid();
+    });
+  }
+
+  if (sortSelect) {
+    sortSelect.addEventListener("change", (e) => {
+      activeSortOrder = e.target.value;
+      renderMenuGrid();
+    });
+  }
 }
 
-function slugify(name) {
-  return name.toLowerCase().replace(/&/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
-}
+window.resetMenuFilters = function () {
+  activeCat = "all";
+  activeDiet = "all";
+  activeSortOrder = "default";
+  searchWord = "";
 
-function handleHashScroll() {
-  if (!window.location.hash) return;
-  const el = document.querySelector(window.location.hash);
-  if (el) el.scrollIntoView({ behavior: "smooth" });
-}
+  const searchInput = document.querySelector("#menu-search");
+  const dietSelect = document.querySelector("#dietary-select");
+  const sortSelect = document.querySelector("#menu-sort");
+
+  if (searchInput) searchInput.value = "";
+  if (dietSelect) dietSelect.value = "all";
+  if (sortSelect) sortSelect.value = "default";
+
+  renderCategoryChips();
+  renderMenuGrid();
+};
+
+window.addToCartFromMenu = function (btn, id, name, price, img) {
+  if (typeof window.handleAddToCart === "function") {
+    window.handleAddToCart(btn, id, name, price, img);
+  } else {
+    let cart = [];
+    try {
+      cart = JSON.parse(localStorage.getItem("veloura_cart") || "[]");
+    } catch (e) {
+      cart = [];
+    }
+    const existing = cart.find((i) => String(i.id) === String(id));
+    if (existing) existing.quantity = (existing.quantity || 1) + 1;
+    else cart.push({ id, name, price, quantity: 1, image: img });
+
+    localStorage.setItem("veloura_cart", JSON.stringify(cart));
+    if (typeof initCartBadge === "function") initCartBadge();
+    if (window.showToast) window.showToast(`Added ${name} to cart`);
+  }
+};

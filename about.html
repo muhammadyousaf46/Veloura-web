@@ -3,127 +3,245 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>About — Veloura</title>
-<meta name="description" content="The story, philosophy, and people behind Veloura." />
+<title>About Our Heritage — Veloura Luxury Dining</title>
+<meta name="description" content="Discover the culinary story, master chefs, artisanal ingredients, and ambiance of Veloura in Gujrat." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  .about-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 4.5rem;
+  }
+  @media (max-width: 860px) {
+    .about-block {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      margin-bottom: 3rem;
+    }
+  }
+  .about-block.reverse {
+    direction: rtl;
+  }
+  .about-block.reverse > div {
+    direction: ltr;
+  }
+  .about-media {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-gold);
+    aspect-ratio: 16 / 11;
+    box-shadow: var(--shadow-luxury);
+  }
+  .about-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
 </head>
 <body>
 
+<!-- TOP ANNOUNCEMENT BAR -->
+<div class="top-announcement-bar">
+  <div class="top-bar-left">
+    <span class="live-status-pill"><span class="pulse-dot"></span> Open Today</span>
+    <span>Opening Hours: <strong>Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</strong></span>
+  </div>
+  <div class="top-bar-right">
+    <a href="tel:+923000000000" class="phone-quick-link">
+      <i data-lucide="phone" style="width:13px;height:13px;"></i>
+      <span>+92 300 0000000</span>
+    </a>
+    <a href="account.html" class="role-badge-btn">
+      <i data-lucide="user-check" style="width:13px;height:13px;"></i>
+      <span id="role-display-text">Role: Customer</span>
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
 <header class="navbar">
-  <a href="index.html" class="logo">VELOURA</a>
-  <nav aria-label="Primary">
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="menu.html">Menu</a></li>
-      <li><a href="about.html" aria-current="page">About</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="reservation.html">Reservations</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-  <div class="nav-actions">
-    <a href="cart.html" class="icon-btn" aria-label="Cart">&#128717;<span class="cart-count">0</span></a>
-    <a href="login.html" class="icon-btn" aria-label="Account">&#128100;</a>
-    <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav-container">
+    <a href="index.html" class="logo">VELOURA</a>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="about.html" aria-current="page" class="active">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservations</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="reservation.html" class="btn-book-nav">Book A Table</a>
+      <a href="cart.html" class="icon-btn" aria-label="Cart">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;"></i>
+        <span class="cart-count">0</span>
+      </a>
+      <a href="account.html" class="icon-btn" aria-label="Account">
+        <i data-lucide="user" style="width:18px;height:18px;"></i>
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
+<!-- MOBILE MENU DRAWER -->
 <div class="mobile-menu">
   <a href="index.html">Home</a>
   <a href="menu.html">Menu</a>
-  <a href="about.html">About</a>
+  <a href="about.html" class="active">About</a>
   <a href="gallery.html">Gallery</a>
   <a href="reservation.html">Reservations</a>
   <a href="contact.html">Contact</a>
+  <a href="account.html">My Account &amp; Rewards</a>
 </div>
 
+<!-- PAGE HERO -->
 <section class="page-hero">
   <div class="container">
-    <p class="hero-eyebrow" style="color:var(--gold);">About Veloura</p>
-    <h1>Crafted With Passion</h1>
-    <p>An extraordinary dining experience begins long before the first course.</p>
+    <p class="hero-eyebrow">Heritage &amp; Passion</p>
+    <h1>The Soul of Veloura</h1>
+    <p style="margin:0 auto;max-width:540px;">An extraordinary gastronomic journey begins long before the first course is served.</p>
   </div>
 </section>
 
+<!-- MAIN ABOUT SECTION -->
 <section class="section-tight">
   <div class="container">
 
-    <div class="about-block reveal">
-      <div class="about-media"><!-- IMAGE PLACEHOLDER: images/about/our-story.jpg --></div>
+    <!-- Block 1: Our Story -->
+    <div class="about-block">
+      <div class="about-media">
+        <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1000&q=80" alt="Veloura Dining Ambiance" />
+      </div>
       <div>
-        <hr class="rule" />
+        <div class="rule"></div>
         <h2>Our Story</h2>
-        <p>Veloura began with a simple conviction: that a meal should be an experience, not a transaction. What started as a single dining room has grown into a destination for those who value craft, patience, and quiet luxury — without ever losing sight of the warmth that brought us here.</p>
+        <p style="margin-top:1rem;line-height:1.7;">
+          Veloura was founded with a singular conviction: that dining should be an awe-inspiring experience, not a simple meal. Located in Ramtali, Gujrat, Veloura has grown into a destination for diners who appreciate culinary precision, organic ingredients, and quiet luxury.
+        </p>
       </div>
     </div>
 
-    <div class="about-block reverse reveal">
-      <div class="about-media"><!-- IMAGE PLACEHOLDER: images/about/philosophy.jpg --></div>
+    <!-- Block 2: Our Philosophy -->
+    <div class="about-block reverse">
+      <div class="about-media">
+        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=80" alt="Culinary Plating" />
+      </div>
       <div>
-        <hr class="rule" />
-        <h2>Our Philosophy</h2>
-        <p>We believe restraint is a form of respect — for the ingredient, for the guest, for the craft itself. Every dish at Veloura is built to let its finest component speak, refined until nothing unnecessary remains.</p>
+        <div class="rule"></div>
+        <h2>Our Culinary Philosophy</h2>
+        <p style="margin-top:1rem;line-height:1.7;">
+          We believe culinary restraint is the highest form of respect. Every dish on our signature menu is crafted to let the finest ingredient speak — from Japanese A5 Wagyu and imported truffles to Persian saffron and organic produce.
+        </p>
       </div>
     </div>
 
-    <div class="about-block reveal">
-      <div class="about-media"><!-- IMAGE PLACEHOLDER: images/chef/head-chef.jpg --></div>
+    <!-- Block 3: Our Master Chef -->
+    <div class="about-block">
+      <div class="about-media">
+        <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=1000&q=80" alt="Executive Chef" />
+      </div>
       <div>
-        <hr class="rule" />
-        <h2>Our Chef</h2>
-        <p>Trained across classical European kitchens and shaped by years of regional exploration, our head chef leads a team devoted to precision without pretension — technique in service of flavor, always.</p>
+        <div class="rule"></div>
+        <h2>Our Executive Chef</h2>
+        <p style="margin-top:1rem;line-height:1.7;">
+          Trained across classical European kitchens and inspired by regional heritage, our master chef leads a dedicated brigade devoted to precision without pretension — pure technique in service of sublime flavor.
+        </p>
       </div>
     </div>
 
-    <div class="about-block reverse reveal">
-      <div class="about-media"><!-- IMAGE PLACEHOLDER: images/about/ingredients.jpg --></div>
-      <div>
-        <hr class="rule" />
-        <h2>Our Ingredients</h2>
-        <p>We work directly with growers, fishmongers, and small producers who share our standards. Seasonality dictates the menu, not the other way around — so what you taste today may not appear again until next year.</p>
+    <!-- Block 4: Artisanal Ingredients -->
+    <div class="about-block reverse">
+      <div class="about-media">
+        <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=1000&q=80" alt="Fresh Salmon Dish" />
       </div>
-    </div>
-
-    <div class="about-block reveal">
-      <div class="about-media"><!-- IMAGE PLACEHOLDER: images/about/restaurant-interior.jpg --></div>
       <div>
-        <hr class="rule" />
-        <h2>Our Restaurant</h2>
-        <p>Every surface, from the dining room to the bar, was chosen for how it makes a guest feel — warm light, considered acoustics, and space to actually talk to the people you came with.</p>
+        <div class="rule"></div>
+        <h2>Artisanal Ingredients</h2>
+        <p style="margin-top:1rem;line-height:1.7;">
+          We collaborate directly with small artisanal growers, trusted fishmongers, and specialty spice purveyors. Our charcoal grills use authentic binchotan charcoals to impart an unmistakable clean, smoky crust to our steaks and seafood.
+        </p>
       </div>
     </div>
 
   </div>
 </section>
 
-<section class="section section-dark">
-  <div class="container" style="text-align:center;max-width:640px;">
-    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
-    <h2>Why Veloura</h2>
-    <p>Because dining out should feel like an occasion, even on an ordinary evening. That's the standard we hold ourselves to — one plate, one guest, one story at a time.</p>
-    <a href="reservation.html" class="btn btn-primary" style="margin-top:1.5rem;">Reserve a Table</a>
+<!-- CALL TO ACTION BANNER -->
+<section style="background:#15120e;border-top:1px solid var(--border-gold);padding:4rem 0;text-align:center;">
+  <div class="container" style="max-width:640px;">
+    <h2>Join Us For An Unforgettable Evening</h2>
+    <p style="margin:1rem auto 2rem;color:var(--text-cream);">
+      Whether celebrating a milestone or enjoying an intimate dinner, Veloura welcomes you with open warmth.
+    </p>
+    <a href="reservation.html" class="btn btn-primary" style="padding:1rem 2.25rem;">
+      <i data-lucide="calendar" style="width:16px;height:16px;"></i> Reserve A Table
+    </a>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><p class="logo">VELOURA</p><p>"Where Every Flavor Tells a Story."</p></div>
-      <div><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
-      <div><h4>Guest</h4><ul><li><a href="reservation.html">Reservations</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li></ul></div>
-      <div><h4>Follow</h4><div class="social-icons"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="TikTok">TT</a></div></div>
+      <div>
+        <p class="logo">VELOURA</p>
+        <p style="margin-top:0.75rem;font-size:0.85rem;">Fine Dining &amp; Curated Culinary Excellence.</p>
+        <p style="margin-top:0.5rem;font-size:0.82rem;color:var(--gold-primary);">Mon &ndash; Sun: 10:00 AM &ndash; 12:00 AM (Midnight)</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Guest Services</h4>
+        <ul>
+          <li><a href="reservation.html">Table Reservations</a></li>
+          <li><a href="cart.html">View Dining Cart</a></li>
+          <li><a href="account.html">Loyalty Rewards</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Concierge</h4>
+        <p style="color:var(--text-cream);font-size:0.85rem;">Ramtali, Gujrat, Punjab, Pakistan</p>
+        <p style="font-size:0.85rem;margin:0.25rem 0;">Phone: <a href="tel:+923000000000" style="color:var(--gold-primary);font-weight:700;">+92 300 0000000</a></p>
+        <p style="font-size:0.85rem;">Email: <a href="mailto:shahyousaf2004@gmail.com" style="color:var(--gold-primary);">shahyousaf2004@gmail.com</a></p>
+      </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Veloura. All rights reserved.</span>
-      <span>Gujrat, Ramtalai, Pakistan &bull; Phone: <a href="tel:03285733872" style="color:var(--gold);">03285733872</a> &bull; Email: <a href="mailto:shahousaf2004@gmail.com" style="color:var(--gold);">shahousaf2004@gmail.com</a></span>
+      <span>&copy; 2026 Veloura Luxury Dining. All rights reserved.</span>
+      <span>Ramtali, Gujrat, Punjab, Pakistan</span>
     </div>
   </div>
 </footer>
 
+<div class="toast"></div>
+
 <script src="js/supabase-client.js"></script>
+<script src="js/data-store.js"></script>
 <script src="js/main.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
 </body>
 </html>

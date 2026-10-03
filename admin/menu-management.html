@@ -6,7 +6,10 @@
 <title>Menu Management — Veloura Admin</title>
 <meta name="robots" content="noindex, nofollow" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="../css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -14,65 +17,117 @@
 
 <div id="admin-guard" class="admin-guard-block">
   <div id="admin-guard-inner">
-    <hr class="rule" style="margin-left:auto;margin-right:auto;" />
-    <h2>Checking access&hellip;</h2>
-    <p>Verifying administrator permissions.</p>
+    <h2>Verifying access...</h2>
   </div>
 </div>
 
 <div class="admin-shell" style="display:none;">
-<aside class="admin-sidebar">
-  <a href="index.html" class="logo">VELOURA</a>
-  <nav class="admin-nav">
-    <a href="index.html">Overview</a>
-    <a href="menu-management.html" aria-current="page">Menu Management</a>
-    <a href="categories.html">Categories</a>
-    <a href="deals.html">Deals</a>
-    <a href="orders.html">Orders</a>
-    <a href="reservations.html">Reservations</a>
-    <a href="customers.html">Customers</a>
-    <a href="messages.html">Contact Messages</a>
-    <a href="newsletter.html">Newsletter</a>
-    <a href="#" class="signout" data-logout="admin">Sign Out</a>
-    <a href="../index.html" style="margin-top:0.5rem;">&larr; Back to Site</a>
-  </nav>
-</aside>
+  
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div>
+      <a href="../index.html" class="logo">VELOURA</a>
+      <div style="font-size:0.75rem;color:var(--gold-primary);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.25rem;">Management Console</div>
+      
+      <nav class="admin-nav">
+        <a href="index.html">Overview</a>
+        <a href="menu-management.html" aria-current="page">Menu &amp; Stock Toggle</a>
+        <a href="orders.html">Live Orders</a>
+        <a href="reservations.html">Reservations</a>
+        <a href="../index.html">&larr; Back to Site</a>
+      </nav>
+    </div>
 
+    <div>
+      <a href="#" class="btn btn-outline" style="width:100%;font-size:0.72rem;padding:0.5rem;" data-logout="admin">Sign Out</a>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEW -->
   <main class="admin-main">
-    <div class="admin-topbar">
-      <h1 style="font-size:1.8rem;">Menu Management</h1>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <h1 style="font-size:2rem;color:var(--text-primary);">Menu Management &amp; Stock Control</h1>
+        <p style="font-size:0.85rem;color:var(--text-muted);">Manage dishes, update prices, and click the Stock pill to instantly toggle availability.</p>
+      </div>
+      <div>
+        <button id="add-item-btn" class="btn btn-primary">
+          <i data-lucide="plus" style="width:16px;height:16px;"></i> Add Menu Dish
+        </button>
+      </div>
     </div>
-    <div class="admin-topbar">
-      <button id="add-item-btn" class="btn btn-primary">Add Menu Item</button>
-    </div>
+
+    <!-- DATA TABLE WRAPPER -->
     <div class="admin-table-wrap">
       <table class="admin-table">
-        <thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Popular</th><th>Vegetarian</th><th>Available</th><th>Actions</th></tr></thead>
-        <tbody id="menu-table-body"></tbody>
+        <thead>
+          <tr>
+            <th>Dish Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Popular</th>
+            <th>Dietary</th>
+            <th>Stock Status (Click to Toggle)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="menu-table-body">
+          <!-- Populated by admin/js/menu-management.js -->
+        </tbody>
       </table>
     </div>
 
-    <div id="item-modal" class="modal-backdrop">
-      <div class="modal-box">
-        <h3 id="modal-title">Add Menu Item</h3>
+    <!-- ADD/EDIT DISH MODAL -->
+    <div id="item-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+      <div class="modal-box" style="max-width:540px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+          <h3 id="modal-title" style="color:var(--gold-primary);">Add Menu Dish</h3>
+          <button onclick="closeItemModal()" style="color:var(--text-muted);font-size:1.5rem;">&times;</button>
+        </div>
+
         <form id="item-form">
           <input type="hidden" id="item-id" />
-          <div class="field" style="margin-bottom:0.75rem;"><label for="item-name">Name</label><input id="item-name" required /></div>
-          <div class="field" style="margin-bottom:0.75rem;"><label for="item-description">Description</label><textarea id="item-description"></textarea></div>
-          <div class="field" style="margin-bottom:0.75rem;"><label for="item-category">Category</label><select id="item-category"></select></div>
-          <div class="field" style="margin-bottom:0.75rem;"><label for="item-price">Price (Rs)</label><input id="item-price" type="number" min="0" step="1" required /></div>
-          <div class="field" style="margin-bottom:0.75rem;">
-            <label for="item-image-file">Image</label>
-            <input id="item-image-file" type="file" accept="image/*" />
-            <input type="hidden" id="item-image" />
-            <p style="font-size:0.8rem;color:var(--stone);margin-top:0.3rem;">Uploads to Supabase Storage automatically.</p>
+
+          <div class="field" style="margin-bottom:1rem;">
+            <label for="item-name">Dish Name *</label>
+            <input id="item-name" required placeholder="e.g. Binchotan Seared Lamb Chops" />
           </div>
-          <label style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;"><input type="checkbox" id="item-popular" /> Mark as popular</label>
-          <label style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;"><input type="checkbox" id="item-vegetarian" /> Vegetarian</label>
-          <label style="display:flex;gap:0.5rem;align-items:center;"><input type="checkbox" id="item-available" checked /> Available</label>
-          <div class="modal-close-row">
+
+          <div class="field" style="margin-bottom:1rem;">
+            <label for="item-category">Category *</label>
+            <select id="item-category"></select>
+          </div>
+
+          <div class="field" style="margin-bottom:1rem;">
+            <label for="item-price">Price (Rs) *</label>
+            <input id="item-price" type="number" min="0" step="50" required placeholder="e.g. 2450" />
+          </div>
+
+          <div class="field" style="margin-bottom:1rem;">
+            <label for="item-image-url">Image URL (Unsplash Supported)</label>
+            <input id="item-image-url" type="url" placeholder="https://images.unsplash.com/..." />
+          </div>
+
+          <div class="field" style="margin-bottom:1rem;">
+            <label for="item-description">Culinary Description</label>
+            <textarea id="item-description" placeholder="Artisanal seasoning, garnish, sauce..."></textarea>
+          </div>
+
+          <div style="display:flex;gap:1.5rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+            <label style="display:flex;gap:0.4rem;align-items:center;font-size:0.85rem;cursor:pointer;">
+              <input type="checkbox" id="item-popular" /> Chef's Choice / Popular
+            </label>
+            <label style="display:flex;gap:0.4rem;align-items:center;font-size:0.85rem;cursor:pointer;">
+              <input type="checkbox" id="item-vegetarian" /> Vegetarian
+            </label>
+            <label style="display:flex;gap:0.4rem;align-items:center;font-size:0.85rem;cursor:pointer;">
+              <input type="checkbox" id="item-available" checked /> Available in Stock
+            </label>
+          </div>
+
+          <div style="display:flex;gap:0.75rem;justify-content:flex-end;">
             <button type="button" class="btn btn-dark" id="modal-cancel">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save Item</button>
+            <button type="submit" class="btn btn-primary">Save Dish</button>
           </div>
         </form>
       </div>
@@ -81,9 +136,14 @@
   </main>
 </div>
 
+<div class="toast"></div>
+
 <script src="../js/supabase-client.js"></script>
-<script src="../js/auth.js"></script>
+<script src="../js/data-store.js"></script>
 <script src="js/admin-guard.js"></script>
 <script src="js/menu-management.js"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+</script>
 </body>
 </html>
