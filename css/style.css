@@ -220,33 +220,79 @@ p { max-width: 62ch; color: var(--umber); }
 .hamburger {
   display: none;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
-  color: var(--ivory);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 161, 90, 0.3);
+  background: rgba(23, 20, 15, 0.6);
+  cursor: pointer;
+  z-index: 101;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+.hamburger:hover {
+  border-color: var(--gold);
+  background: rgba(201, 161, 90, 0.15);
 }
 .hamburger span {
-  width: 22px; height: 1px;
-  background: var(--ivory);
+  width: 20px;
+  height: 2px;
+  background: var(--gold);
   display: block;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.hamburger[aria-expanded="true"] {
+  border-color: var(--gold);
+  background: rgba(201, 161, 90, 0.2);
+}
+.hamburger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .mobile-menu {
   position: fixed;
   inset: 0;
-  background: var(--charcoal);
+  background: rgba(13, 13, 13, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   z-index: 99;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-md);
+  gap: 2rem;
+  opacity: 0;
+  pointer-events: none;
   transform: translateY(-100%);
-  transition: transform var(--transition);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
-.mobile-menu.open { transform: translateY(0); }
+.mobile-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
 .mobile-menu a {
   font-family: var(--font-display);
-  font-size: 1.8rem;
+  font-size: 2rem;
+  letter-spacing: 0.1em;
   color: var(--ivory);
+  text-transform: uppercase;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.mobile-menu a:hover,
+.mobile-menu a[aria-current="page"] {
+  color: var(--gold);
+  transform: scale(1.05);
 }
 
 @media (max-width: 900px) {

@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Veloura — An Extraordinary Dining Experience</title>
+<title>Veloura — Luxury Dining & Curated Gastronomy</title>
+<meta name="description" content="Discover Veloura's signature dishes, handcrafted by master chefs with artisanal ingredients. Explore our curated menu and reserve your table." />
+
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
 <!-- Lucide Icons -->
@@ -11,9 +13,10 @@
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <!-- Supabase JS Client CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 tailwind.config = {
   theme: {
@@ -23,305 +26,365 @@ tailwind.config = {
           gold: '#D4AF37',
           goldHover: '#C5A028',
           goldLight: '#F3E5AB',
+          goldDark: '#997A15',
           dark: '#0D0D0D',
+          darker: '#070707',
           card: '#161616',
+          cardHover: '#1c1b18',
           cream: '#F9F6F0',
           muted: '#A3A3A3',
-          border: '#2A2A2A'
+          border: '#2A2A2A',
+          borderGold: 'rgba(212, 175, 55, 0.35)'
         }
       },
       fontFamily: {
-        serif: ['Cormorant Garamond', 'serif'],
+        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
         sans: ['Manrope', 'sans-serif'],
       }
     }
   }
 }
 </script>
+
 <style>
-.glass-nav { background: rgba(13, 13, 13, 0.85); backdrop-filter: blur(12px); }
-.custom-scrollbar::-webkit-scrollbar { height: 4px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: #161616; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+  /* Glassmorphism navigation & surfaces */
+  .glass-nav { 
+    background: rgba(13, 13, 13, 0.88); 
+    backdrop-filter: blur(16px); 
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .glass-card {
+    background: rgba(22, 22, 22, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Custom luxury scrollbar for horizontal category scrolling */
+  .custom-scrollbar::-webkit-scrollbar { height: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: #161616; border-radius: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #F3E5AB; }
+
+  /* Animated Card entrance */
+  @keyframes cardEntrance {
+    0% {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .card-animate {
+    animation: cardEntrance 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Shimmer animation for skeleton loaders */
+  @keyframes shimmerWave {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .skeleton-shimmer {
+    background: linear-gradient(90deg, #181818 25%, #252422 50%, #181818 75%);
+    background-size: 200% 100%;
+    animation: shimmerWave 1.8s infinite ease-in-out;
+  }
+
+  /* Pulsing live dot */
+  @keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+    50% { transform: scale(1.15); opacity: 0.85; box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+  }
+  .live-dot {
+    animation: pulseGlow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  }
+
+  /* Hamburger toggle button bar transformations */
+  #mobile-nav-toggle.is-active .hamburger-bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  #mobile-nav-toggle.is-active .hamburger-bar:nth-child(2) {
+    opacity: 0;
+    transform: scale(0);
+  }
+  #mobile-nav-toggle.is-active .hamburger-bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* Toast notification styling */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #181612;
+    color: #F9F6F0;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    padding: 0.85rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.8), 0 0 15px rgba(212, 175, 55, 0.2);
+    z-index: 100;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .toast.error {
+    border-color: #ef4444;
+    color: #fca5a5;
+  }
 </style>
 </head>
-<body class="bg-brand-dark text-brand-cream font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brand-gold selection:text-brand-dark">
 
-<!-- NAVIGATION -->
+<body class="bg-brand-dark text-brand-cream font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brand-gold selection:text-brand-dark overflow-x-hidden">
+
+<!-- ========================================================================== -->
+<!-- 1. NAVIGATION BAR (RESPONSIVE WITH MOBILE HAMBURGER) -->
+<!-- ========================================================================== -->
 <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-brand-border/60 transition-all duration-300">
-  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-    <a href="index.html" class="font-serif text-2xl md:text-3xl tracking-[0.3em] font-semibold text-brand-gold hover:opacity-90 transition">VELOURA</a>
-    <nav class="hidden md:flex items-center space-x-8 text-xs tracking-[0.2em] uppercase font-medium">
-      <a href="index.html" class="text-brand-gold">Home</a>
-      <a href="menu.html" class="hover:text-brand-gold transition-colors">Menu</a>
-      <a href="about.html" class="hover:text-brand-gold transition-colors">About</a>
-      <a href="gallery.html" class="hover:text-brand-gold transition-colors">Gallery</a>
-      <a href="reservation.html" class="hover:text-brand-gold transition-colors">Reservations</a>
-      <a href="contact.html" class="hover:text-brand-gold transition-colors">Contact</a>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+    <!-- Brand Logo -->
+    <a href="index.html" class="font-serif text-2xl sm:text-3xl tracking-[0.28em] font-semibold text-brand-gold hover:opacity-90 transition-opacity">
+      VELOURA
+    </a>
+
+    <!-- Desktop Navigation Links (>= md) -->
+    <nav class="hidden md:flex items-center space-x-8 text-xs tracking-[0.2em] uppercase font-medium" aria-label="Desktop Navigation">
+      <a href="index.html" class="text-brand-gold relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-brand-gold">Home</a>
+      <a href="menu.html" class="text-brand-cream/80 hover:text-brand-gold transition-colors py-1">Menu</a>
+      <a href="about.html" class="text-brand-cream/80 hover:text-brand-gold transition-colors py-1">About</a>
+      <a href="gallery.html" class="text-brand-cream/80 hover:text-brand-gold transition-colors py-1">Gallery</a>
+      <a href="reservation.html" class="text-brand-cream/80 hover:text-brand-gold transition-colors py-1">Reservations</a>
+      <a href="contact.html" class="text-brand-cream/80 hover:text-brand-gold transition-colors py-1">Contact</a>
     </nav>
-    <div class="flex items-center space-x-4">
-      <a href="reservation.html" class="hidden sm:inline-block bg-brand-gold text-brand-dark px-5 py-2.5 rounded-full font-semibold text-xs tracking-wider uppercase hover:bg-brand-goldHover transition duration-300 shadow-md hover:shadow-brand-gold/20">Book A Table</a>
-      <a href="cart.html" class="relative p-2 text-brand-cream hover:text-brand-gold transition-colors" title="View Cart">
-        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-        <span id="cart-badge-count" class="absolute -top-1 -right-1 bg-brand-gold text-brand-dark text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+
+    <!-- Header Action Icons & Mobile Toggle -->
+    <div class="flex items-center space-x-3 sm:space-x-4">
+      <!-- Book A Table CTA (Desktop / Tablet) -->
+      <a href="reservation.html" class="hidden sm:inline-flex items-center space-x-1.5 bg-brand-gold text-brand-dark px-4 sm:px-5 py-2 rounded-full font-bold text-xs tracking-wider uppercase hover:bg-brand-goldHover transition duration-300 shadow-md hover:shadow-brand-gold/25">
+        <span>Book A Table</span>
       </a>
-      <a href="login.html" class="p-2 text-brand-cream hover:text-brand-gold transition-colors" title="Account Login">
+
+      <!-- Shopping Cart Button -->
+      <a href="cart.html" class="relative p-2.5 rounded-full text-brand-cream hover:text-brand-gold hover:bg-brand-card/80 transition-all" title="View Cart">
+        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        <span id="cart-badge-count" class="cart-count absolute -top-1 -right-1 bg-brand-gold text-brand-dark text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center transition-all">0</span>
+      </a>
+
+      <!-- User Account Login -->
+      <a href="login.html" class="p-2.5 rounded-full text-brand-cream hover:text-brand-gold hover:bg-brand-card/80 transition-all" title="Account / Sign In">
         <i data-lucide="user" class="w-5 h-5"></i>
       </a>
+
+      <!-- Mobile Hamburger Toggle Button (< md) -->
+      <button 
+        id="mobile-nav-toggle" 
+        class="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-full border border-brand-border/90 bg-brand-card text-brand-gold hover:border-brand-gold/60 transition-all duration-300 focus:outline-none"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+      >
+        <span class="hamburger-bar block w-5 h-0.5 bg-brand-gold transition-all duration-300 origin-center my-0.5"></span>
+        <span class="hamburger-bar block w-5 h-0.5 bg-brand-gold transition-all duration-300 origin-center my-0.5"></span>
+        <span class="hamburger-bar block w-5 h-0.5 bg-brand-gold transition-all duration-300 origin-center my-0.5"></span>
+      </button>
     </div>
   </div>
 </header>
 
-<!-- HERO & CATEGORY NAVIGATION -->
-<main class="flex-grow pt-28 pb-16">
-  <section class="max-w-7xl mx-auto px-6 text-center pt-8 pb-6">
-    <div class="max-w-3xl mx-auto">
-      <div class="inline-flex items-center space-x-2 text-brand-gold tracking-[0.35em] uppercase text-xs mb-3 font-semibold">
-        <i data-lucide="utensils" class="w-4 h-4"></i>
-        <span>Curated Gastronomy</span>
-      </div>
-      <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-tight mb-4 tracking-tight">
-        Explore Our <br/><span class="italic text-brand-gold">Signature Menu</span>
-      </h1>
-      <p class="text-brand-muted text-sm sm:text-base max-w-lg mx-auto font-light">
-        Select a category below to discover our freshly prepared dishes and house specials.
-      </p>
+<!-- ========================================================================== -->
+<!-- 2. FULLSCREEN MOBILE NAVIGATION DRAWER -->
+<!-- ========================================================================== -->
+<div 
+  id="mobile-nav-drawer" 
+  class="fixed inset-0 z-40 bg-brand-darker/98 backdrop-blur-2xl transition-all duration-400 opacity-0 pointer-events-none -translate-y-full md:hidden flex flex-col justify-between pt-24 pb-8 px-6 overflow-y-auto"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Mobile Navigation"
+>
+  <div class="my-auto py-6 space-y-6 text-center">
+    <div class="inline-flex items-center space-x-2 text-brand-gold tracking-[0.3em] uppercase text-xs font-semibold">
+      <i data-lucide="utensils" class="w-3.5 h-3.5"></i>
+      <span>Veloura Gastronomy</span>
     </div>
 
-    <!-- CATEGORY BUTTONS: rendered dynamically now, from the real categories table -->
-    <div class="mt-8 flex items-center justify-start md:justify-center gap-2.5 overflow-x-auto pb-4 custom-scrollbar px-2" id="category-bar">
-      <button onclick="selectCategory('ALL')" class="cat-btn bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300 shadow-lg" data-cat="ALL">
-        All Dishes
-      </button>
-      <!-- Other category buttons are injected by renderCategoryButtons() once real categories load -->
+    <!-- Navigation Links -->
+    <nav class="flex flex-col space-y-4 font-serif text-2xl tracking-[0.15em] uppercase">
+      <a href="index.html" class="text-brand-gold font-medium py-1 transition-colors">Home</a>
+      <a href="menu.html" class="text-brand-cream/80 hover:text-brand-gold py-1 transition-colors">Menu</a>
+      <a href="about.html" class="text-brand-cream/80 hover:text-brand-gold py-1 transition-colors">About</a>
+      <a href="gallery.html" class="text-brand-cream/80 hover:text-brand-gold py-1 transition-colors">Gallery</a>
+      <a href="reservation.html" class="text-brand-cream/80 hover:text-brand-gold py-1 transition-colors">Reservations</a>
+      <a href="contact.html" class="text-brand-cream/80 hover:text-brand-gold py-1 transition-colors">Contact</a>
+    </nav>
+
+    <!-- Mobile Drawer Actions -->
+    <div class="pt-6 flex flex-col gap-3 max-w-xs mx-auto">
+      <a href="reservation.html" class="bg-brand-gold text-brand-dark py-3.5 rounded-full font-bold text-xs tracking-widest uppercase hover:bg-brand-goldHover transition shadow-lg shadow-brand-gold/25 flex items-center justify-center space-x-2">
+        <i data-lucide="calendar" class="w-4 h-4"></i>
+        <span>Book A Table</span>
+      </a>
+      <a href="cart.html" class="border border-brand-border bg-brand-card/80 text-brand-cream py-3 rounded-full text-xs font-semibold tracking-widest uppercase hover:border-brand-gold/60 transition flex items-center justify-center space-x-2">
+        <i data-lucide="shopping-bag" class="w-4 h-4 text-brand-gold"></i>
+        <span>View Cart (<span class="mobile-cart-count font-bold text-brand-gold">0</span>)</span>
+      </a>
+      <a href="login.html" class="text-xs text-brand-muted hover:text-brand-gold tracking-wider uppercase py-2 flex items-center justify-center space-x-1.5 transition">
+        <i data-lucide="user" class="w-3.5 h-3.5"></i>
+        <span>Customer Account & Orders</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="text-center pt-4 border-t border-brand-border/40 text-[11px] text-brand-muted tracking-widest uppercase">
+    Veloura Fine Dining &bull; Master Crafted
+  </div>
+</div>
+
+<!-- ========================================================================== -->
+<!-- 3. HERO & DISHES SHOWCASE -->
+<!-- ========================================================================== -->
+<main class="flex-grow pt-24 sm:pt-28 pb-16">
+  <!-- HERO BANNER -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 text-center pt-6 sm:pt-8 pb-4">
+    <div class="max-w-3xl mx-auto">
+      <!-- Live Sync Status Badge -->
+      <div class="inline-flex items-center space-x-2.5 bg-brand-card/90 border border-brand-border/90 px-4 py-1.5 rounded-full text-xs font-medium text-brand-gold mb-4 shadow-inner">
+        <span id="sync-indicator" class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span>
+        <span class="tracking-widest uppercase text-[11px] font-semibold">Live Menu</span>
+        <span class="text-brand-muted/40">•</span>
+        <span id="dishes-count-badge" class="text-brand-cream/80 text-[11px] font-normal">Loading dishes...</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-normal leading-[1.1] mb-4 tracking-tight">
+        Explore Our <br class="sm:hidden"/><span class="italic text-brand-gold font-light">Signature Menu</span>
+      </h1>
+      
+      <p class="text-brand-muted text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed mb-6">
+        Handcrafted with passion and fresh ingredients. Select any category or search below to explore dishes live from our kitchen.
+      </p>
+
+      <!-- Instant Dish Search -->
+      <div class="max-w-md mx-auto relative mb-6">
+        <i data-lucide="search" class="w-4 h-4 text-brand-muted absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+        <input 
+          id="dish-search" 
+          type="text" 
+          placeholder="Search by dish name, flavor, or ingredient..." 
+          class="w-full bg-brand-card/90 border border-brand-border/80 rounded-full pl-11 pr-4 py-2.5 text-xs text-brand-cream placeholder-brand-muted/60 focus:outline-none focus:border-brand-gold/80 transition-colors shadow-inner"
+        />
+      </div>
+    </div>
+
+    <!-- DYNAMIC CATEGORY BUTTONS (HORIZONTAL TOUCH-SCROLL ON MOBILE) -->
+    <div class="relative max-w-5xl mx-auto">
+      <div 
+        id="category-bar" 
+        class="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-3 pt-1 px-2 custom-scrollbar touch-pan-x"
+      >
+        <button onclick="selectCategory('ALL')" class="cat-btn bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition-all duration-300 shadow-lg shadow-brand-gold/20" data-cat="ALL">
+          All Dishes
+        </button>
+        <!-- Dynamic categories injected by js/index.js -->
+      </div>
     </div>
   </section>
 
-  <!-- DYNAMIC MENU ITEMS GRID -->
-  <section class="max-w-7xl mx-auto px-6 py-6">
-    <div id="loading-state" class="text-center py-16">
-      <div class="inline-block w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin mb-3"></div>
-      <p class="text-brand-muted text-sm tracking-widest uppercase">Fetching dishes from database...</p>
+  <!-- ======================================================================== -->
+  <!-- 4. DYNAMIC MENU ITEMS GRID (SUPABASE CONNECTED) -->
+  <!-- ======================================================================== -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <!-- SKELETON LOADING STATE -->
+    <div id="loading-state" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div class="bg-brand-card/60 rounded-2xl border border-brand-border/60 overflow-hidden flex flex-col justify-between">
+        <div class="aspect-[4/3] skeleton-shimmer"></div>
+        <div class="p-6 space-y-3">
+          <div class="h-6 w-3/4 skeleton-shimmer rounded"></div>
+          <div class="h-4 w-full skeleton-shimmer rounded"></div>
+          <div class="pt-4 flex justify-between items-center border-t border-brand-border/40">
+            <div class="h-6 w-20 skeleton-shimmer rounded"></div>
+            <div class="h-8 w-20 skeleton-shimmer rounded-full"></div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-brand-card/60 rounded-2xl border border-brand-border/60 overflow-hidden flex flex-col justify-between hidden sm:flex">
+        <div class="aspect-[4/3] skeleton-shimmer"></div>
+        <div class="p-6 space-y-3">
+          <div class="h-6 w-2/3 skeleton-shimmer rounded"></div>
+          <div class="h-4 w-full skeleton-shimmer rounded"></div>
+          <div class="pt-4 flex justify-between items-center border-t border-brand-border/40">
+            <div class="h-6 w-20 skeleton-shimmer rounded"></div>
+            <div class="h-8 w-20 skeleton-shimmer rounded-full"></div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-brand-card/60 rounded-2xl border border-brand-border/60 overflow-hidden flex flex-col justify-between hidden lg:flex">
+        <div class="aspect-[4/3] skeleton-shimmer"></div>
+        <div class="p-6 space-y-3">
+          <div class="h-6 w-4/5 skeleton-shimmer rounded"></div>
+          <div class="h-4 w-full skeleton-shimmer rounded"></div>
+          <div class="pt-4 flex justify-between items-center border-t border-brand-border/40">
+            <div class="h-6 w-20 skeleton-shimmer rounded"></div>
+            <div class="h-8 w-20 skeleton-shimmer rounded-full"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="menu-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-    <div id="empty-state" class="hidden text-center py-20 bg-brand-card/40 rounded-3xl border border-brand-border max-w-xl mx-auto px-6">
-      <i data-lucide="soup" class="w-12 h-12 text-brand-gold/60 mx-auto mb-4"></i>
-      <h3 class="font-serif text-2xl text-brand-cream mb-2">No Items Found</h3>
-      <p id="empty-state-msg" class="text-brand-muted text-sm font-light mb-6">There are currently no items listed in this category.</p>
-      <button onclick="selectCategory('ALL')" class="bg-brand-gold text-brand-dark px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-goldHover transition">
-        View All Items
+
+    <!-- MAIN DISHES GRID -->
+    <div id="menu-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <!-- Dish cards rendered by js/index.js -->
+    </div>
+
+    <!-- EMPTY / NO MATCHES STATE -->
+    <div id="empty-state" class="hidden text-center py-16 px-6 bg-brand-card/60 rounded-3xl border border-brand-border max-w-lg mx-auto my-8">
+      <div class="w-16 h-16 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center mx-auto mb-4 text-brand-gold">
+        <i data-lucide="soup" class="w-8 h-8"></i>
+      </div>
+      <h3 class="font-serif text-2xl text-brand-cream mb-2">No Dishes Found</h3>
+      <p id="empty-state-msg" class="text-brand-muted text-xs sm:text-sm font-light leading-relaxed mb-6">
+        There are currently no items matching your selection.
+      </p>
+      <button onclick="selectCategory('ALL')" class="bg-brand-gold hover:bg-brand-goldHover text-brand-dark px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md">
+        View All Dishes
       </button>
     </div>
   </section>
 </main>
 
-<!-- FOOTER -->
+<!-- ========================================================================== -->
+<!-- 5. LUXURY FOOTER -->
+<!-- ========================================================================== -->
 <footer class="bg-brand-card border-t border-brand-border/80 py-12 px-6">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
     <div>
-      <span class="font-serif text-2xl tracking-[0.25em] text-brand-gold">VELOURA</span>
+      <a href="index.html" class="font-serif text-2xl tracking-[0.25em] text-brand-gold block">VELOURA</a>
       <p class="text-xs text-brand-muted mt-1 font-light">Fine Dining & Culinary Excellence</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-6 text-xs text-brand-muted uppercase tracking-wider">
+      <a href="menu.html" class="hover:text-brand-gold transition">Menu</a>
+      <a href="about.html" class="hover:text-brand-gold transition">About</a>
+      <a href="gallery.html" class="hover:text-brand-gold transition">Gallery</a>
+      <a href="reservation.html" class="hover:text-brand-gold transition">Reservations</a>
+      <a href="contact.html" class="hover:text-brand-gold transition">Contact</a>
+      <a href="admin/index.html" class="hover:text-brand-gold transition">Admin Portal</a>
     </div>
     <p class="text-xs text-brand-muted font-light">&copy; 2026 Veloura Fine Dining. All rights reserved.</p>
   </div>
 </footer>
 
-<!-- SCRIPT INTEGRATION & SUPABASE LOGIC -->
-<script>
-// 1. SUPABASE CLIENT CONFIGURATION
-// NOTE: keep this in sync with js/supabase-client.js used by the rest of the site (cart, checkout, admin, etc.)
-const SUPABASE_URL = 'https://owyyxnrumposabelapid.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93eXl4bnJ1bXBvc2FiZWxhcGlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgzNjY3NjMsImV4cCI6MjA3Mzk0Mjc2M30.4sUpG6pTz_jAnBAn7Lvhb3xJ5v5uG4xX4q_7zI4n-vM';
-
-let supabaseClient = null;
-if (window.supabase) {
-  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-}
-
-let allMenuItems = [];
-let allCategories = [];
-let activeCategory = 'ALL';
-
-const DEFAULT_IMAGE = 'https://placehold.co/600x400/161616/D4AF37?text=Veloura+Special';
-
-// 2. FETCH CATEGORIES + MENU ITEMS FROM SUPABASE
-// menu_items does NOT have a plain "category" text column — it has
-// category_id, a foreign key into the categories table. We fetch both
-// lists separately (same approach as js/menu.js) and match them with
-// categoryNameFor() below, instead of a PostgREST join/embed.
-async function fetchMenuItems() {
-  const loadingEl = document.getElementById('loading-state');
-  const gridEl = document.getElementById('menu-grid');
-  const emptyEl = document.getElementById('empty-state');
-
-  loadingEl.classList.remove('hidden');
-  gridEl.classList.add('hidden');
-  emptyEl.classList.add('hidden');
-
-  try {
-    if (!supabaseClient) throw new Error("Supabase client not initialized.");
-
-    // IMPORTANT: fetch categories and menu_items SEPARATELY (not as a
-    // PostgREST join/embed) and match them ourselves below. This mirrors
-    // what menu.html / js/menu.js already does successfully on this project.
-    const { data: categories, error: catError } = await supabaseClient
-      .from('categories')
-      .select('id, name')
-      .order('name');
-    if (catError) throw catError;
-
-    const { data: items, error: itemError } = await supabaseClient
-      .from('menu_items')
-      .select('*')
-      .eq('is_available', true)
-      .order('created_at', { ascending: false });
-    if (itemError) throw itemError;
-
-    allCategories = categories || [];
-    allMenuItems = items || [];
-
-    renderCategoryButtons();
-    renderDishes();
-  } catch (err) {
-    console.error("Supabase fetch failed:", err);
-    loadingEl.classList.add('hidden');
-    emptyEl.classList.remove('hidden');
-    document.getElementById('empty-state-msg').innerText =
-      "Couldn't load the menu right now. Please refresh, or check back shortly.";
-  }
-}
-
-// Look up a category's name by id (menu_items stores category_id, not a name)
-function categoryNameFor(item) {
-  const cat = allCategories.find(c => c.id === item.category_id);
-  return cat ? cat.name : '';
-}
-
-// 2b. BUILD CATEGORY BUTTONS FROM THE REAL categories TABLE
-// (replaces the old hardcoded list of category names, which could drift
-// out of sync with whatever categories actually exist in the database)
-function renderCategoryButtons() {
-  const bar = document.getElementById('category-bar');
-  const allBtn = bar.querySelector('[data-cat="ALL"]');
-  bar.innerHTML = '';
-  bar.appendChild(allBtn);
-
-  allCategories.forEach(cat => {
-    const btn = document.createElement('button');
-    btn.className = 'cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300';
-    btn.setAttribute('data-cat', cat.name);
-    btn.textContent = cat.name;
-    btn.onclick = () => selectCategory(cat.name);
-    bar.appendChild(btn);
-  });
-}
-
-// 3. RENDER DISHES GRID
-function renderDishes() {
-  const gridEl = document.getElementById('menu-grid');
-  const emptyEl = document.getElementById('empty-state');
-  document.getElementById('loading-state').classList.add('hidden');
-
-  let filteredItems = allMenuItems;
-  if (activeCategory !== 'ALL') {
-    filteredItems = allMenuItems.filter(item => {
-      const catName = categoryNameFor(item);
-      return catName.trim().toLowerCase() === activeCategory.trim().toLowerCase();
-    });
-  }
-
-  if (filteredItems.length === 0) {
-    gridEl.classList.add('hidden');
-    emptyEl.classList.remove('hidden');
-    document.getElementById('empty-state-msg').innerText =
-      activeCategory === 'ALL'
-        ? "No menu items yet — add some from the admin dashboard."
-        : `No dishes found under "${activeCategory}".`;
-    return;
-  }
-
-  emptyEl.classList.add('hidden');
-  gridEl.classList.remove('hidden');
-
-  gridEl.innerHTML = filteredItems.map(item => {
-    let imgSrc = item.image_url || DEFAULT_IMAGE;
-    if (!imgSrc.startsWith('http') && !imgSrc.startsWith('data:')) imgSrc = DEFAULT_IMAGE;
-
-    const priceText = typeof item.price === 'number'
-      ? `Rs ${item.price.toLocaleString()}`
-      : (item.price || 'Rs 0');
-
-    const categoryName = categoryNameFor(item);
-
-    return `
-      <div class="bg-brand-card rounded-2xl border border-brand-border overflow-hidden group hover:border-brand-gold/60 transition duration-500 flex flex-col justify-between shadow-xl">
-        <div class="relative overflow-hidden aspect-[4/3]">
-          <img src="${imgSrc}" alt="${item.name || 'Dish'}" onerror="this.onerror=null; this.src='${DEFAULT_IMAGE}';" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" />
-          ${item.is_popular ? `<span class="absolute top-3 left-3 bg-brand-gold text-brand-dark font-bold text-[10px] tracking-wider uppercase px-3 py-1 rounded-full shadow">Popular</span>` : ''}
-          ${categoryName ? `<span class="absolute bottom-3 right-3 bg-brand-dark/80 backdrop-blur-md text-brand-gold text-[11px] font-medium tracking-wider uppercase px-3 py-1 rounded-full border border-brand-gold/30">${categoryName}</span>` : ''}
-        </div>
-        <div class="p-6 flex-grow flex flex-col justify-between">
-          <div>
-            <h3 class="font-serif text-2xl text-brand-cream group-hover:text-brand-gold transition duration-300 font-medium mb-2">${item.name || 'Unnamed Dish'}</h3>
-            <p class="text-brand-muted text-xs line-clamp-2 mb-4 font-light leading-relaxed">${item.description || 'Prepared fresh with fine ingredients by our master chefs.'}</p>
-          </div>
-          <div class="flex items-center justify-between pt-4 border-t border-brand-border/60">
-            <span class="font-serif text-xl font-semibold text-brand-gold">${priceText}</span>
-            <button onclick="addToCart('${item.id}', '${(item.name || '').replace(/'/g, "\\'")}', ${item.price || 0})" class="bg-brand-dark hover:bg-brand-gold hover:text-brand-dark text-brand-gold border border-brand-gold/50 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition duration-300 flex items-center space-x-1.5">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-              <span>Add</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  lucide.createIcons();
-}
-
-// 4. CATEGORY SELECTION HANDLER
-function selectCategory(categoryName) {
-  activeCategory = categoryName;
-  document.querySelectorAll('.cat-btn').forEach(btn => {
-    const cat = btn.getAttribute('data-cat');
-    if (cat === categoryName) {
-      btn.className = 'cat-btn bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300 shadow-lg';
-    } else {
-      btn.className = 'cat-btn bg-brand-card hover:bg-brand-border text-brand-cream border border-brand-border px-5 py-2.5 rounded-full text-xs tracking-wider uppercase whitespace-nowrap transition duration-300';
-    }
-  });
-  renderDishes();
-}
-
-// 5. ADD TO CART HANDLER
-// FIX: now stores the real menu_items.id too (needed so checkout can link
-// order_items back to the correct dish — matches what cart.html/checkout.html expect).
-function addToCart(id, name, price) {
-  let cart = JSON.parse(localStorage.getItem('veloura_cart') || '[]');
-  const existing = cart.find(i => i.id === id);
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push({ id, name, price, quantity: 1 });
-  }
-  localStorage.setItem('veloura_cart', JSON.stringify(cart));
-  updateCartCount();
-}
-
-function updateCartCount() {
-  let cart = JSON.parse(localStorage.getItem('veloura_cart') || '[]');
-  const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const badge = document.getElementById('cart-badge-count');
-  if (badge) badge.innerText = totalCount;
-}
-
-// INITIAL LOAD
-window.addEventListener('DOMContentLoaded', () => {
-  lucide.createIcons();
-  updateCartCount();
-  fetchMenuItems();
-});
-</script>
+<!-- Shared Supabase Client & App Engine -->
+<script src="js/supabase-client.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>

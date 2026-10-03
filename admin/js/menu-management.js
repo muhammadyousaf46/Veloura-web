@@ -127,7 +127,7 @@ async function saveItem(e) {
   const payload = {
     name: document.querySelector("#item-name").value.trim(),
     description: document.querySelector("#item-description").value.trim(),
-    category_id: document.querySelector("#item-category").value,
+    category_id: document.querySelector("#item-category").value || null,
     price: Number(document.querySelector("#item-price").value),
     image_url: document.querySelector("#item-image").value.trim() || null,
     is_popular: document.querySelector("#item-popular").checked,
